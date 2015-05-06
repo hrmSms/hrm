@@ -3,7 +3,6 @@ package vn.com.tma.hrm.entities;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "item")
 public class Item {
 
   @Id

@@ -25,12 +25,16 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     private static final Logger LOGGER = Logger.getLogger(SecurityUserDetailsService.class);
 
-    @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
+	public SecurityUserDetailsService(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByTheUsersName(username);
+        User user = userRepository.findByName(username);
 
         if (user == null) {
             String message = "Username not found" + username;
@@ -42,6 +46,6 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
         LOGGER.info("Found user in database: " + user);
 
-        return new org.springframework.security.core.userdetails.User(username, user.getPasswordDigest(), authorities);
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), authorities);
     }
 }
