@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 27, 2015 at 05:43 AM
+-- Generation Time: Jul 28, 2015 at 06:27 AM
 -- Server version: 5.6.24
 -- PHP Version: 5.6.8
 
@@ -46,7 +46,8 @@ CREATE TABLE IF NOT EXISTS `client` (
 CREATE TABLE IF NOT EXISTS `globalpermission` (
   `GPermissionID` int(10) unsigned NOT NULL,
   `Name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `Description` text COLLATE utf8_unicode_ci
+  `Description` text COLLATE utf8_unicode_ci,
+  `CreatedDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
