@@ -10,7 +10,7 @@
 
 	<properties>
 		<org.springframework.version>4.1.1.RELEASE</org.springframework.version>
-		<spring.data.rest.webmvc.version>2.3.0.RELEASE</spring.data.rest.webmvc.version>
+		<spring.data.rest.webmvc.version>2.2.0.RELEASE</spring.data.rest.webmvc.version>
 		<spring.data.jpa.version>1.7.0.RELEASE</spring.data.jpa.version>
 		<hibernate.entitymanager.version>4.3.6.Final</hibernate.entitymanager.version>
 		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>
