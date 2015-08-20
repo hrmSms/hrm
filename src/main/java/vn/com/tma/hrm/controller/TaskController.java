@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/task")
 public class TaskController {
 
-	  @RequestMapping(method = RequestMethod.GET)
+	 @RequestMapping(method = RequestMethod.GET)
 	  public String viewApplication() {
-	    return "index";
+	    return "home";
 	  }
 }
