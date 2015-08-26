@@ -33,3 +33,15 @@ HRM Ecipse package
 	
 HRM Ecipse debug, run:
 	Right click run on server
+	
+Server:
+	SSH:
+		+ IP: 192.168.100.190:22
+		+ Account: sysadmin/12345678@X
+	Tomcat dir: /usr/local/tomcat8/apache-tomcat-8.0.24
+	Web UI:
+		+ Jenkins: 192.168.100.190:8080
+		+ Tomcat: 192.168.100.190
+	MySQL:
+		+ Server: 192.168.100.190:3306
+		+ Account: admin/12345678@X
