@@ -22,8 +22,6 @@ Local Tomcat server:
 Local Tomcat for Eclipse:
 	Path: C:\Tomcat 7.0
 	
-WampServer:
-	
 Bower download lib:
 	1. cd "C:\Users\GODFATHER VMW\git\hrm" 
 	2. bower intall
