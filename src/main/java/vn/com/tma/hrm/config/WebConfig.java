@@ -5,9 +5,9 @@ import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.mvc.WebContentInterceptor;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-@Configuration
-@EnableWebMvc
-@ComponentScan(basePackages = "vn.com.tma.hrm.controller")
+//@Configuration
+//@EnableWebMvc
+//@ComponentScan(basePackages = "vn.com.tma.hrm.controller")
 public class WebConfig extends WebMvcConfigurerAdapter {
 
   @Bean
