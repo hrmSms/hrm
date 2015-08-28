@@ -25,12 +25,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-@Configuration
-@EnableJpaRepositories(basePackages = { "vn.com.tma.hrm.repository" })
-@PropertySource("classpath:application.properties")
-@ComponentScan(basePackages = "vn.com.tma.hrm", excludeFilters = {
-		@ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION),
-		@ComponentScan.Filter(value = Configuration.class, type = FilterType.ANNOTATION) })
+//@Configuration
+//@EnableJpaRepositories(basePackages = { "vn.com.tma.hrm.repository" })
+//@PropertySource("classpath:application.properties")
+//@ComponentScan(basePackages = "vn.com.tma.hrm", excludeFilters = {
+//		@ComponentScan.Filter(value = Controller.class, type = FilterType.ANNOTATION),
+//		@ComponentScan.Filter(value = Configuration.class, type = FilterType.ANNOTATION) })
 public class AppConfig extends RepositoryRestMvcConfiguration {
 
 	private static final String PROPERTY_NAME_DATABASE_DRIVER = "db.driver";

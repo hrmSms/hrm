@@ -169,7 +169,7 @@ hr {
 	<script type="text/javascript"
 		src="./libs/angular-spring-data-rest/dist/angular-spring-data-rest.min.js"></script>
 	<script type="text/javascript" src="./libs/lodash/dist/lodash.min.js"></script>
-	<script type="text/javascript" src="./libs/assets/js/ace-extra.min.js"></script>
+	<script type="text/javascript" src="./assets/js/ace-extra.min.js"></script>
 	<script type="text/javascript" src="./app/app.js"></script>
 	<script type="text/javascript" src="./app/controllers.js"></script>
 	<script type="text/javascript" src="./app/services.js"></script>
