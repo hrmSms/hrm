@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:p="http://www.springframework.org/schema/p"
   xmlns:mvc="http://www.springframework.org/schema/mvc"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:context="http://www.springframework.org/schema/context"
@@ -28,7 +29,7 @@
       <property name="useCacheControlNoStore" value="true"/>
     </bean>
   </mvc:interceptors>
-  <!-- handle default url "/"s -->
+  <!-- handle default url "/" -->
   <mvc:default-servlet-handler/>
   <!-- mapping default url "/" to "home" -->
   <mvc:view-controller path="/" view-name="home"/>
@@ -39,7 +40,9 @@
   <mvc:resources mapping="/app/**" location="/app/"></mvc:resources>
 
   <!-- JPA configurations -->
-  <jpa:repositories base-package="vn.com.tma.hrm.repository" entity-manager-factory-ref="entityManagerFactoryBean"/>
+  <jpa:repositories base-package="vn.com.tma.hrm.repository" 
+                    entity-manager-factory-ref="entityManagerFactoryBean"
+                    transaction-manager-ref="txManager"/>
 
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="locations" value="classpath:application.properties" />
@@ -51,8 +54,7 @@
     <property name="password" value="${db.password}" />
   </bean>
 
-  <bean id="entityManagerFactoryBean"
-    class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+  <bean id="entityManagerFactoryBean" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="hrmDataSource" />
     <property name="packagesToScan" value="${entitymanager.packages.to.scan}" />
     <property name="jpaVendorAdapter">
@@ -72,4 +74,10 @@
     <property name="entityManagerFactory" ref="entityManagerFactoryBean" />
   </bean>
   <tx:annotation-driven />
+
+  <!-- Spring data REST configurations -->
+  <bean id="baseUri" class="org.springframework.data.rest.webmvc.BaseUri">
+    <constructor-arg value="/api" />
+  </bean>
+  <!-- <bean class="org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration"/> -->
 </beans>
