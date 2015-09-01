@@ -1,5 +1,8 @@
+'use strict';
 (function(angular) {
-  angular.module("myApp.controllers", []);
-  angular.module("myApp.services", []);
-  angular.module("myApp", ["ngResource", "spring-data-rest", "myApp.controllers", "myApp.services"]);
+
+angular.module('hrmApp.controllers', []);
+angular.module('hrmApp.services', []);
+angular.module('hrmApp.modules', ['ngAnimate', 'ngCookies', 'ngResource', 'ui.router']);
+angular.module('hrmApp', ['hrmApp.modules', 'hrmApp.route', 'hrmApp.controllers', 'hrmApp.services']);
 }(angular));
