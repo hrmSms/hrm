@@ -36,7 +36,7 @@
 		<![endif]-->
 
 		<!-- ace settings handler -->
-		<script src="./assets/js/ace-extra.min.js"></script>
+		<script src="./assets/js/ace-extra.js"></script>
 
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 
@@ -48,7 +48,7 @@
 
 	<body class="no-skin">
 	
-        <ng-include src="'shared/header.html'"/><!-- /.header -->
+        <ng-include src="'shared/page-header.html'"></ng-include><!-- /.header -->
 
 		<div class="main-container" id="main-container">
 			<script type="text/javascript">
@@ -634,7 +634,7 @@
 				</div>
 			</div><!-- /.main-content -->
       
-            <ng-include src="'shared/footer.html'"/><!-- /.footer -->
+            <div class="footer" hrm-page-footer></div><!-- /.footer -->
 
 			<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse">
 				<i class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
@@ -669,17 +669,21 @@
         <script src="./assets/js/app/angular-ui-router.min.js"></script>
 
         <!-- app scripts -->
-        <script src="./assets/js/app/ng/app.module.js"></script>
+        <script src="./assets/js/app/ng/app.modules.js"></script>
         <script src="./assets/js/app/ng/app.route.js"></script>
         <script src="./assets/js/app/ng/app.js"></script>
 
+        <script src="./assets/js/app/ng/shared/pageFooter.controller.js"></script>
+        <script src="./assets/js/app/ng/shared/pageFooter.directive.js"></script>
+
 		<!-- ace scripts -->
-        <script src="./assets/js/ace-elements.min.js"></script>
-        <script src="./assets/js/ace.min.js"></script>
+        <script src="./assets/js/ace-elements.js"></script>
+        <script src="./assets/js/ace.js"></script>
         
         <script type="text/javascript">
           (function($ , undefined) {
-          	$.fn.load_styles = function () {
+        	  if( !('ace' in window) ) window['ace'] = {};
+          	  $.fn.load_styles = function () {
                   var contentArea = $('.page-content-area');
                   //remove previous stylesheets inserted via ajax
                   if (contentArea.length !== 0) {
