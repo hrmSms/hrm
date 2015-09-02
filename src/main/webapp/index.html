@@ -684,22 +684,29 @@
           (function($ , undefined) {
         	  if( !('ace' in window) ) window['ace'] = {};
           	  $.fn.load_styles = function () {
-                  var contentArea = $('.page-content-area');
+                  var contentArea = this;//$('.page-content-area');
                   //remove previous stylesheets inserted via ajax
                   if (contentArea.length !== 0) {
                     setTimeout(function() {
-                      $('head').find('link.ajax-stylesheet').remove();
-                      var ace_style = $('head').find('link#main-ace-style');
-                      contentArea.find('link').each(function(e) {
-                        var $link = $(this);
-                        if ( $link.attr('href') ) {
-                          var new_link = jQuery('<link />', {type : 'text/css', rel: 'stylesheet', 'class': 'ajax-stylesheet'})
-                          if( ace_style.length > 0 ) new_link.insertBefore(ace_style);
-                          else new_link.appendTo('head');
-                          new_link.attr('href', $link.attr('href'));//we set "href" after insertion, for IE to work
-                        }
-                        $link.remove();
-                      })
+                      //$('head').find('link.ajax-stylesheet').remove();
+                      //var ace_style = $('head').find('link#main-ace-style');
+                      $('head').find('link.ace-ajax-stylesheet').remove();
+                      var main_selectors = ['link.ace-main-stylesheet', 'link#main-ace-style', 'link[href*="/ace.min.css"]', 'link[href*="/ace.css"]']
+	  				  var ace_style = [];
+	  				  for(var m = 0; m < main_selectors.length; m++) {
+	  					ace_style = $('head').find(main_selectors[m]).first();
+	  					if(ace_style.length > 0) break;
+	  				  }
+		  				$contentArea.find('link').each(function(e) {
+							var $link = $(this);
+							if ( $link.attr('href') ) {
+								var new_link = jQuery('<link />', {type : 'text/css', rel: 'stylesheet', 'class': 'ace-ajax-stylesheet'})
+								if( ace_style.length > 0 ) new_link.insertBefore(ace_style);
+								else new_link.appendTo('head');
+								new_link.attr('href', $link.attr('href'));
+							}
+							$link.remove();
+						})
                     }, 10);
                   }
           	}
