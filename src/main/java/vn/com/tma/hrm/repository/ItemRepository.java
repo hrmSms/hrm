@@ -8,4 +8,5 @@ import vn.com.tma.hrm.entities.Item;
 @RepositoryRestResource(collectionResourceRel = "items", path = "items")
 public interface ItemRepository extends PagingAndSortingRepository<Item, Integer> {
 
+    Item findByChecked(boolean checked);
 }
