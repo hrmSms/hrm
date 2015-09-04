@@ -86,9 +86,11 @@
 					<!-- /section:basics/content.breadcrumbs -->
 					<div class="page-content">
                         <ng-include src="'shared/ace-settings-box.html'"></ng-include>
-						<div class="page-content-area" data-ajax-content="true">
-							<!-- ajax content goes here -->
-                            <div ng-view></div>
+						<div class="row">
+                            <div class="col-xs-12 class="page-content-area" data-ajax-content="true">
+                            <!-- ajax content goes here -->
+                            <div ui-view></div>
+                            </div>
 						</div><!-- /.page-content-area -->
 					</div><!-- /.page-content -->
 				</div>
@@ -129,7 +131,6 @@
         <script src="./assets/js/app/angular-ui-router.min.js"></script>
 
         <!-- app scripts -->
-        <script src="./assets/js/app/ng/app.modules.js"></script>
         <script src="./assets/js/app/ng/app.route.js"></script>
         <script src="./assets/js/app/ng/app.js"></script>
 
