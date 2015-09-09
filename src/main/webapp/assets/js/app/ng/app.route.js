@@ -34,6 +34,24 @@ angular.module('hrmApp.route', [])
       templateUrl: 'pages/task-create.html',
       controller: ''
     });
+  
+//Routes for Project
+  $stateProvider
+    .state('project', {
+      abstract: true,
+      // Note: abstract still needs a ui-view for its children to populate
+      template: '<ui-view/>'
+    })
+    .state('project.list', {
+      url: '/project/list',
+      templateUrl: 'pages/project-list.html',
+      controller: ''
+    })
+    .state('project.create', {
+      url: '/project/create',
+      templateUrl: 'pages/project-create.html',
+      controller: ''
+    });
 
   //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-make-a-trailing-slash-optional-for-all-routes
   $urlRouterProvider.rule(function ($injector, $location) {
