@@ -1,0 +1,165 @@
+<!-- page specific plugin styles -->
+<!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
+
+<!-- page's inner styles -->
+<style>
+  .border-top {
+    border-top: 1px solid #E3E3E3;
+    border-top-color: rgba(0,0,0,0.11);
+  }
+  .border-right {
+    border-right: 1px solid #E3E3E3;
+    border-right-color: rgba(0,0,0,0.11);
+  }
+  .border-bottom {
+    border-bottom: 1px solid #E3E3E3;
+    border-bottom-color: rgba(0,0,0,0.11);
+  }
+  .border-left {
+    border-left: 1px solid #E3E3E3;
+    border-left-color: rgba(0,0,0,0.11);
+  }
+</style>
+
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+  <h1>
+    Task Details <small> <i class="ace-icon fa fa-angle-double-right"></i> Create a task
+    </small>
+  </h1>
+</div>
+<!-- /.page-header -->
+
+<!-- PAGE CONTENT BEGINS -->
+<form role="form">
+  <div class="col-md-8 border-right">
+    <div class="row">
+      <div class="form-group col-md-2">
+        <label class="control-label no-padding-right" for="t-state">State</label>
+        <select class="form-control" id="t-state" placeholder="">
+          <option value=""></option>
+          <option value="define">Define</option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label no-padding-right" for="t-status">Status</label>
+        <select class="form-control" id="t-status" placeholder="">
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label no-padding-right" for="t-est">Task EST.</label>
+        <input type="text" class="form-control" id="t-est" placeholder="">
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label no-padding-right" for="t-to-do">To Do</label>
+        <input type="text" class="form-control" id="t-to-do" placeholder="">
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label no-padding-right" for="t-actual">Actual</label>
+        <input type="text" class="form-control" id="t-actual" placeholder="">
+      </div>
+      <div class="form-group col-md-2">
+        <label class="control-label no-padding-right" for="t-time-spent">Time spent</label>
+        <input type="text" class="form-control" id="t-time-spent" placeholder="">
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="control-label no-padding-right" for="t-description">Description</label>
+        <textarea class="autosize-transition form-control" id="t-description" rows="4" placeholder=""></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="control-label no-padding-right" for="t-attachment">Attachment</label>
+        <table id="t-attachment" class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th>
+                <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+                When
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Document.doc</td>
+              <td>The first attachment</td>
+              <td>9/8/2015</td>
+            </tr>
+            <tr>
+              <td>Reporting.xls</td>
+              <td>The excel file</td>
+              <td>9/7/2015</td>
+            </tr>
+            <tr>
+              <td>Analytic.pdf</td>
+              <td>Another .pdf file</td>
+              <td>9/10/2015</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-12">
+        <label class="control-label no-padding-right" for="t-note">Note</label>
+        <textarea class="autosize-transition form-control" id="t-note" rows="4" placeholder=""></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="space-12"></div>
+  <div class="col-md-4">
+    <div class="form-group">
+        <label class="control-label no-padding-right" for="t-owner">Owner</label>
+        <select class="form-control" id="t-owner" placeholder="">
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label no-padding-right" for="t-user-story">User story</label>
+        <select class="form-control" id="t-user-story" placeholder="">
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="control-label no-padding-right" for="t-project">Project</label>
+        <select class="form-control" id="t-project" placeholder="">
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
+        </select>
+      </div>
+  </div>
+</form>
+<!-- PAGE CONTENT ENDS -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+	var scripts = [null, 
+	               './assets/js/jquery.autosize.min.js', 
+	               './assets/js/jquery.inputlimiter.1.3.1.min.js', 
+	               null];
+	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+	  //inline scripts related to this page
+	  $('textarea[class*=autosize]').autosize({append: "\n"});
+  	  $('textarea.limited').inputlimiter({
+  		remText: '%n character%s remaining...',
+  		limitText: 'max allowed : %n.'
+  	  });
+	});
+</script>
