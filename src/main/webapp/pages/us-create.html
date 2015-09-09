@@ -1,10 +1,109 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
+<!-- page specific plugin styles -->
+<!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
 
-</body>
-</html>
+<!-- page's inner styles -->
+<style>
+.border-top {
+	border-top: 1px solid #E3E3E3;
+	border-top-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-right {
+	border-right: 1px solid #E3E3E3;
+	border-right-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-bottom {
+	border-bottom: 1px solid #E3E3E3;
+	border-bottom-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-left {
+	border-left: 1px solid #E3E3E3;
+	border-left-color: rgba(0, 0, 0, 0.11);
+}
+</style>
+
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+	<h1>
+		User Story <small> <i
+			class="ace-icon fa fa-angle-double-right"></i> Create an user story
+		</small>
+	</h1>
+</div>
+<!-- /.page-header -->
+
+<!-- PAGE CONTENT BEGINS -->
+<form role="form">
+	<div class="col-md-8 border-right">
+		<div class="row">
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-status">Status</label>
+				<select class="form-control" id="t-status" placeholder="">
+					<option value="new">New</option>
+					<option value="closed">Closed</option>
+					<option value="assigned">Assigned</option>
+					<option value="onhold">On-Hold</option>
+					<option value="reopen">Re-Open</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-priority">Priority</label>
+				<select class="form-control" id="t-priority" placeholder="">
+					<option value="high">High</option>
+					<option value="normal">Normal</option>
+					<option value="low">Low</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-startdate">Start
+					date</label> <input type="datetime" class="form-control" id="t-startdate"
+					placeholder="US start date ">
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-duedate">Due
+					date</label> <input type="datetime" class="form-control" id="t-duedate"
+					placeholder="US end date ">
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-timespent">Time
+					spent</label> <input type="datetime" class="form-control" id="t-timespent"
+					placeholder="Time to complete this US">
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label class="control-label no-padding-right" for="t-subject">Subject</label>
+				<textarea class="autosize-transition form-control"
+					id="t-description" rows="4" placeholder="User story content"></textarea>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label class="control-label no-padding-right" for="t-note">Note</label>
+				<textarea class="autosize-transition form-control" id="t-note"
+					rows="4" placeholder=""></textarea>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
+			<select class="form-control" id="t-assignee" placeholder="">
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-project">Project</label>
+			<select class="form-control" id="t-project" placeholder="">
+				<option value=""></option>
+				<option value=""></option>
+				<option value=""></option>
+			</select>
+		</div>
+	</div>
+
+</form>
