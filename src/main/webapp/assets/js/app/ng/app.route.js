@@ -50,7 +50,7 @@ angular.module('hrmApp.route', [])
     .state('project.create', {
       url: '/project/create',
       templateUrl: 'pages/project-create.html',
-      controller: ''
+      controller: 'AppController'
     });
 
   //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-make-a-trailing-slash-optional-for-all-routes
