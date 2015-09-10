@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <link rel="stylesheet"
-	href="./libs/bootstrap-css-only/css/bootstrap.min.css" />
+	href="./libs/css/bootstrap.min.css" />
 <link rel="stylesheet" href="./libs/assets/css/font-awesome.min.css" />
 <link rel="stylesheet" href="./libs/assets/css/ace-fonts.css" />
 <link rel="stylesheet" href="./libs/assets/css/ace.min.css"
@@ -35,32 +35,7 @@ hr {
 </head>
 <body ng-app="myApp">
 	<div class="container" ng-controller="AppController">
-		<!-- <div class="page-header">
-        <h1>A checklist</h1>
-      </div> -->
-		<!--  <div class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<div class="navbar-header pull-left">
-				<a class="navbar-brand" href="#">
-						&nbsp;<i class="glyphicon glyphicon-leaf"></i>&nbsp;
-						Dashboards 
-				</a>
-				<a class="navbar-brand" href="#">
-						&nbsp;<i class="glyphicon"></i>&nbsp;
-						Projects 
-				</a>
-				<a class="navbar-brand" href="#">
-						&nbsp;<i class="glyphicon"></i>&nbsp;
-						Plans 
-				</a>
-				<a class="navbar-brand" href="#">
-						&nbsp;<i class="glyphicon"></i>&nbsp;
-						More 
-				</a>
-			</div>
-
-		</div>
-    </div> -->
+		
 		<div class="alert alert-info" role="alert"
 			ng-hide="items && items.length > 0">There are no items yet.</div>
 		<div class="page-content-area">
@@ -137,31 +112,8 @@ hr {
 
 				</div>
 			</div>
-			<!-- 			<div class="form-group" ng-repeat="item in items">
-				<div class="checkbox col-xs-9">
-					<label> <input type="checkbox" ng-model="item.checked"
-						ng-change="updateItem(item)" /> {{item.description}}
-					</label>
-				</div>
-				<div class="col-xs-3">
-					<button class="pull-right btn btn-danger" type="button"
-						title="Delete" ng-click="deleteItem(item)">
-						<span class="glyphicon glyphicon-trash"></span>
-					</button>
-				</div>
-			</div>
-			<hr />
-			<div class="input-group">
-				<input type="text" class="form-control" ng-model="newItem"
-					placeholder="Enter project name..." /> <span
-					class="input-group-btn">
-					<button class="btn btn-default" type="submit"
-						ng-disabled="!newItem" title="Add">
-						<span class="glyphicon glyphicon-plus"></span>
-					</button>
-				</span>
-			</div>
-		</form> -->
+			
+		</form>
 	</div>
 	<script type="text/javascript" src="./libs/angular/angular.min.js"></script>
 	<script type="text/javascript"
