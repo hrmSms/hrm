@@ -63,12 +63,12 @@ angular.module('hrmApp.route', [])
   .state('us.list', {
     url: '/us/list',
     templateUrl: 'pages/us-list.html',
-    controller: ''
+    controller: 'UserStoryCtrl'
   })
   .state('us.create', {
     url: '/us/create',
     templateUrl: 'pages/us-create.html',
-    controller: ''
+    controller: 'UserStoryCtrl'
   });
   
 //Routes for Sprint
