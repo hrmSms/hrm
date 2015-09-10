@@ -70,6 +70,24 @@ angular.module('hrmApp.route', [])
     templateUrl: 'pages/us-create.html',
     controller: ''
   });
+  
+//Routes for Sprint
+  $stateProvider
+  .state('sprint', {
+    abstract: true,
+    // Note: abstract still needs a ui-view for its children to populate
+    template: '<ui-view/>'
+  })
+  .state('sprint.list', {
+    url: '/sprint',
+    templateUrl: 'pages/sprint-list.html',
+    controller: ''
+  })
+  .state('sprint.create', {
+    url: '/sprint/create',
+    templateUrl: 'pages/sprint-create.html',
+    controller: ''
+  });
 
   //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-make-a-trailing-slash-optional-for-all-routes
   $urlRouterProvider.rule(function ($injector, $location) {
