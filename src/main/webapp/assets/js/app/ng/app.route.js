@@ -81,12 +81,12 @@ angular.module('hrmApp.route', [])
   .state('sprint.list', {
     url: '/sprint',
     templateUrl: 'pages/sprint-list.html',
-    controller: ''
+    controller: 'SprintCtrl'
   })
   .state('sprint.create', {
     url: '/sprint/create',
     templateUrl: 'pages/sprint-create.html',
-    controller: ''
+    controller: 'SprintCtrl'
   });
 
   //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-make-a-trailing-slash-optional-for-all-routes

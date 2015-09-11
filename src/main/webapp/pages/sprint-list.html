@@ -143,10 +143,10 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = ['assets/js/dataTables/jquery.dataTables.min.js', 'assets/js/dataTables/jquery.dataTables.bootstrap.min.js']; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+	var scripts = [null,'assets/js/dataTables/jquery.dataTables.min.js', 'assets/js/dataTables/jquery.dataTables.bootstrap.min.js',null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 	  //inline scripts related to this page
-		initTable();
+	initTable();
 	});
 </script>
 

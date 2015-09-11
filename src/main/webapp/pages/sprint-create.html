@@ -156,7 +156,7 @@
 
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
-			jQuery(function($) {
+			var initAll = function() {
 				//datetimepicker plugin
 				$('#startDate').datetimepicker().next().on(ace.click_event, function(){
 					$(this).prev().focus();
@@ -238,17 +238,15 @@
 					*/
 				}
 			
-			});
+			};
 		</script>
-
-<!-- PAGE CONTENT BEGINS -->
-
-<!-- PAGE CONTENT ENDS -->
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null, null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+
+	var scripts = [null,'assets/js/date-time/moment.min.js','assets/js/date-time/bootstrap-datetimepicker.min.js','assets/js/bootstrap-wysiwyg.min.js','assets/js/bootbox.min.js', null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 	  //inline scripts related to this page
+	  initAll();
 	});
 </script>
