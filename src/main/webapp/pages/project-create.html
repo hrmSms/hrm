@@ -32,17 +32,17 @@
 
 <!-- PAGE CONTENT BEGINS -->
 
-<form class="form-horizontal" role="form" ng-submit="addItem(newItem)">
+<form class="form-horizontal" role="form" ng-submit="addProject(newProject)">
 			<div class="input-group">
 			
-				<input type="text" class="form-control" ng-model="newItem"
+				<input type="text" class="form-control" ng-model="newProject"
 					placeholder="Enter project name..." 
 					style="width:200px"/> 
 					<span class="input-group-btn" > 
 					
 					<div class="hidden-sm hidden-xs btn-group">
 						<button class="btn btn-xs btn-success" type="submit"
-							ng-disabled="!newItem">
+							ng-disabled="!newProject">
 							<i class="ace-icon fa fa-check bigger-120"></i>
 						</button>
 					</div>
@@ -72,10 +72,10 @@
 						</thead>
 						<tbody>
 
-							<tr ng-repeat="item in items">
+							<tr ng-repeat="item in projects">
 								<td class="center"><label class="position-relative">
 										<input type="checkbox" class="ace" ng-model="item.checked"
-										ng-change="updateItem(item)" /> <span class="lbl"></span>
+										ng-change="updateProject(item)" /> <span class="lbl"></span>
 								</label></td>
 
 								<td><a href="#">{{item.description}}</a></td>
@@ -85,7 +85,7 @@
 								<td>Lead</td>
 								<td>
 									<div class="hidden-sm hidden-xs action-buttons"
-										ng-click="deleteItem(item)">
+										ng-click="deleteProject(item)">
 										<a class="red" href="#"> <i
 											class="ace-icon fa fa-trash-o bigger-130"></i>
 										</a>
