@@ -35,9 +35,10 @@
   <mvc:view-controller path="/" view-name="home"/>
   
   <!-- static resources mapping -->
-  <mvc:resources mapping="/libs/**" location="/libs/"></mvc:resources>
   <mvc:resources mapping="/assets/**" location="/assets/"></mvc:resources>
-  <mvc:resources mapping="/app/**" location="/app/"></mvc:resources>
+  <mvc:resources mapping="/components/**" location="/components/"></mvc:resources>
+  <mvc:resources mapping="/pages/**" location="/pages/"></mvc:resources>
+  <mvc:resources mapping="/shared/**" location="/shared/"></mvc:resources>
 
   <!-- JPA configurations -->
   <jpa:repositories base-package="vn.com.tma.hrm.repository" 

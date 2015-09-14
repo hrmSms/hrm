@@ -8,7 +8,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * Created by Administrator on 8/10/2015.
@@ -19,7 +18,7 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-
+/*
     @Override
     public Optional<User> getUserById(long id) {
         return Optional.ofNullable(userRepository.findOne(id));
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findOneByEmail(username);
     }
-
+*/
     @Override
     public Collection<User> getAllUsers() {
         return (Collection<User>) userRepository.findAll();

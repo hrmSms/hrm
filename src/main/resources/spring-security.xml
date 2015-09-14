@@ -1,37 +1,65 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans:beans xmlns="http://www.springframework.org/schema/security"
-xmlns:beans="http://www.springframework.org/schema/beans"
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-<!-- Satic content -->
-<http pattern="/assets/**" security="none"/>
-<http pattern="/login.jsp" security="none"/>
-<!--http://docs.spring.io/spring-security/site/docs/3.2.0.RELEASE/reference/htmlsingle/#ns-global-method-->
-<global-method-security pre-post-annotations="enabled" />
+  <!-- http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#method-security-expressions -->
+  <global-method-security pre-post-annotations="enabled" />
 
+  <!-- Static content -->
+  <http pattern="/assets/**" security="none" />
+  <http pattern="/components/**" security="none" />
+  <http pattern="/pages/**" security="none" />
+  <http pattern="/shared/**" security="none" />
 
-	<!-- Protected Requests -->
+  <!-- Protected Requests -->
+  <http use-expressions="true">
+    <headers disabled="true"/>
+    <intercept-url pattern="/login" access="isAnonymous()" />
+    <intercept-url pattern="/**" access="hasRole('USER')" />
+    <form-login login-page='/login' authentication-failure-url="/login?error" />
+    <remember-me user-service-ref="userDetailsService"/>
+    <logout delete-cookies="JSESSIONID"/>
+  </http>
 
-	<http use-expressions="true">
-		<intercept-url pattern="/**" access="permitAll"/>
-		<intercept-url pattern="/greeting" access="permitAll"/>
-		<form-login login-page='/login.jsp'/>
-	</http>
+  <!-- http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#authz-hierarchical-roles -->
+  <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+    <beans:constructor-arg ref="roleHierarchy" />
+  </beans:bean>
+  <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
+    <beans:property name="hierarchy">
+      <beans:value>
+        ROLE_ADMIN > ROLE_STAFF
+        ROLE_STAFF > ROLE_USER
+        ROLE_USER > ROLE_GUEST
+      </beans:value>
+    </beans:property>
+  </beans:bean>
 
-	<authentication-manager>
-	    <authentication-provider user-service-ref='myUserDetailsService'>
-	    	<password-encoder ref="bcryptEncoder"/>
-    	</authentication-provider>
-  	</authentication-manager>
-  
-  <beans:bean id="myUserDetailsService" class="vn.com.tma.hrm.security.MyUserDetailsService"/>	
-	
-	<beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
-	    <beans:constructor-arg name="strength" value="15" /> 
-	</beans:bean>
+  <!-- In-memory users, for development only -->
+  <authentication-manager>
+    <authentication-provider>
+      <user-service id="userDetailsService">
+        <user name="admin" password="admin" authorities="ROLE_USER, ROLE_ADMIN" />
+        <user name="user" password="user" authorities="ROLE_USER" />
+      </user-service>
+    </authentication-provider>
+  </authentication-manager>
 
+<!-- 
+  <authentication-manager>
+    <authentication-provider user-service-ref='myUserDetailsService'>
+      <password-encoder ref="bcryptEncoder" />
+    </authentication-provider>
+  </authentication-manager>
+
+  <beans:bean id="myUserDetailsService" class="vn.com.tma.hrm.security.MyUserDetailsService" />
+
+  <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+    <beans:constructor-arg name="strength" value="15" />
+  </beans:bean>
+ -->
 </beans:beans>
