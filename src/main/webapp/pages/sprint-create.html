@@ -34,7 +34,8 @@
       <div class="alert alert-success">{{message}}</div>
     </div>
     <div class="col-xs-12">
-      <form name="form" class="form-horizontal" novalidate ng-submit="save()">
+
+      <form name="form" class="form-horizontal" novalidate ng-submit="form.$valid && save()">
         <!-- #section:elements.form -->
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="name" required> Name </label>
@@ -54,29 +55,30 @@
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="startDate">Start Date</label>
           <div class="col-sm-3 col-xs-8">
-            <div class="input-group">
-              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="startDate" required="" />
+            <div class="input-group" ng-class="{ 'has-error': form.startDate.$touched && form.startDate.$invalid }">
+              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="startDate" lower-than="{{endDate}}" required />
               <span class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
-            <div>{{startDate}}</div>
-            <div ng-show="startDate">
-              <div ng-show="startDate==null" class="alert alert-danger">Start Date isn't null</div>
-              <div class="alert alert-danger">Start Date must be earlier than end date of the previous Sprint</div>
-              <div ng-show="endDate && endDate < startDate" class="alert alert-danger">Start Date must be earlier than end date</div>
+            <div ng-show="form.$submitted || form.startDate.$dirty">
+              <div ng-show="form.startDate.$error.required" class="alert alert-danger">Start Date isn't null</div>
+              <div ng-show="false" class="alert alert-danger">Start Date should be less than End Date of the
+                previous Sprint</div>
+              <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be less than End
+                Date</div>
             </div>
           </div>
-
           <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date</label>
           <div class="col-sm-3  col-xs-8">
-            <div class="input-group">
-              <input id="endDate" type="text" class="form-control" ng-model="endDate" /> <span class="input-group-addon">
-                <i class="fa fa-clock-o bigger-110"></i>
+            <div class="input-group" ng-class="{ 'has-error': form.endDate.$touched && form.endDate.$invalid }">
+              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="endDate" required higher-than="{{startDate}}"/> <span
+                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
-            <div ng-show="endDate">
-              <div ng-show="endDate==null" class="alert alert-danger">End Date isn't null</div>
-              <div ng-show="endDate && endDate < startDate" class="alert alert-danger">End Date must be later than start date</div>
+            <div ng-show="form.$submitted || form.endDate.$dirty">
+              <div ng-show="form.endDate.$error.required" class="alert alert-danger">End Date isn't null</div>
+              <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be greater than Start
+                Date</div>
             </div>
           </div>
         </div>
@@ -133,14 +135,14 @@
         </div>
 
         <div class="form-actions center clearfix">
-          <button type="button" class="btn btn-success">
+          <button ng-disabled="(!form.$valid)" = "form.$valid" type="submit" class="btn btn-success">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
           </button>
-          <button type="button" class="btn btn-warning">
+          <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-warning">
             <i class="ace-icon fa fa-save bigger-110"></i> Save & new
           </button>
 
-          <button type="button" class="btn btn-purple" ng-click="save()">
+          <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-purple" ng-click="save()">
             <i class="ace-icon fa fa-save bigger-110"></i> Save
           </button>
           <button type="button" class="btn" ng-click="redirect()">
@@ -156,14 +158,24 @@
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
+jQuery(function($) {
+  // init theme
+  //ace.init.start();
+});
   var initAll = function() {
     //datetimepicker plugin
-    $('#startDate').datetimepicker().next().on(ace.click_event, function() {
+    $('#startDate').datetimepicker({
+      format : 'DD-MM-YYYY h:mm:ss'
+    })
+    .next().on(ace.click_event, function(e) {
       $(this).prev().focus();
-
+      //$(this).data("DateTimePicker").minDate(date());
     });
-
-    $('#endDate').datetimepicker().next().on(ace.click_event, function() {
+    
+    $('#endDate').datetimepicker({
+      format : 'DD-MM-YYYY h:mm:ss'
+    })
+    .next().on(ace.click_event, function(e) {
       $(this).prev().focus();
     });
 
@@ -241,8 +253,8 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-  var scripts = [ null, 'assets/js/date-time/moment.min.js', 'assets/js/date-time/bootstrap-datetimepicker.min.js',
-      'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  var scripts = ['assets/js/date-time/bootstrap-datetimepicker.min.js',
+      'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js' ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
     initAll();

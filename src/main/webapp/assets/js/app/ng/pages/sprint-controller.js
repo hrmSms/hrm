@@ -4,6 +4,7 @@
 'use strict';
 angular.module('hrmApp.controllers').controller('SprintCtrl', [ '$scope', function($scope) {
 
+  $scope.email = null;
   $scope.sprintID = null;
   $scope.active = 1;
   $scope.actuals = null;
@@ -36,4 +37,8 @@ angular.module('hrmApp.controllers').controller('SprintCtrl', [ '$scope', functi
     this.taskEst = null;
     this.toDo = null;
   };
+  
+  $scope.save= function(){
+    console.log("save");
+  }
 } ]);
