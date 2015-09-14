@@ -1,7 +1,6 @@
 package vn.com.tma.hrm.services;
 
 import  vn.com.tma.hrm.repository.UserRepository;
-import  vn.com.tma.hrm.repository.VerificationTokenRepository;
 import vn.com.tma.hrm.entities.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    VerificationTokenRepository verificationTokenRepository;
     @Override
     public Optional<User> getUserById(long id) {
         return Optional.ofNullable(userRepository.findOne(id));
@@ -43,42 +40,6 @@ public class UserServiceImpl implements UserService {
         return (Collection<User>) userRepository.findAll();
     }
 
-    @Override
-    public User create(UserCreateForm form) {
-        User user = new User();
-        user.setEmail(form.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
-        user.setRole(form.getRole());
-        user.setNonExpired(false);
-        user.setEnabled(false);
-        return userRepository.save(user);
-    }
 
-    public User registerNewUserAccount(UserRegistrationForm form) {
-        User user = new User();
-        user.setUsername(form.getUsername());
-        user.setEmail(form.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(form.getPassword()));
-        user.setNonExpired(false);
-        user.setEnabled(false);
-        user.setRole(Role.USER);
-        return userRepository.save(user);
-    }
-
-    @Override
-    public User saveRegisteredUser(User user) {
-        return userRepository.save(user);
-    }
-
-    @Override
-    public void createVerificationTokenForUser(User user, String token) {
-        final VerificationToken myToken = new VerificationToken(token, user);
-        verificationTokenRepository.save(myToken);
-    }
-
-    @Override
-    public VerificationToken getVerificationToken(String VerificationToken) {
-        return verificationTokenRepository.findByToken(VerificationToken);
-    }
 }
 
