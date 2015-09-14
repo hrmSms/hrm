@@ -24,21 +24,97 @@
 <!-- ajax layout which only needs content area -->
 <div class="page-header">
   <h1>
-    Task Details <small> <i class="ace-icon fa fa-angle-double-right"></i> Create a task
+    Task list <small> <i class="ace-icon fa fa-angle-double-right"></i> Create a project
     </small>
+  </h1>
+</div>
+
+<div class="page-header">
+  <h1 >
+    	<input id="inputId" type="text" value="abc" class="form-control" ng-model="newItem" placeholder="Enter project name..." style="width:200px"/> 
   </h1>
 </div>
 <!-- /.page-header -->
 
 <!-- PAGE CONTENT BEGINS -->
-<form role="form">
+
+<form class="form-horizontal" role="form" ng-submit="addItem(newItem)">
+			<div class="input-group">
+			
+				<input type="text" class="form-control" ng-model="newItem"
+					placeholder="Enter project name..." 
+					style="width:200px"/> 
+					<span class="input-group-btn" > 
+					
+					<div class="hidden-sm hidden-xs btn-group">
+						<button class="btn btn-xs btn-success" type="submit"
+							ng-disabled="!newItem">
+							<i class="ace-icon fa fa-check bigger-120"></i>
+						</button>
+					</div>
+					
+				</span>
+			</div>
+			<hr/>
+			<div class="row">
+				<div class="col-xs-12">
+					<table id="sample-table-1"
+						class="table table-striped table-bordered table-hover">
+						<thead>
+							<tr>
+								<th class="center"><label class="position-relative">
+										<input type="checkbox" class="ace" /> <span class="lbl"></span>
+								</label></th>
+								<th>Name</th>
+								<th>Description</th>
+
+								<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+									Start Date</th>
+								<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+									End Date</th>
+								<th class="hidden-480">Project Lead</th>
+								<th>Operations</th>
+							</tr>
+						</thead>
+						<tbody>
+
+							<tr ng-repeat="item in items">
+								<td class="center"><label class="position-relative">
+										<input type="checkbox" class="ace" ng-model="item.checked"
+										ng-change="updateItem(item)" /> <span class="lbl"></span>
+								</label></td>
+
+								<td><a href="#">{{item.description}}</a></td>
+								<td></td>
+								<td>Start Date</td>
+								<td>End date</td>
+								<td>Lead</td>
+								<td>
+									<div class="hidden-sm hidden-xs action-buttons"
+										ng-click="deleteItem(item)">
+										<a class="red" href="#"> <i
+											class="ace-icon fa fa-trash-o bigger-130"></i>
+										</a>
+									</div>
+								</td>
+
+							</tr>
+						</tbody>
+					</table>
+
+
+				</div>
+			</div>
+			
+		</form>
+<!-- form role="form">
   <div class="col-md-8 border-right">
     <div class="row">
       <div class="form-group col-md-2">
         <label class="control-label no-padding-right" for="t-state">State</label>
-        <select class="form-control" id="t-state" placeholder="">          
-          <option value="define">Define</option>
+        <select class="form-control" id="t-state" placeholder="">
           <option value=""></option>
+          <option value="define">Define</option>
           <option value=""></option>
           <option value=""></option>
           <option value=""></option>
@@ -47,7 +123,7 @@
       <div class="form-group col-md-2">
         <label class="control-label no-padding-right" for="t-status">Status</label>
         <select class="form-control" id="t-status" placeholder="">
-          <option value="block">Block</option>
+          <option value=""></option>
           <option value=""></option>
           <option value=""></option>
           <option value=""></option>
@@ -56,7 +132,7 @@
       </div>
       <div class="form-group col-md-2">
         <label class="control-label no-padding-right" for="t-est">Task EST.</label>
-        <input type="text" class="form-control" id="t-est" placeholder="" value="">
+        <input type="text" class="form-control" id="t-est" placeholder="">
       </div>
       <div class="form-group col-md-2">
         <label class="control-label no-padding-right" for="t-to-do">To Do</label>
@@ -72,13 +148,10 @@
       </div>
     </div>
     <div class="row">
-      <div class="form-group">
-		<label class="col-md-1 control-label no-padding-right" for="t-desc">
-			Description </label>
-		<div class="col-md-12">
-			<div class="wysiwyg-editor" id="desc"></div>
-		</div>
-	</div>
+      <div class="form-group col-md-12">
+        <label class="control-label no-padding-right" for="t-description">Description</label>
+        <textarea class="autosize-transition form-control" id="t-description" rows="4" placeholder=""></textarea>
+      </div>
     </div>
     <div class="row">
       <div class="form-group col-md-12">
@@ -115,12 +188,10 @@
       </div>
     </div>
     <div class="row">
-      <div class="form-group">
-		<label class="col-md-1 control-label no-padding-right" for="note"> Note </label>
-		<div class="col-md-12">
-			<div class="wysiwyg-editor" id="note"></div>
-		</div>
-	</div>
+      <div class="form-group col-md-12">
+        <label class="control-label no-padding-right" for="t-note">Note</label>
+        <textarea class="autosize-transition form-control" id="t-note" rows="4" placeholder=""></textarea>
+      </div>
     </div>
   </div>
   <div class="space-12"></div>
@@ -128,74 +199,33 @@
     <div class="form-group">
         <label class="control-label no-padding-right" for="t-owner">Owner</label>
         <select class="form-control" id="t-owner" placeholder="">
-          <option value="12">Huy Nguyen</option>
-          <option value="13">Long Nguyen</option>
-          <option value="14">Anh Nguyen</option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
         </select>
       </div>
       <div class="form-group">
         <label class="control-label no-padding-right" for="t-user-story">User story</label>
         <select class="form-control" id="t-user-story" placeholder="">
-          <option value="1">US 1</option>
-          <option value="2">US 2</option>
-          <option value="3">US 3</option>
-          <option value="4">US 4</option>
-          <option value="5">US 5</option>
-          <option value="6">US 6</option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
         </select>
       </div>
       <div class="form-group">
         <label class="control-label no-padding-right" for="t-project">Project</label>
         <select class="form-control" id="t-project" placeholder="">
-          <option value="1">HRM</option>
-          <option value="2">FADMV</option>
-          <option value="3">Dynamic CRM</option>
+          <option value=""></option>
+          <option value=""></option>
+          <option value=""></option>
         </select>
       </div>
   </div>
-  
-  <div class="clearfix"></div>
-	<div class="form-actions center clearfix">
-		<button type="button" class="btn btn-success">
-			<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
-		</button>
-		<button type="button" class="btn btn-warning">
-			<i class="ace-icon fa fa-save bigger-110"></i> Save & new
-		</button>
-
-		<button type="button" class="btn btn-purple" ng-click="save()">
-			<i class="ace-icon fa fa-save bigger-110"></i> Save
-		</button>
-		<button type="button" class="btn" ng-click="redirect()">
-			<i class="ace-icon fa fa-times bigger-110"></i> Close
-		</button>
-	</div>
-</form>
+</form-->
 <!-- PAGE CONTENT ENDS -->
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null, 'assets/js/bootstrap-wysiwyg.min.js','assets/js/bootbox.min.js', null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
-	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-	  //inline scripts related to this page
-	  initNote();
-	});
-</script>
-
-<!-- page specific plugin scripts -->
-<script type="text/javascript">
-	var initNote = function() {
-		//note texterea
-		$('#note').ace_wysiwyg();
-	
-		var toolbar = $('#note').prev().get(0);
-		$(toolbar).addClass('wysiwyg-style2');
-		$('#desc').ace_wysiwyg();
-	
-		var description = $('#desc').prev().get(0);
-		$(description).addClass('wysiwyg-style2');
-	};
-	
 	var scripts = [null, 
 	               './assets/js/jquery.autosize.min.js', 
 	               './assets/js/jquery.inputlimiter.1.3.1.min.js', 

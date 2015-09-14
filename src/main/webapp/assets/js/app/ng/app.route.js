@@ -27,7 +27,7 @@ angular.module('hrmApp.route', [])
     .state('task.list', {
       url: '/task/list',
       templateUrl: 'pages/task-list.html',
-      controller: ''
+      controller: 'taskController'
     })
     .state('task.create', {
       url: '/task/create',
