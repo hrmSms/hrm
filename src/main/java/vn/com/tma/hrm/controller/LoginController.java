@@ -2,25 +2,25 @@ package vn.com.tma.hrm.controller;
 
 
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Controller
-@RequestMapping("/login")
 public class LoginController {
-	
-    @RequestMapping(method=RequestMethod.POST)
-    public String login(@RequestParam(value="username", required=true) String username, 
-    					   @RequestParam(value="password", required=true) String password, Model model) {
-    	System.out.println("username: " + username);
-    	System.out.println("password: " + password);
-    	if(username.equals("admin") && password.equals("123") ){
-    		return "home";
-    	}
-    	return "login";	
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LoginController.class);
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView getLoginPage(@RequestParam(required=false) Optional<String> error) {
+        LOGGER.debug("Getting login page, error={}", error);
+        return new ModelAndView("login", "error", error);
     }
 
 }

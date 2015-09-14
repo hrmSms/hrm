@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" hrmApp>
+<html lang="en">
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
@@ -121,13 +121,13 @@
 			if('ontouchstart' in document.documentElement) document.write("<script src='./assets/js/jquery.mobile.custom.min.js'>"+"<"+"/script>");
 		</script>
 		<script src="./assets/js/bootstrap.min.js"></script>
-		<script src="assets/js/jquery-ui.custom.min.js"></script>
-		<script src="assets/js/jquery.ui.touch-punch.min.js"></script>
-		<script src="assets/js/chosen.jquery.min.js"></script>
-		<script src="assets/js/jquery.hotkeys.min.js"></script>
-		<script src="assets/js/jquery.autosize.min.js"></script>
-		<script src="assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
-		<script src="assets/js/jquery.maskedinput.min.js"></script>
+		<script src="./assets/js/jquery-ui.custom.min.js"></script>
+		<script src="./assets/js/jquery.ui.touch-punch.min.js"></script>
+		<script src="./assets/js/chosen.jquery.min.js"></script>
+		<script src="./assets/js/jquery.hotkeys.min.js"></script>
+		<script src="./assets/js/jquery.autosize.min.js"></script>
+		<script src="./assets/js/jquery.inputlimiter.1.3.1.min.js"></script>
+		<script src="./assets/js/jquery.maskedinput.min.js"></script>
 	
 
         <!-- angularjs and modules scripts -->
@@ -143,15 +143,14 @@
         <script src="./assets/js/app/ng/app.route.js"></script>
         <script src="./assets/js/app/ng/app.js"></script>
         
-        
-
         <!-- other angular components, these components will be merged on production -->
         <script src="./assets/js/app/ng/shared/pageHeader.controller.js"></script>
         <script src="./assets/js/app/ng/shared/pageHeader.directive.js"></script>
         <script src="./assets/js/app/ng/shared/pageFooter.controller.js"></script>
         <script src="./assets/js/app/ng/shared/pageFooter.directive.js"></script>
         
-        <script src="./assets/js/app/ng/pages/project-controller.js"></script>
+        <script src="./assets/js/app/ng/pages/project-controllers.js"></script>
+        <script src="./assets/js/app/ng/services/project-services.js"></script>
         <script src="./assets/js/app/ng/pages/us-controller.js"></script>
         <script src="./assets/js/app/ng/services.js"></script>
  
@@ -161,15 +160,10 @@
         <script src="./assets/js/ace-custom.js"></script>
         
         <script type="text/javascript">
-          // Document Ready
-          jQuery(function($) {
-            // init theme
-            
+          angular.element(document).ready(function() {
+            angular.bootstrap(document, ['hrmApp']);
+            ace.init.start();
           });
-          (function(angular) {
-        	  angular.bootstrap(document, ['hrmApp']);
-        	  ace.init.start();
-          })(angular);
         </script>
 	</body>
 </html>
