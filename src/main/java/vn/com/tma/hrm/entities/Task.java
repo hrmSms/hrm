@@ -17,10 +17,37 @@ public class Task {
     private String name;
     
     @Column
+    private String owner;
+    
+    @Column
+    private String taskEST;
+    
+    @Column
+    private String toDo;
+    
+    @Column
+    private String actual;
+    
+    @Column
+    private String timeSpent;
+    
+    @Column
     private String description;
     
     @Column
-    private Float estimation;
+    private String attachments;
+    
+    @Column
+    private String note;
+    
+    @Column
+    private String userStoryId;
+    
+    @Column
+    private String projectId;
+    
+    @Column
+    private String taskStatusId;
 
     public int getId() {
         return id;
