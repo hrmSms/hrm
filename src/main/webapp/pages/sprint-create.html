@@ -5,248 +5,258 @@
 <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
 <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
 <div class="breadcrumbs" id="breadcrumbs">
-					<script type="text/javascript">
-						try{ace.settings.check('breadcrumbs' , 'fixed')}catch(e){}
-					</script>
+  <script type="text/javascript">
+      try {
+        ace.settings.check('breadcrumbs', 'fixed')
+      } catch (e) {
+      }
+    </script>
 
-					<ul class="breadcrumb">
-						<li>
-							<i class="ace-icon fa fa-home home-icon"></i>
-							<a href="#/index">Home</a>
-						</li>
+  <ul class="breadcrumb">
+    <li><i class="ace-icon fa fa-home home-icon"></i> <a href="#/index">Home</a></li>
 
-						<li>
-							<a href="#/sprint">Sprint</a>
-						</li>
-						<li class="active">Create Sprint</li>
-					</ul><!-- /.breadcrumb -->
+    <li><a href="#/sprint">Sprint</a></li>
+    <li class="active">Create Sprint</li>
+  </ul>
+  <!-- /.breadcrumb -->
 
-					<!-- /section:basics/content.searchbox -->
-				</div>
-		<!-- /section:basics/navbar.layout -->
-		<div class="main-container" id="main-container" SprintCreateCtrl>
-			<div class="row">
-				<div class="col-xs-12">
-					<div class="page-header">
-					  <h1>Create a Sprint </h1>
-					</div>
-				</div>
-				<div ng-show="message" class="col-xs-12 center">
-					<div class="alert alert-success">{{message}} </div>
-				</div>
-				<div class="col-xs-12">
-					<form class="form-horizontal" role="form">
-						<!-- #section:elements.form -->
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="name" required> Name </label>
-							<div class="col-sm-10">
-								<input type="text" id="name" placeholder="Name" class="col-xs-10 col-sm-8" ng-model="name" ng-readonly='true'/>
-							</div>
-						</div>
+  <!-- /section:basics/content.searchbox -->
+</div>
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="page-header">
+        <h1>Create a Sprint</h1>
+      </div>
+    </div>
+    <div ng-show="message" class="col-xs-12 center">
+      <div class="alert alert-success">{{message}}</div>
+    </div>
+    <div class="col-xs-12">
 
-						<div class="form-group ">
-							<label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
-							<div class="col-sm-8 col-sx-10">
-								<div class="wysiwyg-editor" id="description" placeholder="Description" ng-model="description"></div>
-							</div>
-						</div>
+      <form name="form" class="form-horizontal" novalidate ng-submit="form.$valid && save()">
+        <!-- #section:elements.form -->
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="name" required> Name </label>
+          <div class="col-sm-10">
+            <input type="text" id="name" placeholder="Name" class="col-xs-10 col-sm-8" ng-model="name"
+              ng-readonly='true' />
+          </div>
+        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="startDate">Start Date</label>
-							<div class="col-sm-3 col-xs-8">
-								<div class="input-group">
-									<input id="startDate" type="text" class="form-control" ng-model="startDate"/>
-									<span class="input-group-addon">
-										<i class="fa fa-clock-o bigger-110"></i>
-									</span>
-								</div>
-								<div class="alert alert-danger">Start Date isn't null</div>
-								<div class="alert alert-danger">Start Date must be earlier than end date of the previous Sprint</div>
-								<div class="alert alert-danger">Start Date must be earlier than end date</div>
-							</div>
+        <div class="form-group ">
+          <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
+          <div class="col-sm-8 col-sx-10">
+            <div class="wysiwyg-editor" id="description" placeholder="Description" ng-model="description"></div>
+          </div>
+        </div>
 
-							<label class="col-sm-2 control-label no-padding-right" for="endDate">End Date</label>
-							<div class="col-sm-3  col-xs-8">
-								<div class="input-group">
-									<input id="endDate" type="text" class="form-control" ng-model="endDate"/>
-									<span class="input-group-addon">
-										<i class="fa fa-clock-o bigger-110"></i>
-									</span>
-								</div>
-								<div class="alert alert-danger">End Date isn't null</div>
-								<div class="alert alert-danger">End Date must be later than start date</div>
-							</div>
-						</div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="startDate">Start Date</label>
+          <div class="col-sm-3 col-xs-8">
+            <div class="input-group" ng-class="{ 'has-error': form.startDate.$touched && form.startDate.$invalid }">
+              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="startDate" lower-than="{{endDate}}" required />
+              <span class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+              </span>
+            </div>
+            <div ng-show="form.$submitted || form.startDate.$dirty">
+              <div ng-show="form.startDate.$error.required" class="alert alert-danger">Start Date isn't null</div>
+              <div ng-show="false" class="alert alert-danger">Start Date should be less than End Date of the
+                previous Sprint</div>
+              <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be less than End
+                Date</div>
+            </div>
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date</label>
+          <div class="col-sm-3  col-xs-8">
+            <div class="input-group" ng-class="{ 'has-error': form.endDate.$touched && form.endDate.$invalid }">
+              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="endDate" required higher-than="{{startDate}}"/> <span
+                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+              </span>
+            </div>
+            <div ng-show="form.$submitted || form.endDate.$dirty">
+              <div ng-show="form.endDate.$error.required" class="alert alert-danger">End Date isn't null</div>
+              <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be greater than Start
+                Date</div>
+            </div>
+          </div>
+        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="project"> Project </label>
-							<div class="col-sm-10">
-								<select class="col-sm-8" id="project" ng-model="project" required>
-									<option ng-repeat="project in projects" value="{{project}}" ng-bind="project.name"></option>
-								</select>
-							</div>
-						</div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="project"> Project </label>
+          <div class="col-sm-10">
+            <select class="col-sm-8" id="project" ng-model="project" required>
+              <option ng-repeat="project in projects" value="{{project}}" ng-bind="project.name"></option>
+            </select>
+          </div>
+        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="state"> State </label>
-							<div class="col-sm-3">
-								<select class="form-control" id="state" ng-model="sprintstate" required>
-									<option ng-repeat="sprintState in sprintStates" value={{sprintState}} ng-bind="sprintState.name">Planning</option>
-								</select>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="planVelocity" "> Plan Velocity </label>
-							<div class="col-sm-3">
-								<input type="text" id="planVelocity" class="form-control col-xs-10" ng-model="planVelocity" />
-							</div>
-						</div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="state"> State </label>
+          <div class="col-sm-3">
+            <select class="form-control" id="state" ng-model="sprintstate" required>
+              <option ng-repeat="sprintState in sprintStates" value={{sprintState}} ng-bind="sprintState.name">Planning</option>
+            </select>
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="planVelocity""> Plan Velocity </label>
+          <div class="col-sm-3">
+            <input type="text" id="planVelocity" class="form-control col-xs-10" ng-model="planVelocity" />
+          </div>
+        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="planEstimate" > Plan Estimate </label>
-							<div class="col-sm-3">
-								<input type="text" id="planEstimate" class="form-control col-xs-10" ng-model="planEst"/>
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="taskEstimate"> Task Estimate </label>
-							<div class="col-sm-3">
-								<input type="text" id="taskEstimate" class="form-control col-xs-10" ng-model="taskEst"/>
-							</div>
-						</div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="planEstimate"> Plan Estimate </label>
+          <div class="col-sm-3">
+            <input type="text" id="planEstimate" class="form-control col-xs-10" ng-model="planEst" />
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="taskEstimate"> Task Estimate </label>
+          <div class="col-sm-3">
+            <input type="text" id="taskEstimate" class="form-control col-xs-10" ng-model="taskEst" />
+          </div>
+        </div>
 
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="toDo"> To Do</label>
-							<div class="col-sm-3">
-								<input type="text" id="toDo" class="form-control col-xs-10" ng-model="toDo" />
-							</div>
-							<label class="col-sm-2 control-label no-padding-right" for="actual"> Actual </label>
-							<div class="col-sm-3">
-								<input type="text" id="actual" class="form-control col-xs-10" ng-model="actuals" />
-							</div>
-						</div>
-						
-						<div class="form-group">
-							<label class="col-sm-2 control-label no-padding-right" for="note"> Note </label>
-							<div class="col-sm-8 col-sx-10">
-								<div class="wysiwyg-editor" id="note" placeholder="note" ng-model="note" ></div>
-							</div>
-						</div>
-						
-						<div class="form-actions center clearfix">
-							<button type="button" class="btn btn-success">
-								<i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
-								Save & close					
-							</button>
-							<button type="button" class="btn btn-warning">
-								<i class="ace-icon fa fa-save bigger-110"></i>
-								Save & new
-							</button>
-							
-							<button type="button" class="btn btn-purple" ng-click="save()">
-								<i class="ace-icon fa fa-save bigger-110"></i>
-								Save
-							</button>
-							<button type="button" class="btn" ng-click="redirect()">
-								<i class="ace-icon fa fa-times bigger-110"></i>
-								Close
-							</button>
-						</div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="toDo"> To Do</label>
+          <div class="col-sm-3">
+            <input type="text" id="toDo" class="form-control col-xs-10" ng-model="toDo" />
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="actual"> Actual </label>
+          <div class="col-sm-3">
+            <input type="text" id="actual" class="form-control col-xs-10" ng-model="actuals" />
+          </div>
+        </div>
 
-					</form>
-				</div>
-			</div>
-		</div><!-- /.main-container -->
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="note"> Note </label>
+          <div class="col-sm-8 col-sx-10">
+            <div class="wysiwyg-editor" id="note" placeholder="note" ng-model="note"></div>
+          </div>
+        </div>
 
-		<!-- inline scripts related to this page -->
-		<script type="text/javascript">
-			var initAll = function() {
-				//datetimepicker plugin
-				$('#startDate').datetimepicker().next().on(ace.click_event, function(){
-					$(this).prev().focus();
-					
-				});
-				
-				$('#endDate').datetimepicker().next().on(ace.click_event, function(){
-					$(this).prev().focus();
-				});
+        <div class="form-actions center clearfix">
+          <button ng-disabled="(!form.$valid)" = "form.$valid" type="submit" class="btn btn-success">
+            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
+          </button>
+          <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-warning">
+            <i class="ace-icon fa fa-save bigger-110"></i> Save & new
+          </button>
 
-				//description texterea
-				$('#description').ace_wysiwyg();
+          <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-purple" ng-click="save()">
+            <i class="ace-icon fa fa-save bigger-110"></i> Save
+          </button>
+          <button type="button" class="btn" ng-click="redirect()">
+            <i class="ace-icon fa fa-times bigger-110"></i> Close
+          </button>
+        </div>
 
-				var toolbar = $('#description').prev().get(0);
-				$(toolbar).addClass('wysiwyg-style2');
+      </form>
+    </div>
+  </div>
+</div>
+<!-- /.main-container -->
 
-				//note texterea
-				$('#note').ace_wysiwyg();
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+jQuery(function($) {
+  // init theme
+  //ace.init.start();
+});
+  var initAll = function() {
+    //datetimepicker plugin
+    $('#startDate').datetimepicker({
+      format : 'DD-MM-YYYY h:mm:ss'
+    })
+    .next().on(ace.click_event, function(e) {
+      $(this).prev().focus();
+      //$(this).data("DateTimePicker").minDate(date());
+    });
+    
+    $('#endDate').datetimepicker({
+      format : 'DD-MM-YYYY h:mm:ss'
+    })
+    .next().on(ace.click_event, function(e) {
+      $(this).prev().focus();
+    });
 
-				var toolbar = $('#note').prev().get(0);
-				$(toolbar).addClass('wysiwyg-style2');
+    //description texterea
+    $('#description').ace_wysiwyg();
 
-				//RESIZE IMAGE
-				
-				//Add Image Resize Functionality to Chrome and Safari
-				//webkit browsers don't have image resize functionality when content is editable
-				//so let's add something using jQuery UI resizable
-				//another option would be opening a dialog for user to enter dimensions.
-				if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {
-					
-					var lastResizableImg = null;
-					function destroyResizable() {
-						if(lastResizableImg == null) return;
-						lastResizableImg.resizable( "destroy" );
-						lastResizableImg.removeData('resizable');
-						lastResizableImg = null;
-					}
+    var toolbar = $('#description').prev().get(0);
+    $(toolbar).addClass('wysiwyg-style2');
 
-					var enableImageResize = function() {
-						$('.wysiwyg-editor')
-						.on('mousedown', function(e) {
-							var target = $(e.target);
-							if( e.target instanceof HTMLImageElement ) {
-								if( !target.data('resizable') ) {
-									target.resizable({
-										aspectRatio: e.target.width / e.target.height,
-									});
-									target.data('resizable', true);
-									
-									if( lastResizableImg != null ) {
-										//disable previous resizable image
-										lastResizableImg.resizable( "destroy" );
-										lastResizableImg.removeData('resizable');
-									}
-									lastResizableImg = target;
-								}
-							}
-						})
-						.on('click', function(e) {
-							if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
-								destroyResizable();
-							}
-						})
-						.on('keydown', function() {
-							destroyResizable();
-						});
-				    }
+    //note texterea
+    $('#note').ace_wysiwyg();
 
-					enableImageResize();
+    var toolbar = $('#note').prev().get(0);
+    $(toolbar).addClass('wysiwyg-style2');
 
-					/**
-					//or we can load the jQuery UI dynamically only if needed
-					if (typeof jQuery.ui !== 'undefined') enableImageResize();
-					else {//load jQuery UI if not loaded
-						$.getScript($path_assets+"/js/jquery-ui.custom.min.js", function(data, textStatus, jqxhr) {
-							enableImageResize()
-						});
-					}
-					*/
-				}
-			
-			};
-		</script>
+    //RESIZE IMAGE
+
+    //Add Image Resize Functionality to Chrome and Safari
+    //webkit browsers don't have image resize functionality when content is editable
+    //so let's add something using jQuery UI resizable
+    //another option would be opening a dialog for user to enter dimensions.
+    if (typeof jQuery.ui !== 'undefined' && ace.vars['webkit']) {
+
+      var lastResizableImg = null;
+      function destroyResizable() {
+        if (lastResizableImg == null)
+          return;
+        lastResizableImg.resizable("destroy");
+        lastResizableImg.removeData('resizable');
+        lastResizableImg = null;
+      }
+
+      var enableImageResize = function() {
+        $('.wysiwyg-editor').on('mousedown', function(e) {
+          var target = $(e.target);
+          if (e.target instanceof HTMLImageElement) {
+            if (!target.data('resizable')) {
+              target.resizable({
+                aspectRatio : e.target.width / e.target.height,
+              });
+              target.data('resizable', true);
+
+              if (lastResizableImg != null) {
+                //disable previous resizable image
+                lastResizableImg.resizable("destroy");
+                lastResizableImg.removeData('resizable');
+              }
+              lastResizableImg = target;
+            }
+          }
+        }).on('click', function(e) {
+          if (lastResizableImg != null && !(e.target instanceof HTMLImageElement)) {
+            destroyResizable();
+          }
+        }).on('keydown', function() {
+          destroyResizable();
+        });
+      }
+
+      enableImageResize();
+
+      /**
+      //or we can load the jQuery UI dynamically only if needed
+      if (typeof jQuery.ui !== 'undefined') enableImageResize();
+      else {//load jQuery UI if not loaded
+      	$.getScript($path_assets+"/js/jquery-ui.custom.min.js", function(data, textStatus, jqxhr) {
+      		enableImageResize()
+      	});
+      }
+       */
+    }
+
+  };
+</script>
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-
-	var scripts = [null,'assets/js/date-time/moment.min.js','assets/js/date-time/bootstrap-datetimepicker.min.js','assets/js/bootstrap-wysiwyg.min.js','assets/js/bootbox.min.js', null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
-	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-	  //inline scripts related to this page
-	  initAll();
-	});
+  var scripts = ['assets/js/date-time/bootstrap-datetimepicker.min.js',
+      'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js' ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+    //inline scripts related to this page
+    initAll();
+  });
 </script>
