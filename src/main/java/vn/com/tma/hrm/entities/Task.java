@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import java.util.*;
 
 @Entity
 public class Task {
@@ -14,70 +15,153 @@ public class Task {
     private int id;
     
     @Column
-    private String name;
+    private String name;   
     
     @Column
-    private String owner;
+    private int assignee;
     
     @Column
-    private String taskEST;
+    private int taskEst;
     
     @Column
-    private String toDo;
+    private int toDo;
+      
+    @Column
+    private int spentTime;
     
     @Column
-    private String actual;
+    private Date startDate;
     
     @Column
-    private String timeSpent;
+    private Date endDate;
+    
+    @Column
+    private int owner;
     
     @Column
     private String description;
     
     @Column
-    private String attachments;
-    
-    @Column
     private String note;
     
     @Column
-    private String userStoryId;
+    private int userStoryId;
     
     @Column
-    private String projectId;
+    private int taskStatusId;
     
     @Column
-    private String taskStatusId;
+    private int taskStateId;
 
-    public int getId() {
-        return id;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public int getAssignee() {
+		return assignee;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setAssignee(int assignee) {
+		this.assignee = assignee;
+	}
 
-    public Float getEstimation() {
-        return estimation;
-    }
+	public int getTaskEst() {
+		return taskEst;
+	}
 
-    public void setEstimation(Float estimation) {
-        this.estimation = estimation;
-    }
+	public void setTaskEst(int taskEst) {
+		this.taskEst = taskEst;
+	}
+
+	public int getToDo() {
+		return toDo;
+	}
+
+	public void setToDo(int toDo) {
+		this.toDo = toDo;
+	}
+
+	public int getSpentTime() {
+		return spentTime;
+	}
+
+	public void setSpentTime(int spentTime) {
+		this.spentTime = spentTime;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public int getOwner() {
+		return owner;
+	}
+
+	public void setOwner(int owner) {
+		this.owner = owner;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
+	}
+
+	public int getUserStoryId() {
+		return userStoryId;
+	}
+
+	public void setUserStoryId(int userStoryId) {
+		this.userStoryId = userStoryId;
+	}
+
+	public int getTaskStatusId() {
+		return taskStatusId;
+	}
+
+	public void setTaskStatusId(int taskStatusId) {
+		this.taskStatusId = taskStatusId;
+	}
+
+	public int getTaskStateId() {
+		return taskStateId;
+	}
+
+	public void setTaskStateId(int taskStateId) {
+		this.taskStateId = taskStateId;
+	}
 }

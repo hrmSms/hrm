@@ -3,158 +3,158 @@
 
 <!-- page's inner styles -->
 <style>
-  .border-top {
-    border-top: 1px solid #E3E3E3;
-    border-top-color: rgba(0,0,0,0.11);
-  }
-  .border-right {
-    border-right: 1px solid #E3E3E3;
-    border-right-color: rgba(0,0,0,0.11);
-  }
-  .border-bottom {
-    border-bottom: 1px solid #E3E3E3;
-    border-bottom-color: rgba(0,0,0,0.11);
-  }
-  .border-left {
-    border-left: 1px solid #E3E3E3;
-    border-left-color: rgba(0,0,0,0.11);
-  }
+.border-top {
+	border-top: 1px solid #E3E3E3;
+	border-top-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-right {
+	border-right: 1px solid #E3E3E3;
+	border-right-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-bottom {
+	border-bottom: 1px solid #E3E3E3;
+	border-bottom-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-left {
+	border-left: 1px solid #E3E3E3;
+	border-left-color: rgba(0, 0, 0, 0.11);
+}
 </style>
 
 <!-- ajax layout which only needs content area -->
 <div class="page-header">
-  <h1>
-    Task Details <small> <i class="ace-icon fa fa-angle-double-right"></i> Create a task
-    </small>
-  </h1>
+	<h1>
+		Task Details <small> <i
+			class="ace-icon fa fa-angle-double-right"></i> Create a task
+		</small>
+	</h1>
 </div>
 <!-- /.page-header -->
 
 <!-- PAGE CONTENT BEGINS -->
 <form role="form">
-  <div class="col-md-8 border-right">
-    <div class="row">
-      <div class="form-group col-md-2">
-        <label class="control-label no-padding-right" for="t-state">State</label>
-        <select class="form-control" id="t-state" placeholder="">          
-          <option value="define">Define</option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-        </select>
-      </div>
-      <div class="form-group col-md-2">
-        <label class="control-label no-padding-right" for="t-status">Status</label>
-        <select class="form-control" id="t-status" placeholder="">
-          <option value="block">Block</option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-          <option value=""></option>
-        </select>
-      </div>
-      <div class="form-group col-md-2">
-        <label class="control-label no-padding-right" for="t-est">Task EST.</label>
-        <input type="text" class="form-control" id="t-est" placeholder="" value="">
-      </div>
-      <div class="form-group col-md-2">
-        <label class="control-label no-padding-right" for="t-to-do">To Do</label>
-        <input type="text" class="form-control" id="t-to-do" placeholder="">
-      </div>
-      <div class="form-group col-md-2">
-        <label class="control-label no-padding-right" for="t-actual">Actual</label>
-        <input type="text" class="form-control" id="t-actual" placeholder="">
-      </div>
-      <div class="form-group col-md-2">
-        <label class="control-label no-padding-right" for="t-time-spent">Time spent</label>
-        <input type="text" class="form-control" id="t-time-spent" placeholder="">
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group">
-		<label class="col-md-1 control-label no-padding-right" for="t-desc">
-			Description </label>
-		<div class="col-md-12">
-			<div class="wysiwyg-editor" id="desc"></div>
+	<div class="col-md-8 border-right">
+		<div class="row">
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-state">State</label>
+				<select class="form-control" id="t-state">
+					<option value="1">Defined</option>
+					<option value="2">In-Progress</option>
+					<option value="3">Completed</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-status">Status</label>
+				<select class="form-control" id="t-status">
+					<option value="1">New</option>
+					<option value="">Assigned</option>
+					<option value="">In Progress</option>
+					<option value="">Resolved</option>
+					<option value="">Approved</option>
+					<option value="">Closed</option>
+					<option value="">Rejected</option>
+					<option value="">Blocked</option>
+				</select>
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-est">Task
+					EST.</label> <input type="text" class="form-control" id="t-est"
+					placeholder="hours" value="">
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-to-do">To
+					Do</label> <input type="text" class="form-control" id="t-to-do"
+					placeholder="hours">
+			</div>
+			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-time-spent">Time
+					spent</label> <input type="text" class="form-control" id="t-time-spent"
+					placeholder="hours">
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-1 control-label no-padding-right" for="t-desc">
+					Description </label>
+				<div class="col-md-12">
+					<div class="wysiwyg-editor" id="desc"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group col-md-12">
+				<label class="control-label no-padding-right" for="t-attachment">Attachment</label>
+				<table id="t-attachment"
+					class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Description</th>
+							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
+								When</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Document.doc</td>
+							<td>The first attachment</td>
+							<td>9/8/2015</td>
+						</tr>
+						<tr>
+							<td>Reporting.xls</td>
+							<td>The excel file</td>
+							<td>9/7/2015</td>
+						</tr>
+						<tr>
+							<td>Analytic.pdf</td>
+							<td>Another .pdf file</td>
+							<td>9/10/2015</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="form-group">
+				<label class="col-md-1 control-label no-padding-right" for="note">
+					Note </label>
+				<div class="col-md-12">
+					<div class="wysiwyg-editor" id="note"></div>
+				</div>
+			</div>
 		</div>
 	</div>
-    </div>
-    <div class="row">
-      <div class="form-group col-md-12">
-        <label class="control-label no-padding-right" for="t-attachment">Attachment</label>
-        <table id="t-attachment" class="table table-striped table-bordered table-hover">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Description</th>
-              <th>
-                <i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-                When
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Document.doc</td>
-              <td>The first attachment</td>
-              <td>9/8/2015</td>
-            </tr>
-            <tr>
-              <td>Reporting.xls</td>
-              <td>The excel file</td>
-              <td>9/7/2015</td>
-            </tr>
-            <tr>
-              <td>Analytic.pdf</td>
-              <td>Another .pdf file</td>
-              <td>9/10/2015</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group">
-		<label class="col-md-1 control-label no-padding-right" for="note"> Note </label>
-		<div class="col-md-12">
-			<div class="wysiwyg-editor" id="note"></div>
+	<div class="space-12"></div>
+	<div class="col-md-4">
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-owner">Owner</label>
+			<input type="text" class="form-control" id="t-owner"
+				value="Huy Nguyen" disabled="disabled">
+		</div>
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-assignee">Assignee</label>
+			<select class="form-control" id="t-owner">
+				<option value="13">Long Nguyen</option>
+				<option value="12">Huy Nguyen</option>
+				<option value="14">Anh Nguyen</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-user-story">User
+				story</label> <input type="text" class="form-control" id="t-user-story"
+				value="US 1" disabled="disabled">
+		</div>
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-project">Project</label>
+			<input type="text" class="form-control" id="t-project" value="HRM"
+				disabled="disabled">
 		</div>
 	</div>
-    </div>
-  </div>
-  <div class="space-12"></div>
-  <div class="col-md-4">
-    <div class="form-group">
-        <label class="control-label no-padding-right" for="t-owner">Owner</label>
-        <select class="form-control" id="t-owner" placeholder="">
-          <option value="12">Huy Nguyen</option>
-          <option value="13">Long Nguyen</option>
-          <option value="14">Anh Nguyen</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="control-label no-padding-right" for="t-user-story">User story</label>
-        <select class="form-control" id="t-user-story" placeholder="">
-          <option value="1">US 1</option>
-          <option value="2">US 2</option>
-          <option value="3">US 3</option>
-          <option value="4">US 4</option>
-          <option value="5">US 5</option>
-          <option value="6">US 6</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="control-label no-padding-right" for="t-project">Project</label>
-        <select class="form-control" id="t-project" placeholder="">
-          <option value="1">HRM</option>
-          <option value="2">FADMV</option>
-          <option value="3">Dynamic CRM</option>
-        </select>
-      </div>
-  </div>
-  
-  <div class="clearfix"></div>
+
+	<div class="clearfix"></div>
 	<div class="form-actions center clearfix">
 		<button type="button" class="btn btn-success">
 			<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
