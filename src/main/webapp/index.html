@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 <meta charset="utf-8" />
-<title>Welcome - Ace Admin</title>
+<title>Welcome - HRM</title>
 
 <!-- async load libraries in order with angular-loader -->
 <!-- <script src="./assets/app/angular-loader.min.js"></script> -->
@@ -51,46 +51,49 @@
 </head>
 
 <body class="no-skin">
-
-  <div id="navbar" class="navbar navbar-default navbar-collapse h-navbar">
-    <div hrm-page-header></div>
-    <!-- /.header -->
-  </div>
+  <!-- #section:basics/navbar.layout -->
+  <div id="navbar" class="navbar navbar-default navbar-collapse h-navbar" hrm-page-header></div>
+  <!-- /.header -->
 
   <div class="main-container" id="main-container">
     <script type="text/javascript">
-          try {
-            ace.settings.check('main-container', 'fixed')
-          } catch (e) {
-          }
-        </script>
-    <div class="breadcrumbs" id="breadcrumbs">
-      <script type="text/javascript">
-              try {
-                ace.settings.check('breadcrumbs', 'fixed')
-              } catch (e) {
-              }
-            </script>
+                    try {
+                        ace.settings.check('main-container', 'fixed')
+                    } catch (e) {
+                    }
+                </script>
 
-      <ul class="breadcrumb">
-        <li><i class="ace-icon fa fa-home home-icon"></i> <a href="#">Home</a></li>
-      </ul>
-      <!-- /.breadcrumb -->
-
-      <!-- #section:basics/content.searchbox -->
-      <div class="nav-search" id="nav-search">
-        <form class="form-search">
-          <span class="input-icon"> <input type="text" placeholder="Search ..." class="nav-search-input"
-            id="nav-search-input" autocomplete="off" /> <i class="ace-icon fa fa-search nav-search-icon"></i>
-          </span>
-        </form>
-      </div>
-      <!-- /.nav-search -->
-
-      <!-- /section:basics/content.searchbox -->
-    </div>
     <div class="main-content">
       <div class="main-content-inner">
+        <!-- #section:basics/content.breadcrumbs -->
+        <div class="breadcrumbs" id="breadcrumbs">
+          <script type="text/javascript">
+                                            try {
+                                                ace.settings.check('breadcrumbs', 'fixed')
+                                            } catch (e) {
+                                            }
+                                        </script>
+
+          <ul class="breadcrumb">
+            <li>
+              <i class="ace-icon fa fa-home home-icon"></i> <a href="#">Home</a>
+            </li>
+          </ul>
+          <!-- /.breadcrumb -->
+
+          <!-- #section:basics/content.searchbox -->
+          <div class="nav-search" id="nav-search">
+            <form class="form-search">
+              <span class="input-icon"> <input type="text" placeholder="Search ..." class="nav-search-input"
+                  id="nav-search-input" autocomplete="off" /> <i class="ace-icon fa fa-search nav-search-icon"></i>
+              </span>
+            </form>
+          </div>
+          <!-- /.nav-search -->
+
+          <!-- /section:basics/content.searchbox -->
+        </div>
+
         <!-- /section:basics/content.breadcrumbs -->
         <div class="page-content">
           <div class="row">
@@ -114,17 +117,6 @@
     </a>
   </div>
   <!-- /.main-container -->
-
-  <div class="footer" hrm-page-footer></div>
-  <!-- /.footer -->
-  <!-- basic scripts -->
-
-  <a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse"> <i
-    class="ace-icon fa fa-angle-double-up icon-only bigger-110"></i>
-  </a>
-  </div>
-  <!-- /.main-container -->
-
   <!-- basic scripts -->
 
   <!--[if !IE]> -->
