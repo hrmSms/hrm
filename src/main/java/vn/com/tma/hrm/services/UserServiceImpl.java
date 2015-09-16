@@ -1,24 +1,20 @@
 package vn.com.tma.hrm.services;
 
-import  vn.com.tma.hrm.repository.UserRepository;
-import vn.com.tma.hrm.entities.*;
+import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.Collection;
-
-/**
- * Created by Administrator on 8/10/2015.
- */
+import vn.com.tma.hrm.entities.User;
+import vn.com.tma.hrm.repository.UserRepository;
 
 @Component
 public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
-/*
+
     @Override
     public Optional<User> getUserById(long id) {
         return Optional.ofNullable(userRepository.findOne(id));
@@ -33,7 +29,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findOneByEmail(username);
     }
-*/
+
     @Override
     public Collection<User> getAllUsers() {
         return (Collection<User>) userRepository.findAll();
@@ -41,4 +37,3 @@ public class UserServiceImpl implements UserService {
 
 
 }
-

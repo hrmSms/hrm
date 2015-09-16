@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -7,7 +8,6 @@
 
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
 		<!-- bootstrap & fontawesome -->
 		<link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="./assets/css/font-awesome.min.css" />
@@ -63,12 +63,12 @@
 
 											<div class="space-6"></div>
 
-											<form name="myForm" action="/hrm/login" method="post">
+											<form name="myForm" action="" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Username"
-                                                                   name="username" id="username" ng-model="j_username" ng-trim="true" required="true" ng-pattern="/^([a-zA-Z0-9]+)$/"
+															<input type="text" class="form-control" placeholder="Email"
+                                                                   name="email" id="email" ng-model="email" ng-trim="true" required="true" ng-pattern="/^([a-zA-Z0-9]+)$/"
                                                                     ng-minlength="3" ng-maxlength="10"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
@@ -95,7 +95,7 @@
 															<span class="bigger-110">Login</span>
 														</button>
 													</div>
-
+													<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 													<div class="space-4"></div>
 												</fieldset>
 											</form>

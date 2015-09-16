@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans:beans xmlns="http://www.springframework.org/schema/security" xmlns:beans="http://www.springframework.org/schema/beans"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:context="http://www.springframework.org/schema/context"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/security
-		http://www.springframework.org/schema/security/spring-security.xsd">
+		http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/context
+		 http://www.springframework.org/schema/context/spring-context-4.0.xsd">
 
+<context:component-scan base-package="vn.com.tma.hrm"/>
   <!-- http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#method-security-expressions -->
   <global-method-security pre-post-annotations="enabled" />
 
@@ -18,15 +22,26 @@
   <!-- Protected Requests -->
   <http use-expressions="true">
     <headers disabled="true"/>
-    <intercept-url pattern="/login" access="isAnonymous()" />
-    <intercept-url pattern="/**" access="hasRole('USER')" />
-    <form-login login-page='/login' authentication-failure-url="/login?error" />
-    <remember-me user-service-ref="userDetailsService"/>
-    <logout delete-cookies="JSESSIONID"/>
+    <csrf/>
+    <intercept-url pattern="/login" access="permitAll()" />
+    <intercept-url pattern="/**" access="hasRole('ADMIN') or hasRole('USER')" />
+    <form-login login-page='/login' 
+    			username-parameter='email'
+    			authentication-failure-url="/login?error" 
+    			default-target-url='/'/>
+    <remember-me user-service-ref="myUserDetailsService"/>
+    <logout logout-url="/logout"
+    		delete-cookies="JSESSIONID"/>
   </http>
+  
+  
+  <authentication-manager>
+    <authentication-provider user-service-ref='myUserDetailsService'>
+      <password-encoder hash="bcrypt" />
+    </authentication-provider>
+  </authentication-manager>
 
-  <!-- http://docs.spring.io/spring-security/site/docs/4.0.2.RELEASE/reference/htmlsingle/#authz-hierarchical-roles -->
-  <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
+  <!-- <beans:bean id="roleVoter" class="org.springframework.security.access.vote.RoleHierarchyVoter">
     <beans:constructor-arg ref="roleHierarchy" />
   </beans:bean>
   <beans:bean id="roleHierarchy" class="org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl">
@@ -37,9 +52,9 @@
         ROLE_USER > ROLE_GUEST
       </beans:value>
     </beans:property>
-  </beans:bean>
-
-  <!-- In-memory users, for development only -->
+  </beans:bean> -->
+  <!--
+  In-memory users, for development only
   <authentication-manager>
     <authentication-provider>
       <user-service id="userDetailsService">
@@ -47,19 +62,12 @@
         <user name="user" password="user" authorities="ROLE_USER" />
       </user-service>
     </authentication-provider>
-  </authentication-manager>
+  </authentication-manager>  -->
 
-<!-- 
-  <authentication-manager>
-    <authentication-provider user-service-ref='myUserDetailsService'>
-      <password-encoder ref="bcryptEncoder" />
-    </authentication-provider>
-  </authentication-manager>
 
-  <beans:bean id="myUserDetailsService" class="vn.com.tma.hrm.security.MyUserDetailsService" />
+	<!-- <beans:bean id="myUserDetailsService" class="vn.com.tma.hrm.security.MyUserDetailsService" /> -->
 
-  <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
+  <!-- <beans:bean id="bcryptEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder">
     <beans:constructor-arg name="strength" value="15" />
-  </beans:bean>
- -->
+  </beans:bean> -->
 </beans:beans>
