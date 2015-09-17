@@ -23,7 +23,7 @@ public class Sprintstate implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Sprint
-	@OneToMany(mappedBy="sprintstate")
+	@OneToMany(mappedBy="sprintstate", fetch=FetchType.EAGER)
 	private List<Sprint> sprints;
 
 	public Sprintstate() {

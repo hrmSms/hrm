@@ -15,7 +15,7 @@ public class Sprint implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private long sprintID;
+	private Integer sprintID;
 
 	private Byte active;
 
@@ -53,11 +53,11 @@ public class Sprint implements Serializable {
 	public Sprint() {
 	}
 
-	public long getSprintID() {
+	public Integer getSprintID() {
 		return this.sprintID;
 	}
 
-	public void setSprintID(long sprintID) {
+	public void setSprintID(Integer sprintID) {
 		this.sprintID = sprintID;
 	}
 

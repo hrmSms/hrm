@@ -18,7 +18,7 @@
     </div>
     <div class="col-xs-12">
 
-      <form name="form" class="form-horizontal" novalidate ng-submit="addItem(description)">
+      <form name="form" class="form-horizontal" novalidate ng-submit="save()">
         <!-- #section:elements.form -->
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="name" required> Name </label>
@@ -148,7 +148,7 @@ jQuery(function($) {
   var initAll = function() {
     //datetimepicker plugin
     $('#startDate').datetimepicker({
-      format : 'DD-MM-YYYY h:mm:ss'
+      format : 'DD-MM-YYYY h:mm:ss A'
     })
     .next().on(ace.click_event, function(e) {
       $(this).prev().focus();
@@ -156,7 +156,7 @@ jQuery(function($) {
     });
     
     $('#endDate').datetimepicker({
-      format : 'DD-MM-YYYY h:mm:ss'
+      format : 'DD-MM-YYYY h:mm:ss A'
     })
     .next().on(ace.click_event, function(e) {
       $(this).prev().focus();

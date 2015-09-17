@@ -22,8 +22,12 @@
   border-left-color: rgba(0, 0, 0, 0.11);
 }
 
+.h-navbar {
+  z-index: 1;  
+}
+
 .h-navbar ~ .main-container {
-  margin-top: 15px;
+  
 }
 
 .user-min.dropdown-hover:hover .user-info {
