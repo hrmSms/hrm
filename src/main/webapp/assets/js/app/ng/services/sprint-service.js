@@ -3,7 +3,7 @@
  */
 angular.module("hrmApp.services").factory('sprintService',
     ['$http', 'SpringDataRestAdapter', function($http, SpringDataRestAdapter) {
-      var HATEOAS_URL = './api/items';
+      var HATEOAS_URL = './api/sprints';
       function Item(item) {
 
         if (item._resources) {
@@ -42,7 +42,9 @@ angular.module("hrmApp.services").factory('sprintService',
         // return SpringDataRestAdapter.processWithPromise(deferred).then(function(data) {
         return SpringDataRestAdapter.process(deferred).then(function(data) {
           Item.resources = data._resources("self");
+          //console.log(data._resources("sprintstate"));
           callback && callback(_.map(data._embeddedItems, function(item) {
+            //console.log(item);
             return new Item(item);
           }));
         });

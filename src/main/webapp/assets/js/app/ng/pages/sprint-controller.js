@@ -2,7 +2,7 @@
  * Controller of Sprint Author: nqhuy1@tma.com.vn
  */
 'use strict';
-angular.module('hrmApp.controllers').controller('SprintCtrl', [ '$scope','sprintService', function($scope, sprint) {
+angular.module('hrmApp.controllers').controller('SprintCtrl', [ '$scope','sprintService', function($scope, sprintService) {
 
   $scope.email = null;
   $scope.sprintID = null;
@@ -37,16 +37,25 @@ angular.module('hrmApp.controllers').controller('SprintCtrl', [ '$scope','sprint
     this.taskEst = null;
     this.toDo = null;
   };
-  
-  var item={};
-  
-  sprint.query(function(response) {
-    $scope.items = response ? response : [];
+ 
+  //var sprint_URL = './api/sprints';
+  sprintService.query(function(response) {
+    $scope.sprints = response ? response : [];
   });
   
+  /*var project_URL = './api/projects';
+  sprintService.query(function(response, project_URL) {
+    $scope.projects = response ? response : [];
+  });
+  
+  var sprintstate_URL = './api/sprintstates';
+  sprintService.query(function(response, sprintstate_URL) {
+    $scope.sprintstates = response ? response : [];
+  });*/
+  
+  
   $scope.addItem = function(description) {
-    console.log($scope.description);
-    new sprint({
+    new sprintService({
       description: description,
       checked: false
     }).save(function(item) {
