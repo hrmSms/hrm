@@ -29,3 +29,7 @@
 .user-min.dropdown-hover:hover .user-info {
   display: inline-block !important;
 }
+
+.errorBox {
+	color: red;
+}

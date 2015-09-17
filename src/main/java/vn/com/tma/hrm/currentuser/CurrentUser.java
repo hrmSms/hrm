@@ -1,6 +1,9 @@
-package vn.com.tma.hrm.entities;
+package vn.com.tma.hrm.currentuser;
 
 import org.springframework.security.core.authority.AuthorityUtils;
+
+import vn.com.tma.hrm.entities.Role;
+import vn.com.tma.hrm.entities.User;
 
 public class CurrentUser extends org.springframework.security.core.userdetails.User {
     private User user;

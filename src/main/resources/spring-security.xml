@@ -22,17 +22,23 @@
   <!-- Protected Requests -->
   <http use-expressions="true">
     <headers disabled="true"/>
-    <csrf/>
+    <csrf disabled="true"/>
     <intercept-url pattern="/login" access="permitAll()" />
+    <intercept-url pattern="/register" access="permitAll()" />
+    <intercept-url pattern="/registrationConfirm" access="permitAll()" />
     <intercept-url pattern="/**" access="hasRole('ADMIN') or hasRole('USER')" />
     <form-login login-page='/login' 
     			username-parameter='email'
     			authentication-failure-url="/login?error" 
     			default-target-url='/'/>
-    <remember-me user-service-ref="myUserDetailsService"/>
+    <remember-me token-validity-seconds="1209600"
+    			remember-me-parameter="remember-me"
+   				data-source-ref="hrmDataSource"/>
     <logout logout-url="/logout"
+    		logout-success-url="/login"
     		delete-cookies="JSESSIONID"/>
   </http>
+  
   
   
   <authentication-manager>

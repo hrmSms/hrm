@@ -83,5 +83,27 @@
   </bean>
 
 	<bean id="myUserDetailsService" class="vn.com.tma.hrm.security.MyUserDetailsService" />
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">			
+		 <property name="host"><value>${spring.mail.host}</value></property>
+        <property name="port"><value>${spring.mail.properties.mail.smtp.socketFactory.port}</value></property>
+        <property name="username"><value>${spring.mail.username}</value></property>
+        <property name="password"><value>${spring.mail.password}</value></property>
+        <property name="javaMailProperties">
+            <props>
+            	<prop key="mail.smtp.ssl.enable">${spring.mail.properties.mail.smtp.ssl.enable}</prop>
+                <prop key="mail.smtp.auth">${spring.mail.properties.mail.smtp.auth}</prop>
+                <prop key="mail.smtp.socketFactory.class">${spring.mail.properties.mail.smtp.socketFactory.class}</prop>
+                <prop key="mail.smtp.socketFactory.fallback">${spring.mail.properties.mail.smtp.socketFactory.fallback}</prop>
+            </props>
+        </property>
+	</bean>
+
+	<bean id="messageSource"
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>${message.source.basename}</value>
+        </property>
+    </bean>
   <!-- <bean class="org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration"/> -->
 </beans>
