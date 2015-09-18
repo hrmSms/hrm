@@ -73,13 +73,14 @@
                                     <div class="space-6"></div>
                                     <p> Enter your details to begin: </p>
 
-                                    <form:form id="registerform" action="/hrm/register" method="post" commandName="registrationForm" ng-controller="regController">
+                                    <form:form name="registerform" id="registerform" action="/hrm/register" method="post" commandName="registrationForm" 
+                                    			ng-controller="regController" ng-submit="registerform.$valid && submit()" novalidate="novalidate" >
                                         <%-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> --%>
                                         <fieldset>
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<form:input type="email" path="email" class="form-control" placeholder="Email" required="true"
-																validate-email="" name="email" id="email" ng-model="email"/>
+																validate-email="validate-email" name="email" id="email" ng-model="email"/>
 															<i class="ace-icon fa fa-envelope"></i>
 														</span>
                                             </label>
@@ -96,7 +97,7 @@
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<form:input type="password" path="password" class="form-control" placeholder="Password" required="true"
-															 			ng-minlength="3" ng-maxlength="20" ng-model="password" ng-trim="true"/>
+															 			ng-minlength="3" ng-model="password" ng-trim="true"/>
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
                                             </label>
@@ -104,7 +105,7 @@
                                             <label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<form:input type="password" path="passwordRepeated" class="form-control" placeholder="Repeat password"  required="true"
-																		ng-minlength="3" ng-maxlength="20" ng-model="repeatpassword" ng-trim="true"/>
+																		ng-minlength="3" ng-model="repeatpassword" ng-trim="true"/>
 															<i class="ace-icon fa fa-retweet"></i>
 														</span>
                                             </label>
@@ -127,7 +128,7 @@
                                                     <span class="bigger-110">Reset</span>
                                                 </button>
 
-                                                <button type="submit" class="width-65 pull-right btn btn-sm btn-success">
+                                                <button type="submit" ng-disabled="registerform.$invalid" class="width-65 pull-right btn btn-sm btn-success">
                                                     <span class="bigger-110">Register</span>
 
                                                     <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
@@ -186,9 +187,13 @@
 		</script>
 
         <script src="./assets/js/app/angular.min.js"></script>
-        <script src="./assets/js/app/ng/pages/registration-controller.js"></script>
+        <script src="./assets/js/app/ng/pages/email-directive.js"></script>
         
 		<!-- inline scripts related to this page -->
+		<!-- <script>
+        	$("#email").attr(''); 
+		</script>
+		 -->
 		<script type="text/javascript">
 			
 			//you don't need this, just used for changing background

@@ -68,11 +68,11 @@
 
 											<div class="space-6"></div>
 
-											<form name="myForm" action="" method="post" id="loginform" ng-controller="regController">
+											<form name="loginForm" action="" method="post" id="loginform" ng-controller="regController">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="text" class="form-control" placeholder="Email"
+															<input type="email" class="form-control" placeholder="Email"
                                                                    required="true" validate-email="" name="email" id="email" ng-model="email"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
@@ -81,7 +81,7 @@
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
 															<input type="password" class="form-control" placeholder="Password" name="password" id="password"
-                                                                   ng-model="password" required="true" ng-minlength="3" ng-maxlength="10" ng-trim="true" />
+                                                                   ng-model="password" required="true" ng-minlength="3" ng-trim="true" />
 															<i class="ace-icon fa fa-lock"></i>
 														</span>
 													</label>
@@ -94,7 +94,7 @@
 															<span class="lbl"> Remember Me</span>
 														</label>
 
-														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
+														<button type="submit" ng-disabled="loginForm.$invalid" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">Login</span>
 														</button>
@@ -184,7 +184,7 @@
 		</script>
 
         <script src="./assets/js/app/angular.min.js"></script>
-		<script src="./assets/js/app/ng/pages/registration-controller.js"></script>
+		<script src="./assets/js/app/ng/pages/email-directive.js"></script>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			
