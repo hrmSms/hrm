@@ -10,6 +10,6 @@ import vn.com.tma.hrm.entities.User;
 
 @RepositoryRestResource(collectionResourceRel = "users", path = "users")
 public interface UserRepository extends JpaRepository<User, Long> {
-	User findByUsername(String username);
 	Optional<User> findOneByEmail(String email);
+	Optional<User> findOneByUsername(String username);
 }
