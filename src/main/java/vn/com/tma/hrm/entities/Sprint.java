@@ -15,7 +15,7 @@ public class Sprint implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer sprintID;
+	private Integer id;
 
 	private Byte active;
 
@@ -48,17 +48,17 @@ public class Sprint implements Serializable {
 	//bi-directional many-to-one association to Sprintstate
 	@ManyToOne
 	@JoinColumn(name="StateID")
-	private Sprintstate sprintstate;
+	private SprintState sprintstate;
 
 	public Sprint() {
 	}
 
-	public Integer getSprintID() {
-		return this.sprintID;
+	public Integer getid() {
+		return this.id;
 	}
 
-	public void setSprintID(Integer sprintID) {
-		this.sprintID = sprintID;
+	public void setid(Integer id) {
+		this.id = id;
 	}
 
 	public Byte getActive() {
@@ -157,11 +157,11 @@ public class Sprint implements Serializable {
 		this.toDo = toDo;
 	}
 
-	public Sprintstate getSprintstate() {
+	public SprintState getSprintstate() {
 		return this.sprintstate;
 	}
 
-	public void setSprintstate(Sprintstate sprintstate) {
+	public void setSprintstate(SprintState sprintstate) {
 		this.sprintstate = sprintstate;
 	}
 

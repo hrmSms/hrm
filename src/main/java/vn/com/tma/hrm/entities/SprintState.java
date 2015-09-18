@@ -10,12 +10,12 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Sprintstate.findAll", query="SELECT s FROM Sprintstate s")
-public class Sprintstate implements Serializable {
+@NamedQuery(name="SprintState.findAll", query="SELECT s FROM SprintState s")
+public class SprintState implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer sprintStateID;
+	private Integer id;
 
 	@Lob
 	private String description;
@@ -26,15 +26,15 @@ public class Sprintstate implements Serializable {
 	@OneToMany(mappedBy="sprintstate", fetch=FetchType.EAGER)
 	private List<Sprint> sprints;
 
-	public Sprintstate() {
+	public SprintState() {
 	}
 
-	public Integer getSprintStateID() {
-		return this.sprintStateID;
+	public Integer getid() {
+		return this.id;
 	}
 
-	public void setSprintStateID(Integer sprintStateID) {
-		this.sprintStateID = sprintStateID;
+	public void setid(Integer id) {
+		this.id = id;
 	}
 
 	public String getDescription() {
