@@ -32,19 +32,21 @@ public class UserRegistrationFormValidator implements Validator{
 
     private void validatePasswords(Errors errors, UserRegistrationForm registrationForm) {
         if (!registrationForm.getPassword().equals(registrationForm.getPasswordRepeated())) {
-            errors.reject("password.no_match", "Passwords do not match");
+            errors.reject("password.no_match", "Passwords do not match!");
         }
     }
 
     private void validateEmail(Errors errors, UserRegistrationForm registrationForm) {
         if (userService.getUserByEmail(registrationForm.getEmail()).isPresent()) {
-            errors.reject("email.exists", "User with this email already exists");
+        	System.out.println("validator: email is exist");
+            errors.reject("email.exists", "User with this email already exists!");
         }
     }
 
     private void validateUsername(Errors errors, UserRegistrationForm registrationForm) {
         if (userService.getUserByUsername(registrationForm.getUsername()).isPresent() ) {
-            errors.reject("username.exists", "User with this username already exists");
+        	System.out.println("validator: username is exist");
+            errors.reject("username.exists", "User with this username already exists!");
         }
     }
 }

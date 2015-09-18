@@ -11,6 +11,6 @@
 <c:if test="${not empty registrationForm}">
      <p>Hello ${registrationForm.username} !</p>
 </c:if>
-    <p>Your registration has been successfully. A link will be sent to you for activation. Please check your mail.></p>
+    <p>Your registration has been successful. A link will be sent to you for activation. Please check your mail.</p>
 </body>
 </html>
