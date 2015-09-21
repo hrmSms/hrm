@@ -46,18 +46,18 @@ public class Sprint implements Serializable {
 	private Float toDo;
 
 	//bi-directional many-to-one association to Sprintstate
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="StateID")
-	private Sprintstate sprintstate;
+	private SprintState sprintstate;
 
 	public Sprint() {
 	}
 
-	public Integer getSprintID() {
+	public Integer getsprintID() {
 		return this.sprintID;
 	}
 
-	public void setSprintID(Integer sprintID) {
+	public void setid(Integer sprintID) {
 		this.sprintID = sprintID;
 	}
 
@@ -157,11 +157,11 @@ public class Sprint implements Serializable {
 		this.toDo = toDo;
 	}
 
-	public Sprintstate getSprintstate() {
+	public SprintState getSprintstate() {
 		return this.sprintstate;
 	}
 
-	public void setSprintstate(Sprintstate sprintstate) {
+	public void setSprintstate(SprintState sprintstate) {
 		this.sprintstate = sprintstate;
 	}
 

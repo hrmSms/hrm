@@ -54,7 +54,11 @@
 
                     <div class="position-relative">
                         <h1 class="alert alert-info">Your account has been activated successfully.</h1>
-                        <a class="btn btn-primary" href="/hrm/login">Login here</a>
+<<<<<<< Upstream, based on origin/dev
+                        <a class="btn btn-primary" href="/login">Login here</a>
+=======
+                        <a class="btn btn-primary" href="./login">Login here</a>
+>>>>>>> 1556771 Fixed 1st build on uat
                     </div><!-- /.position-relative -->
 
                     <div class="navbar-fixed-top align-right">

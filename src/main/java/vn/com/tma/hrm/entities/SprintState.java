@@ -1,7 +1,11 @@
 package vn.com.tma.hrm.entities;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -10,8 +14,8 @@ import java.util.List;
  * 
  */
 @Entity
-@NamedQuery(name="Sprintstate.findAll", query="SELECT s FROM Sprintstate s")
-public class Sprintstate implements Serializable {
+@NamedQuery(name="SprintState.findAll", query="SELECT s FROM SprintState s")
+public class SprintState implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -23,17 +27,17 @@ public class Sprintstate implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Sprint
-	@OneToMany(mappedBy="sprintstate", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="sprintstate", fetch=FetchType.LAZY)
 	private List<Sprint> sprints;
 
-	public Sprintstate() {
+	public SprintState() {
 	}
 
-	public Integer getSprintStateID() {
+	public Integer getsprintStateID() {
 		return this.sprintStateID;
 	}
 
-	public void setSprintStateID(Integer sprintStateID) {
+	public void setsprintStateID(Integer sprintStateID) {
 		this.sprintStateID = sprintStateID;
 	}
 
@@ -52,7 +56,7 @@ public class Sprintstate implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@JsonIgnore
 	public List<Sprint> getSprints() {
 		return this.sprints;
 	}

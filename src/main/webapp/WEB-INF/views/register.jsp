@@ -73,7 +73,7 @@
                                     <div class="space-6"></div>
                                     <p> Enter your details to begin: </p>
 
-                                    <form:form name="registerform" id="registerform" action="/hrm/register" method="post" commandName="registrationForm" 
+                                    <form:form name="registerform" id="registerform" action="/register" method="post" commandName="registrationForm"
                                     			ng-controller="regController" ng-submit="registerform.$valid && submit()" novalidate="novalidate" >
                                         <%-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> --%>
                                         <fieldset>
@@ -139,7 +139,11 @@
                                 </div>
 
                                 <div class="toolbar center">
-                                    <a href="/hrm/login" data-target="#login-box" class="back-to-login-link">
+<<<<<<< Upstream, based on origin/dev
+                                    <a href="/login" data-target="#login-box" class="back-to-login-link">
+=======
+                                    <a href="./login" data-target="#login-box" class="back-to-login-link">
+>>>>>>> 1556771 Fixed 1st build on uat
                                         <i class="ace-icon fa fa-arrow-left"></i>
                                         Back to login
                                     </a>

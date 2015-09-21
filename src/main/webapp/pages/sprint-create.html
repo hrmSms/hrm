@@ -23,8 +23,7 @@
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="name" required> Name </label>
           <div class="col-sm-10">
-            <input type="text" id="name" placeholder="Name" class="col-xs-10 col-sm-8" ng-model="name"
-              ng-readonly='true' />
+            <input type="text" id="name" placeholder="Name" class="col-xs-10 col-sm-8" ng-model="name" />
           </div>
         </div>
 
@@ -39,48 +38,61 @@
           <label class="col-sm-2 control-label no-padding-right" for="startDate">Start Date</label>
           <div class="col-sm-3 col-xs-8">
             <div class="input-group" ng-class="{ 'has-error': form.startDate.$touched && form.startDate.$invalid }">
-              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="startDate" lower-than="{{endDate}}" required />
-              <span class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="startDate"
+                lower-than="{{endDate}}" required /> <span class="input-group-addon"> <i
+                class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
             <div ng-show="form.$submitted || form.startDate.$dirty">
               <div ng-show="form.startDate.$error.required" class="alert alert-danger">Start Date isn't null</div>
               <div ng-show="false" class="alert alert-danger">Start Date should be less than End Date of the
                 previous Sprint</div>
-              <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be less than End
-                Date</div>
+              <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be less
+                than End Date</div>
             </div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date</label>
           <div class="col-sm-3  col-xs-8">
             <div class="input-group" ng-class="{ 'has-error': form.endDate.$touched && form.endDate.$invalid }">
-              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="endDate" required higher-than="{{startDate}}"/> <span
-                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="endDate" required
+                higher-than="{{startDate}}" /> <span class="input-group-addon"> <i
+                class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
             <div ng-show="form.$submitted || form.endDate.$dirty">
               <div ng-show="form.endDate.$error.required" class="alert alert-danger">End Date isn't null</div>
-              <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be greater than Start
-                Date</div>
+              <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be greater
+                than Start Date</div>
             </div>
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="project"> Project </label>
-          <div class="col-sm-10">
-            <select class="col-sm-8" id="project" ng-model="project" required>
-              <option ng-repeat="project in projects" value="{{project}}" ng-bind="project.name"></option>
-            </select>
+          <div class="col-md-8 col-sm-8">
+            <div ng-class="{ 'has-error': form.project.$touched && form.project.$invalid }">
+              <select class="form-control" id="project" name="project" ng-model="project" ng-change="">
+                <option ng-repeat="project in projects" value="{{project}}" ng-bind="project.name"></option>
+              </select>
+            </div>
+            <div ng-show="form.$submitted || form.project.$touched">
+              <div ng-show="form.project.$error.required" class="alert alert-danger">Please choose a project</div>
+            </div>
           </div>
         </div>
 
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="state"> State </label>
           <div class="col-sm-3">
-            <select class="form-control" id="state" ng-model="sprintstate" required>
-              <option ng-repeat="sprintState in sprintStates" value={{sprintState}} ng-bind="sprintState.name">Planning</option>
-            </select>
+            <div ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
+              <select class="form-control" id="state" name="state" ng-model="sprintstate"
+                ng-init="sprintstate = sprintStates[0]" required>
+                <option ng-repeat="sprintState in sprintStates" value={{sprintState}}>{{sprintState.name}}</option>
+              </select>
+            </div>
+            <div ng-show="form.$submitted || form.state.$touched">
+              <div ng-show="form.state.$error.required" class="alert alert-danger">Please choose a Sprint State</div>
+            </div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="planVelocity""> Plan Velocity </label>
           <div class="col-sm-3">
@@ -141,24 +153,22 @@
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">
-jQuery(function($) {
-  // init theme
-  //ace.init.start();
-});
+  jQuery(function($) {
+    // init theme
+    //ace.init.start();
+  });
   var initAll = function() {
     //datetimepicker plugin
     $('#startDate').datetimepicker({
       format : 'DD-MM-YYYY h:mm:ss A'
-    })
-    .next().on(ace.click_event, function(e) {
+    }).next().on(ace.click_event, function(e) {
       $(this).prev().focus();
       //$(this).data("DateTimePicker").minDate(date());
     });
-    
+
     $('#endDate').datetimepicker({
       format : 'DD-MM-YYYY h:mm:ss A'
-    })
-    .next().on(ace.click_event, function(e) {
+    }).next().on(ace.click_event, function(e) {
       $(this).prev().focus();
     });
 
@@ -236,8 +246,8 @@ jQuery(function($) {
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-  var scripts = ['assets/js/date-time/bootstrap-datetimepicker.min.js',
-      'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js' ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  var scripts = [ 'assets/js/date-time/bootstrap-datetimepicker.min.js', 'assets/js/bootstrap-wysiwyg.min.js',
+      'assets/js/bootbox.min.js' ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
     initAll();
