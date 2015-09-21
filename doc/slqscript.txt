@@ -1,0 +1,18 @@
+CREATE TABLE `user` (
+ `id` bigint NOT NULL AUTO_INCREMENT UNIQUE,
+ `username` varchar(60) NOT NULL UNIQUE, 
+ `email` varchar(60) NOT NULL UNIQUE, 
+ `password` varchar(64) NOT NULL,
+ `role` enum('ROLE_USER','ROLE_ADMIN') NOT NULL,
+ `enabled` boolean NOT NULL,
+ `nonexpired` boolean NOT NULL,
+  PRIMARY KEY (`id`)
+  )ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  
+    CREATE TABLE persistent_logins (
+    username varchar(64) not null,
+    series varchar(64) not null,
+    token varchar(64) not null,
+    last_used timestamp not null,
+    PRIMARY KEY (series)
+);
