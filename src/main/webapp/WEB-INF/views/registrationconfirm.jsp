@@ -54,7 +54,8 @@
                     <div class="space-6"></div>
 
                     <div class="position-relative">
-                        <h1 class="alert alert-info"><spring:message code="message.accountVerified"></spring:message> </h1>
+                        <%-- <h1 class="alert alert-info"><spring:message code="message.accountVerified"></spring:message> </h1> --%>
+                        <h1 class="alert alert-info"><%= request.getAttribute("message") %> </h1>
                         <a class="btn btn-primary" href="<c:url value="/login"/>">Login here</a>
                     </div><!-- /.position-relative -->
 

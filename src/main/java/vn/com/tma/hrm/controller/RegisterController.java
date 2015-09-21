@@ -77,7 +77,7 @@ public class RegisterController {
         if (verificationToken == null) {
             final String message = messageSource.getMessage("auth.message.invalidToken", null, locale);
             model.addAttribute("message", message);
-            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+            return "baduser";
         }
 
         final User user = verificationToken.getUser();
@@ -86,7 +86,7 @@ public class RegisterController {
             model.addAttribute("message", messageSource.getMessage("auth.message.expired", null, locale));
             model.addAttribute("expired", true);
             model.addAttribute("token", token);
-            return "redirect:/badUser.html?lang=" + locale.getLanguage();
+            return "baduser";
         }
 
         user.setEnabled(true);

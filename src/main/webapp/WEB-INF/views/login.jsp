@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -86,8 +87,12 @@
 													</label>
 
 													<div class="space"></div>
-
-													<div class="clearfix">
+												<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+													<font color="red">
+															<spring:message code="auth.mesage.loginfailed"></spring:message>
+													</font>
+												</c:if>
+												<div class="clearfix">
 														<label class="inline">
 															<input type="checkbox" name="remember-me" id="remember-me" class="ace" />
 															<span class="lbl"> Remember Me</span>
