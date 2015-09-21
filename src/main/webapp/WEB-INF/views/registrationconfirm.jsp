@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -53,12 +54,8 @@
                     <div class="space-6"></div>
 
                     <div class="position-relative">
-                        <h1 class="alert alert-info">Your account has been activated successfully.</h1>
-<<<<<<< Upstream, based on origin/dev
-                        <a class="btn btn-primary" href="/login">Login here</a>
-=======
-                        <a class="btn btn-primary" href="./login">Login here</a>
->>>>>>> 1556771 Fixed 1st build on uat
+                        <h1 class="alert alert-info"><spring:message code="message.accountVerified"></spring:message> </h1>
+                        <a class="btn btn-primary" href="<c:url value="/login"/>">Login here</a>
                     </div><!-- /.position-relative -->
 
                     <div class="navbar-fixed-top align-right">

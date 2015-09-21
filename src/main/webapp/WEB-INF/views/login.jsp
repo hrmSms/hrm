@@ -67,7 +67,6 @@
 											</h4>
 
 											<div class="space-6"></div>
-
 											<form name="loginForm" action="" method="post" id="loginform" ng-controller="regController">
 												<fieldset>
 													<label class="block clearfix">
@@ -134,7 +133,7 @@
 											</div>
 
 											<div>
-												<a href="/register" data-target="#signup-box" class="user-signup-link">
+												<a href="<c:url value="/register"/>" data-target="#signup-box" class="user-signup-link">
 													I want to register
 													<i class="ace-icon fa fa-arrow-right"></i>
 												</a>
