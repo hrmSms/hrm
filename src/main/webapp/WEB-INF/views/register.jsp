@@ -139,7 +139,11 @@
                                 </div>
 
                                 <div class="toolbar center">
+<<<<<<< Upstream, based on origin/dev
                                     <a href="/login" data-target="#login-box" class="back-to-login-link">
+=======
+                                    <a href="./login" data-target="#login-box" class="back-to-login-link">
+>>>>>>> 1556771 Fixed 1st build on uat
                                         <i class="ace-icon fa fa-arrow-left"></i>
                                         Back to login
                                     </a>
