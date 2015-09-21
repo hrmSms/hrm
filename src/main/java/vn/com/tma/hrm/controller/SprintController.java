@@ -19,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.SprintState;
@@ -37,22 +40,19 @@ public class SprintController {
     @ResponseBody
     public ResponseEntity<String> getAll() {
         List<Sprint> sprints = sprintService.getAll();
-        System.out.println("huy");
-        // return new ResponseEntity<String>("{ \"sprints\" : " + new JSONSerializer().serialize(sprints) + " } " ,
-        // HttpStatus.ACCEPTED);
-        ObjectMapper mapper = new ObjectMapper();
+        String jsonSprints = null;
         try {
-            System.out.println(mapper.writeValueAsString(sprints));
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            jsonSprints = ow.writeValueAsString(sprints);
         } catch (JsonProcessingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            System.out.println(e.toString());
         } catch (IOException e) {
-
             e.printStackTrace();
-
+            System.out.println(e.toString());
         }
-
-        return null;
+        return new ResponseEntity<String>("{ \"sprints\" : " + jsonSprints + " } ", HttpStatus.ACCEPTED);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.GET)
@@ -61,17 +61,33 @@ public class SprintController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody String[] jsonString, HttpServletRequest request) {
-
-        String jsonSprint = jsonString[0];
-        // Sprint newSprint = new JSONDeserializer<Sprint>().use(null, Sprint.class).deserialize(jsonSprint);
+    public ResponseEntity<String> create(@RequestBody String jsonString, HttpServletRequest request) {
+        ObjectMapper mapper = new ObjectMapper();
+        Sprint newSprint=null;
+        try {
+            //read from string variable
+            newSprint = mapper.readValue(jsonString, Sprint.class);
+        } catch (JsonParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (JsonMappingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("Name:"+newSprint.getName()+", Vill."+ newSprint.getSprintstate().getName());
+        
+        //String jsonSprint = jsonString[0];
+        //Sprint newSprint = new JSONDeserializer<Sprint>().use(null, Sprint.class).deserialize(jsonSprint);
 
         /*
          * String jsonProject = jsonString[1]; Project project = new JSONDeserializer<Project>().use(null,
          * Project.class).deserialize(jsonProject);
          */
 
-        String jsonSprintState = jsonString[2];
+        //String jsonSprintState = jsonString[2];
         // Sprintstate sprintState = new JSONDeserializer<Sprintstate>().deserialize(jsonSprintState);
 
         // newSprint.setProject(project);
@@ -115,7 +131,7 @@ public class SprintController {
     public ResponseEntity<String> deleteSprint(@PathVariable int id) throws Exception {
 
         Sprint sprint = sprintService.delete(id);
-        System.out.println(sprint.getName());
+        System.out.println(sprint);
 
         String message = "Sprint " + sprint.getName() + " was successfully deleted.";
 

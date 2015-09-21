@@ -16,7 +16,7 @@ public class SprintStateServiceImpl implements SprintStateService{
 	private SprintStateRepository sprintStateRepository;
 
 	@Override
-	@Transactional
+	@Transactional(value="txManager") 
 	public List<SprintState> getAll() {
 		return sprintStateRepository.findAll();
 	}

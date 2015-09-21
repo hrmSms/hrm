@@ -1,5 +1,6 @@
 package vn.com.tma.hrm.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+
+import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.SprintState;
 import vn.com.tma.hrm.services.SprintStateService;
 
@@ -25,8 +31,18 @@ public class SprintStateController {
 	@ResponseBody
 	public ResponseEntity<String> getAll() {
 		List<SprintState> sprintStates = sprintStateService.getAll();
-//		mav.addObject("sprints", sprints);
-		//return new ResponseEntity<String>("{ \"sprintStates\" : " + new JSONSerializer().serialize(sprintStates)+ " } " , HttpStatus.ACCEPTED);
-		return null;
+	        String jsonSprintStates = null;
+	        try {
+	            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	            jsonSprintStates = ow.writeValueAsString(sprintStates);
+	        } catch (JsonProcessingException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	            System.out.println(e.toString());
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	            System.out.println(e.toString());
+	        }
+	        return new ResponseEntity<String>("{ \"sprintStates\" : " + jsonSprintStates + " } ", HttpStatus.ACCEPTED);
 	}
 }

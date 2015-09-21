@@ -38,7 +38,6 @@ angular.module("hrmApp.services").factory("hrmService", ["$http", "$q", function
 	service.get = function(method) {
 		service.ajaxStart();
 		var deferred = $q.defer();
-		console.log(service.url(method));
 		$http({
 			method: 'GET',
 			url: service.url(method)

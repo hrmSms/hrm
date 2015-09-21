@@ -1,7 +1,11 @@
 package vn.com.tma.hrm.entities;
 
 import java.io.Serializable;
+
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 
@@ -15,7 +19,7 @@ public class SprintState implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private Integer id;
+	private Integer sprintStateID;
 
 	@Lob
 	private String description;
@@ -23,18 +27,18 @@ public class SprintState implements Serializable {
 	private String name;
 
 	//bi-directional many-to-one association to Sprint
-	@OneToMany(mappedBy="sprintstate", fetch=FetchType.EAGER)
+	@OneToMany(mappedBy="sprintstate", fetch=FetchType.LAZY)
 	private List<Sprint> sprints;
 
 	public SprintState() {
 	}
 
-	public Integer getid() {
-		return this.id;
+	public Integer getsprintStateID() {
+		return this.sprintStateID;
 	}
 
-	public void setid(Integer id) {
-		this.id = id;
+	public void setsprintStateID(Integer sprintStateID) {
+		this.sprintStateID = sprintStateID;
 	}
 
 	public String getDescription() {
@@ -52,7 +56,7 @@ public class SprintState implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	@JsonIgnore
 	public List<Sprint> getSprints() {
 		return this.sprints;
 	}

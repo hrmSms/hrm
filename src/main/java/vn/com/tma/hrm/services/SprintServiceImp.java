@@ -1,18 +1,11 @@
 package vn.com.tma.hrm.services;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.springframework.aop.ThrowsAdvice;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.repository.SprintRepository;
@@ -24,16 +17,16 @@ public class SprintServiceImp implements SprintService{
 	private SprintRepository sprintRepository;
 	
 	@Override
-	@Transactional
+	@Transactional(value="txManager") 
 	public Sprint create(Sprint sprint){
 		Sprint createdSprint = sprint;
 		return sprintRepository.save(createdSprint);
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(value="txManager") 
 	public Sprint update(Sprint sprint) throws Exception{
-		Sprint updateSprint = sprintRepository.findOne(sprint.getid());
+		Sprint updateSprint = sprintRepository.findOne(sprint.getsprintID());
 		
 		if(updateSprint == null){
 			throw new Exception();
@@ -55,7 +48,7 @@ public class SprintServiceImp implements SprintService{
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(value="txManager") 
 	public Sprint delete(int id) throws Exception{
 		Sprint deletedSprint = sprintRepository.findOne(id);
 		
@@ -67,13 +60,13 @@ public class SprintServiceImp implements SprintService{
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(value="txManager") 
 	public Sprint getByID(int id){
 		return sprintRepository.findOne(id);
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(value="txManager") 
 	public List<Sprint> getAll(){
 		return sprintRepository.findAll();
 	}
