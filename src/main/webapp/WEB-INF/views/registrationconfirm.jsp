@@ -54,7 +54,7 @@
 
                     <div class="position-relative">
                         <h1 class="alert alert-info">Your account has been activated successfully.</h1>
-                        <a class="btn btn-primary" href="/hrm/login">Login here</a>
+                        <a class="btn btn-primary" href="/login">Login here</a>
                     </div><!-- /.position-relative -->
 
                     <div class="navbar-fixed-top align-right">

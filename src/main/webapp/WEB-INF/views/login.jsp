@@ -134,7 +134,7 @@
 											</div>
 
 											<div>
-												<a href="/hrm/register" data-target="#signup-box" class="user-signup-link">
+												<a href="/register" data-target="#signup-box" class="user-signup-link">
 													I want to register
 													<i class="ace-icon fa fa-arrow-right"></i>
 												</a>
