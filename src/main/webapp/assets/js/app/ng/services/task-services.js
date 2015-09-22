@@ -54,5 +54,5 @@
 	};
 
 	TaskFactory.$inject = [ '$http', 'SpringDataRestAdapter' ];
-	angular.module("hrmApp.services").factory("Task", TaskFactory);
+	angular.module("hrmApp.services").factory("TaskService", TaskFactory);
 }(angular));

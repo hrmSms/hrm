@@ -3,7 +3,6 @@
 
 <!-- page's inner styles -->
 <style>
-
 </style>
 
 <!-- ajax layout which only needs content area -->
@@ -21,8 +20,13 @@
 	<div class="col-md-8 border-right">
 		<div class="row">
 			<div class="form-group col-md-2">
+				<label class="control-label no-padding-right" for="t-state">Task's
+					name</label> <input type="text" class="form-control" id="t-time-spent"
+					ng-model="ngName">
+			</div>
+			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-state">State</label>
-				<select class="form-control" id="t-state">
+				<select class="form-control" id="t-state" ng-model="ngState">
 					<option value="1">Defined</option>
 					<option value="2">In-Progress</option>
 					<option value="3">Completed</option>
@@ -30,30 +34,30 @@
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-status">Status</label>
-				<select class="form-control" id="t-status">
+				<select class="form-control" id="t-status" ng-model="ngStatus">
 					<option value="1">New</option>
-					<option value="">Assigned</option>
-					<option value="">In Progress</option>
-					<option value="">Resolved</option>
-					<option value="">Approved</option>
-					<option value="">Closed</option>
-					<option value="">Rejected</option>
-					<option value="">Blocked</option>
+					<option value="2">Assigned</option>
+					<option value="3">In Progress</option>
+					<option value="4">Resolved</option>
+					<option value="5">Approved</option>
+					<option value="6">Closed</option>
+					<option value="7">Rejected</option>
+					<option value="8">Blocked</option>
 				</select>
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-est">Task
-					EST.</label> <input type="text" class="form-control" id="t-est"
-					placeholder="hours" value="">
+					EST</label> <input type="text" class="form-control" id="t-est"
+					ng-model="ngTaskEst" placeholder="hours" value="">
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-to-do">To
-					Do</label> <input type="text" class="form-control" id="t-to-do"
+					Do </label> <input type="text" class="form-control" id="t-to-do" ng-model="ngToDo"
 					placeholder="hours">
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-time-spent">Time
-					spent</label> <input type="text" class="form-control" id="t-time-spent"
+					spent</label> <input type="text" class="form-control" id="t-time-spent" ng-model="ngTimeSpent"
 					placeholder="hours">
 			</div>
 		</div>
@@ -62,7 +66,7 @@
 				<label class="col-md-1 control-label no-padding-right" for="t-desc">
 					Description </label>
 				<div class="col-md-12">
-					<div class="wysiwyg-editor" id="desc"></div>
+					<div class="wysiwyg-editor" id="desc" ng-model="ngDescription"></div>
 				</div>
 			</div>
 		</div>
@@ -104,7 +108,7 @@
 				<label class="col-md-1 control-label no-padding-right" for="note">
 					Note </label>
 				<div class="col-md-12">
-					<div class="wysiwyg-editor" id="note"></div>
+					<div class="wysiwyg-editor" id="note" ng-model="ngNote"></div>
 				</div>
 			</div>
 		</div>
@@ -118,10 +122,10 @@
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-assignee">Assignee</label>
-			<select class="form-control" id="t-owner">
-				<option value="13">Long Nguyen</option>
-				<option value="12">Huy Nguyen</option>
-				<option value="14">Anh Nguyen</option>
+			<select class="form-control" id="t-owner" ng-model="ngAssignee">
+				<option value="1">Long Nguyen</option>
+				<option value="2">Huy Nguyen</option>
+				<option value="3">Anh Nguyen</option>
 			</select>
 		</div>
 		<div class="form-group">
@@ -138,14 +142,16 @@
 
 	<div class="clearfix"></div>
 	<div class="form-actions center clearfix">
-		<button type="button" class="btn btn-success">
-			<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
+		<button type="button" class="btn btn-success"
+			ng-click="addItem(true, true, false)">
+			<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save &
+			close
 		</button>
-		<button type="button" class="btn btn-warning">
+		<button type="button" class="btn btn-warning" ng-click="addItem(true, false, true)">
 			<i class="ace-icon fa fa-save bigger-110"></i> Save & new
 		</button>
 
-		<button type="button" class="btn btn-purple" ng-click="save()">
+		<button type="button" class="btn btn-purple" ng-click="addItem(true, false, false)">
 			<i class="ace-icon fa fa-save bigger-110"></i> Save
 		</button>
 		<button type="button" class="btn" ng-click="redirect()">
@@ -157,10 +163,11 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null, 'assets/js/bootstrap-wysiwyg.min.js','assets/js/bootbox.min.js', null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+	var scripts = [ null, 'assets/js/bootstrap-wysiwyg.min.js',
+			'assets/js/bootbox.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-	  //inline scripts related to this page
-	  initNote();
+		//inline scripts related to this page
+		initNote();
 	});
 </script>
 
@@ -169,25 +176,25 @@
 	var initNote = function() {
 		//note texterea
 		$('#note').ace_wysiwyg();
-	
+
 		var toolbar = $('#note').prev().get(0);
 		$(toolbar).addClass('wysiwyg-style2');
 		$('#desc').ace_wysiwyg();
-	
+
 		var description = $('#desc').prev().get(0);
 		$(description).addClass('wysiwyg-style2');
 	};
-	
-	var scripts = [null, 
-	               './assets/js/jquery.autosize.min.js', 
-	               './assets/js/jquery.inputlimiter.1.3.1.min.js', 
-	               null];
+
+	var scripts = [ null, './assets/js/jquery.autosize.min.js',
+			'./assets/js/jquery.inputlimiter.1.3.1.min.js', null ];
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-	  //inline scripts related to this page
-	  $('textarea[class*=autosize]').autosize({append: "\n"});
-  	  $('textarea.limited').inputlimiter({
-  		remText: '%n character%s remaining...',
-  		limitText: 'max allowed : %n.'
-  	  });
+		//inline scripts related to this page
+		$('textarea[class*=autosize]').autosize({
+			append : "\n"
+		});
+		$('textarea.limited').inputlimiter({
+			remText : '%n character%s remaining...',
+			limitText : 'max allowed : %n.'
+		});
 	});
 </script>
