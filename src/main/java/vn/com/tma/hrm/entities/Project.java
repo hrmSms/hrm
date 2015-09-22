@@ -2,6 +2,8 @@ package vn.com.tma.hrm.entities;
 
 
 import javax.persistence.*;
+
+import java.io.Serializable;
 import java.util.Date;
 
 
@@ -10,17 +12,16 @@ import java.util.Date;
  * 
  */
 @Entity
-//@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
-public class Project {
-	//private static final long serialVersionUID = 1L;
+@NamedQuery(name="Project.findAll", query="SELECT p FROM Project p")
+public class Project implements Serializable{
+	private static final long serialVersionUID = 1L;
 
 	@Id	
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	private byte active;
 
-	private int clientId;
+	private Integer clientId;
 
 	@Lob
 	private String description;
@@ -30,7 +31,7 @@ public class Project {
 
 	private String name;
 
-	private int projectOwner;
+	private Integer projectOwner;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date startDate;
@@ -38,11 +39,11 @@ public class Project {
 	public Project() {
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -54,11 +55,11 @@ public class Project {
 		this.active = active;
 	}
 
-	public int getClientId() {
+	public Integer getClientId() {
 		return this.clientId;
 	}
 
-	public void setClientId(int clientId) {
+	public void setClientId(Integer clientId) {
 		this.clientId = clientId;
 	}
 
@@ -86,11 +87,11 @@ public class Project {
 		this.name = name;
 	}
 
-	public int getProjectOwner() {
+	public Integer getProjectOwner() {
 		return this.projectOwner;
 	}
 
-	public void setProjectOwner(int projectOwner) {
+	public void setProjectOwner(Integer projectOwner) {
 		this.projectOwner = projectOwner;
 	}
 

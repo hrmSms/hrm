@@ -8,75 +8,83 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 
-
 /**
  * The persistent class for the sprintstate database table.
  * 
  */
 @Entity
-@NamedQuery(name="SprintState.findAll", query="SELECT s FROM SprintState s")
+@Table(name = "SprintState")
+@NamedQuery(name = "SprintState.findAll", query = "SELECT s FROM SprintState s")
 public class SprintState implements Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	private Integer sprintStateID;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
+    private Integer id;
 
-	@Lob
-	private String description;
+    @Lob
+    @Column(name = "description", nullable = true)
+    private String description;
 
-	private String name;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-	//bi-directional many-to-one association to Sprint
-	@OneToMany(mappedBy="sprintstate", fetch=FetchType.LAZY)
-	private List<Sprint> sprints;
+    // bi-directional many-to-one association to Sprint
+    @OneToMany(mappedBy = "sprintstate", fetch = FetchType.LAZY)
+    private List<Sprint> sprints;
 
-	public SprintState() {
-	}
+    public SprintState() {
+    }
 
-	public Integer getsprintStateID() {
-		return this.sprintStateID;
-	}
+    public SprintState(String JsonString) {
+    }
 
-	public void setsprintStateID(Integer sprintStateID) {
-		this.sprintStateID = sprintStateID;
-	}
+    public Integer getId() {
+        return this.id;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
-	@JsonIgnore
-	public List<Sprint> getSprints() {
-		return this.sprints;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setSprints(List<Sprint> sprints) {
-		this.sprints = sprints;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Sprint addSprint(Sprint sprint) {
-		getSprints().add(sprint);
-		sprint.setSprintstate(this);
+    @JsonIgnore
+    public List<Sprint> getSprints() {
+        return this.sprints;
+    }
 
-		return sprint;
-	}
+    public void setSprints(List<Sprint> sprints) {
+        this.sprints = sprints;
+    }
 
-	public Sprint removeSprint(Sprint sprint) {
-		getSprints().remove(sprint);
-		sprint.setSprintstate(null);
+    public Sprint addSprint(Sprint sprint) {
+        getSprints().add(sprint);
+        sprint.setSprintstate(this);
 
-		return sprint;
-	}
+        return sprint;
+    }
+
+    public Sprint removeSprint(Sprint sprint) {
+        getSprints().remove(sprint);
+        sprint.setSprintstate(null);
+
+        return sprint;
+    }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,7 +14,7 @@ import vn.com.tma.hrm.repository.SprintRepository;
 @Service
 public class SprintServiceImp implements SprintService{
 	
-	@Resource
+	@Autowired
 	private SprintRepository sprintRepository;
 	
 	@Override
@@ -26,7 +27,7 @@ public class SprintServiceImp implements SprintService{
 	@Override
 	@Transactional(value="txManager") 
 	public Sprint update(Sprint sprint) throws Exception{
-		Sprint updateSprint = sprintRepository.findOne(sprint.getsprintID());
+		Sprint updateSprint = sprintRepository.findOne(sprint.getId());
 		
 		if(updateSprint == null){
 			throw new Exception();
@@ -37,12 +38,12 @@ public class SprintServiceImp implements SprintService{
 		updateSprint.setEndDate(sprint.getEndDate());
 		updateSprint.setName(sprint.getName());
 		updateSprint.setNote(sprint.getNote());
-		updateSprint.setPlanEst(sprint.getPlanEst());
+		updateSprint.setPlanEstimate(sprint.getPlanEstimate());
 		updateSprint.setPlanVelocity(sprint.getPlanVelocity());
 		updateSprint.setProjectID(sprint.getProjectID());
 		updateSprint.setSprintstate(sprint.getSprintstate());
 		updateSprint.setStartDate(sprint.getStartDate());
-		updateSprint.setTaskEst(sprint.getTaskEst());
+		updateSprint.setTaskEstimate(sprint.getTaskEstimate());
 		updateSprint.setToDo(sprint.getToDo());
 		return updateSprint;
 	}
