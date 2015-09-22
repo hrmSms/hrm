@@ -1,16 +1,20 @@
 package vn.com.tma.hrm.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user")
+//@Table(name = "user")
 public class User {
 
     @Id
@@ -36,8 +40,19 @@ public class User {
 
     @Column(name = "username", nullable = false, unique = true)
     private String username;
+    
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+    private List<Task> lstTasks;
+    
+    public List<Task> getLstTasks() {
+		return lstTasks;
+	}
 
-    public String getUsername() {
+	public void setLstTasks(List<Task> lstTasks) {
+		this.lstTasks = lstTasks;
+	}
+
+	public String getUsername() {
         return username;
     }
 

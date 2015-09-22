@@ -32,7 +32,7 @@ angular.module('hrmApp.route', [])
     .state('task.create', {
       url: '/task/create',
       templateUrl: 'pages/task-create.html',
-      controller: ''
+      controller: 'taskController'
     });
   
 //Routes for Project

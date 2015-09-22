@@ -14,6 +14,8 @@
 					taskEST : $scope.ngTaskEst,
 					toDo : $scope.ngToDo,
 					spentTime : $scope.ngTimeSpent,
+					ownerId : 1,
+					userStoryId : 1,
 					// description :$scope.ngDescription,
 					// note : $scope.ngNote,
 					assignee : $scope.ngAssignee
