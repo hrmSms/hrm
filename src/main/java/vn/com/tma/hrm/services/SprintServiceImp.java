@@ -2,8 +2,6 @@ package vn.com.tma.hrm.services;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,5 +68,11 @@ public class SprintServiceImp implements SprintService{
 	@Transactional(value="txManager") 
 	public List<Sprint> getAll(){
 		return sprintRepository.findAll();
+	}
+	
+	@Override
+        @Transactional(value="txManager") 
+	public Sprint getByProjectIDAndName(int projectID, String name) {
+	    return sprintRepository.findByProjectIDAndName(projectID, name);
 	}
 }

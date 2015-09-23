@@ -35,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import vn.com.tma.hrm.entities.Sprint;
+import vn.com.tma.hrm.entities.SprintState;
 import vn.com.tma.hrm.services.SprintService;
 
 @Controller
@@ -79,16 +80,22 @@ public class SprintController {
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody String jsonString, BindingResult result,
-            HttpServletRequest request) {
+    public ResponseEntity<String> create(@RequestBody String[] jsonString, HttpServletRequest request) {
         // convert JSON string to Sprint Object
         ObjectMapper mapper = new ObjectMapper();
         Sprint newSprint = null;
         String message = null;
         try {
             // read from string variable
-            newSprint = mapper.readValue(jsonString, Sprint.class);
-            
+            newSprint = mapper.readValue(jsonString[0], Sprint.class);
+            Sprint duplicatedSprint = sprintService
+                    .getByProjectIDAndName(newSprint.getProjectID(), newSprint.getName());
+            if (duplicatedSprint != null) {
+                String error = newSprint.getName() + " was duplicated.";
+                return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
+            }
+            SprintState sprintState = mapper.readValue(jsonString[1], SprintState.class);
+            newSprint.setSprintstate(sprintState);
             sprintService.create(newSprint);
             message = newSprint.getName() + " was successfully created.";
         } catch (JsonParseException e) {
@@ -98,33 +105,7 @@ public class SprintController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-
-        // validation input from
-        if (result.hasErrors()) {
-            System.out.println("error");
-        } else {
-
-        }
-
-        // String jsonSprint = jsonString[0];
-        // Sprint newSprint = new JSONDeserializer<Sprint>().use(null, Sprint.class).deserialize(jsonSprint);
-
-        /*
-         * String jsonProject = jsonString[1]; Project project = new JSONDeserializer<Project>().use(null,
-         * Project.class).deserialize(jsonProject);
-         */
-
-        // String jsonSprintState = jsonString[2];
-        // Sprintstate sprintState = new JSONDeserializer<Sprintstate>().deserialize(jsonSprintState);
-
-        // newSprint.setProject(project);
-        // newSprint.setSprintstate(sprintState);
-        
-
-        
-        return new ResponseEntity<String>("{ \"message\" : \"" + message + " \"} ",
-                HttpStatus.ACCEPTED);
+        return new ResponseEntity<String>("{ \"success\" : \"" + message + " \"} ", HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)

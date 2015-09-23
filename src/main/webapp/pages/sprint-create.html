@@ -13,27 +13,32 @@
         <h1>Create a Sprint</h1>
       </div>
     </div>
-    <div ng-show="message" class="col-xs-12 center">
-      <div class="alert alert-success">{{message}}</div>
+    <div ng-show="success" class="col-xs-12 center">
+      <div class="alert alert-success">{{success}}</div>
+    </div>
+    <div ng-show="error" class="col-xs-12 center">
+      <div class="alert alert-danger">{{error}}</div>
     </div>
     <div class="col-xs-12">
 
-      <form name="form" class="form-horizontal" novalidate ng-submit="save()">
+      <form name="form" class="form-horizontal" novalidate>
         <!-- #section:elements.form -->
         <div class="form-group">
-          <label class="col-sm-2 control-label no-padding-right" for="name" required> Name </label>
-          <div class="col-sm-10" ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
-            <input type="text" id="name" name="name" placeholder="Name" class="col-xs-10 col-sm-8" ng-model="name" />
-          </div>
-          <div ng-show="form.$submitted || form.name.$dirty">
+          <label class="col-sm-2 control-label no-padding-right" for="name"> Name </label>
+          <div class="col-sm-8 col-xs-10">
+            <div ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
+              <input type="text" id="name" name="name" class="form-control" ng-model="name" required />
+            </div>
+            <div ng-show="form.$submitted || form.name.$touched">
               <div ng-show="form.name.$error.required" class="alert alert-danger">Name is required</div>
             </div>
+          </div>
         </div>
 
         <div class="form-group ">
           <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
           <div class="col-sm-8 col-sx-10">
-            <div class="wysiwyg-editor" id="description" placeholder="Description" ng-model="description"></div>
+            <div class="wysiwyg-editor" id="description" ng-model="description"></div>
           </div>
         </div>
 
@@ -74,7 +79,7 @@
           <label class="col-sm-2 control-label no-padding-right" for="project"> Project </label>
           <div class="col-md-8 col-sm-8">
             <div ng-class="{ 'has-error': form.project.$touched && form.project.$invalid }">
-              <select class="form-control" id="project" name="project" ng-model="projectID" ng-change="">
+              <select class="form-control" id="project" name="project" ng-model="projectID" ng-change="" required>
                 <option ng-repeat="project in projects" value="{{project.id}}" ng-bind="project.name"></option>
               </select>
             </div>
@@ -133,17 +138,17 @@
         </div>
 
         <div class="form-actions center clearfix">
-          <button ng-disabled="(!form.$valid)" = "form.$valid" type="submit" class="btn btn-success">
+          <button ng-disabled="(!form.$valid)" = "form.$valid" type="submit" class="btn btn-success" ng-click="saveAndClose('sprint.list')">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
           </button>
-          <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-warning">
+          <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-warning" ng-click="saveAndNew('sprint.create')">
             <i class="ace-icon fa fa-save bigger-110"></i> Save & new
           </button>
 
           <button ng-disabled="(!form.$valid)" type="submit" class="btn btn-purple" ng-click="save()">
             <i class="ace-icon fa fa-save bigger-110"></i> Save
           </button>
-          <button type="button" class="btn" ng-click="redirect()">
+          <button type="button" class="btn" ng-click="goToState('sprint.list')">
             <i class="ace-icon fa fa-times bigger-110"></i> Close
           </button>
         </div>

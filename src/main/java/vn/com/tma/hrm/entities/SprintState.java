@@ -5,6 +5,7 @@ import java.io.Serializable;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 
@@ -31,13 +32,10 @@ public class SprintState implements Serializable {
     private String name;
 
     // bi-directional many-to-one association to Sprint
-    @OneToMany(mappedBy = "sprintstate", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "sprintstate", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Sprint> sprints;
 
     public SprintState() {
-    }
-
-    public SprintState(String JsonString) {
     }
 
     public Integer getId() {

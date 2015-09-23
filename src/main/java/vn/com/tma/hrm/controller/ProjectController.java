@@ -36,11 +36,8 @@ public class ProjectController {
 	            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 	            jsonprojects = ow.writeValueAsString(projects);
 	        } catch (JsonProcessingException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
 	            System.out.println(e.toString());
 	        } catch (IOException e) {
-	            e.printStackTrace();
 	            System.out.println(e.toString());
 	        }
 	        return new ResponseEntity<String>("{ \"projects\" : " + jsonprojects + " } ", HttpStatus.ACCEPTED);

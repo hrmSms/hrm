@@ -10,5 +10,6 @@ public interface SprintService {
 	public Sprint delete(int id) throws Exception;
 	public Sprint getByID(int id);
 	public List<Sprint> getAll() ;
+	public Sprint getByProjectIDAndName(int projectID, String name) ;
 	
 }
