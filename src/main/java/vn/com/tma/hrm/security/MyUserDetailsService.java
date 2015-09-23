@@ -38,7 +38,7 @@ public class MyUserDetailsService implements UserDetailsService {
         System.out.println("load user from here");
         LOGGER.debug("Authenticating user with email={}", email.replaceFirst("@.*", "@***"));
         User user = userService.getUserByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email=% was not found", email)));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email was not found", email)));
         System.out.println("email: " + user.getEmail());
         System.out.println("loadin user: " + user);
         return new CurrentUser(user);

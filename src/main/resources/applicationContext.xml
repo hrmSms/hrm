@@ -6,6 +6,7 @@
   xmlns:context="http://www.springframework.org/schema/context"
   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
   xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:task="http://www.springframework.org/schema/task"
   xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,7 +17,9 @@
         http://www.springframework.org/schema/data/jpa
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task 
+		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
   <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
     <property name="locations" value="classpath:application.properties" />
@@ -106,5 +109,10 @@
             <value>${message.source.basename}</value>
         </property>
     </bean>
+    
+
+    <task:annotation-driven executor="executorService" />
+    <task:executor id="executorService" pool-size="1" />
+	
   <!-- <bean class="org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration"/> -->
 </beans>

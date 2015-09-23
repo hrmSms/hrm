@@ -111,7 +111,7 @@
                                             </label>
 
                                             <label class="block">
-                                                <input type="checkbox" class="ace" />
+                                                <form:checkbox path="agreement"/>
 														<span class="lbl">
 															I accept the
 															<a href="#">User Agreement</a>

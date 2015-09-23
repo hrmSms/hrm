@@ -64,7 +64,7 @@ public class RegisterController {
             System.out.println("appUrl: " + appUrl);
             applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
         } catch (DataIntegrityViolationException e) {
-            bindingResult.reject("email.exists", "Email already exists");
+            bindingResult.reject("email.exists");
             return "register";
         }
         return "/greeting";

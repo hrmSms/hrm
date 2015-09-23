@@ -1,5 +1,6 @@
 package vn.com.tma.hrm.model;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.data.annotation.Transient;
 
 public class UserRegistrationForm {
 
@@ -14,6 +15,9 @@ public class UserRegistrationForm {
 
     @NotEmpty
     private String passwordRepeated = "";
+    
+    @Transient
+    private boolean agreement = false;
 
     public String getEmail() {
         return email;
@@ -46,5 +50,13 @@ public class UserRegistrationForm {
     public void setUsername(String username) {
         this.username = username;
     }
+
+	public boolean isAgreement() {
+		return agreement;
+	}
+
+	public void setAgreement(boolean agreement) {
+		this.agreement = agreement;
+	}
 
 }
