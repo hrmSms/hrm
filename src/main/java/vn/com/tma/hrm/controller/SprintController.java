@@ -1,16 +1,25 @@
 package vn.com.tma.hrm.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +45,21 @@ public class SprintController {
     @Autowired
     private SprintService sprintService;
 
+    private static final Logger logger = LoggerFactory.getLogger(SprintController.class);
+
+    /*
+     * @Autowired private Validator validator;
+     */
+
+    /*
+     * @InitBinder private void initBinder(WebDataBinder binder) { binder.setValidator(validator); }
+     */
+    @ModelAttribute("sprint")
+    public Sprint createSprintModel() {
+        // ModelAttribute value should be same as used in the empSave.jsp
+        return new Sprint();
+    }
+
     @RequestMapping(value = { "/getall" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> getAll() {
@@ -55,50 +79,33 @@ public class SprintController {
         return new ResponseEntity<String>("{ \"sprints\" : " + jsonSprints + " } ", HttpStatus.ACCEPTED);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String newSprint() {
-        return "sprint/create";
-    }
-
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public ResponseEntity<String> create(@RequestBody String jsonString, HttpServletRequest request) {
+    public ResponseEntity<String> create(@RequestBody String[] jsonString, HttpServletRequest request) {
+        // convert JSON string to Sprint Object
         ObjectMapper mapper = new ObjectMapper();
-        Sprint newSprint=null;
+        Sprint newSprint = null;
+        String message = null;
         try {
-            //read from string variable
-            newSprint = mapper.readValue(jsonString, Sprint.class);
+            // read from string variable
+            newSprint = mapper.readValue(jsonString[0], Sprint.class);
+            Sprint duplicatedSprint = sprintService
+                    .getByProjectIDAndName(newSprint.getProjectID(), newSprint.getName());
+            if (duplicatedSprint != null) {
+                String error = newSprint.getName() + " was duplicated.";
+                return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
+            }
+            SprintState sprintState = mapper.readValue(jsonString[1], SprintState.class);
+            newSprint.setSprintstate(sprintState);
+            sprintService.create(newSprint);
+            message = newSprint.getName() + " was successfully created.";
         } catch (JsonParseException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (JsonMappingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        System.out.println("Name:"+newSprint.getName()+", Vill."+ newSprint.getSprintstate().getName());
-        
-        //String jsonSprint = jsonString[0];
-        //Sprint newSprint = new JSONDeserializer<Sprint>().use(null, Sprint.class).deserialize(jsonSprint);
-
-        /*
-         * String jsonProject = jsonString[1]; Project project = new JSONDeserializer<Project>().use(null,
-         * Project.class).deserialize(jsonProject);
-         */
-
-        //String jsonSprintState = jsonString[2];
-        // Sprintstate sprintState = new JSONDeserializer<Sprintstate>().deserialize(jsonSprintState);
-
-        // newSprint.setProject(project);
-        // newSprint.setSprintstate(sprintState);
-        // sprintService.create(newSprint);
-
-        // String message = "New Sprint: " + newSprint.getName() +" was successfully created.";
-
-        // return new ResponseEntity<String>("{ \"message\" : " + new JSONSerializer().serialize(message) + " } " ,
-        // HttpStatus.ACCEPTED);
-        return null;
+        return new ResponseEntity<String>("{ \"success\" : \"" + message + " \"} ", HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)

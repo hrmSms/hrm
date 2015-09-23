@@ -2,32 +2,37 @@ package vn.com.tma.hrm.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+
 import java.util.*;
 
 @Entity
-public class Task {
+public class Task implements java.io.Serializable{
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "TASK_ID", unique = true, nullable = false)
+    private Integer id;
     
     @Column
     private String name;   
     
     @Column
-    private int assignee;
+    private Integer assignee;
     
     @Column
-    private int taskEst;
+    private Integer taskEst;
     
     @Column
-    private int toDo;
+    private Integer toDo;
       
     @Column
-    private int spentTime;
+    private Integer spentTime;
     
     @Column
     private Date startDate;
@@ -35,8 +40,9 @@ public class Task {
     @Column
     private Date endDate;
     
-    @Column
-    private int owner;
+    @ManyToOne(fetch = FetchType.EAGER) 
+	@JoinColumn(name = "ownerId")
+    private User owner;
     
     @Column
     private String description;
@@ -45,19 +51,19 @@ public class Task {
     private String note;
     
     @Column
-    private int userStoryId;
+    private Integer userStoryId;
     
     @Column
-    private int taskStatusId;
+    private Integer taskStatusId;
     
     @Column
-    private int taskStateId;
-
-	public int getId() {
+    private Integer taskStateId;
+    
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -69,35 +75,35 @@ public class Task {
 		this.name = name;
 	}
 
-	public int getAssignee() {
+	public Integer getAssignee() {
 		return assignee;
 	}
 
-	public void setAssignee(int assignee) {
+	public void setAssignee(Integer assignee) {
 		this.assignee = assignee;
 	}
 
-	public int getTaskEst() {
+	public Integer getTaskEst() {
 		return taskEst;
 	}
 
-	public void setTaskEst(int taskEst) {
+	public void setTaskEst(Integer taskEst) {
 		this.taskEst = taskEst;
 	}
 
-	public int getToDo() {
+	public Integer getToDo() {
 		return toDo;
 	}
 
-	public void setToDo(int toDo) {
+	public void setToDo(Integer toDo) {
 		this.toDo = toDo;
 	}
 
-	public int getSpentTime() {
+	public Integer getSpentTime() {
 		return spentTime;
 	}
 
-	public void setSpentTime(int spentTime) {
+	public void setSpentTime(Integer spentTime) {
 		this.spentTime = spentTime;
 	}
 
@@ -105,10 +111,10 @@ public class Task {
 		return startDate;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(Date startDate) { 
 		this.startDate = startDate;
 	}
-
+ 
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -117,11 +123,12 @@ public class Task {
 		this.endDate = endDate;
 	}
 
-	public int getOwner() {
+	
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(int owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 
@@ -149,19 +156,19 @@ public class Task {
 		this.userStoryId = userStoryId;
 	}
 
-	public int getTaskStatusId() {
+	public Integer getTaskStatusId() {
 		return taskStatusId;
 	}
 
-	public void setTaskStatusId(int taskStatusId) {
+	public void setTaskStatusId(Integer taskStatusId) {
 		this.taskStatusId = taskStatusId;
 	}
 
-	public int getTaskStateId() {
+	public Integer getTaskStateId() {
 		return taskStateId;
 	}
 
-	public void setTaskStateId(int taskStateId) {
+	public void setTaskStateId(Integer taskStateId) {
 		this.taskStateId = taskStateId;
 	}
 }

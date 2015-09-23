@@ -6,37 +6,38 @@ angular.module('hrmApp.controllers').controller(
     'SprintCtrl',
     [ '$scope', '$location', '$state', 'sprintService', 'sprintStateService', 'projectService', "hrmService",
         function($scope, $location, $state, sprintService, sprintStateService, projectService, hrmService) {
+
           var initSprint = function() {
-            $scope.sprintID = null;
+            $scope.id = null;
             $scope.active = 1;
             $scope.actuals = null;
-            $scope.description = null;
+            // $scope.description = null;
             $scope.endDate = null;
             $scope.name = null;
-            $scope.note = null;
-            $scope.planEst = null;
+            // $scope.note = null;
+            $scope.planEstimate = null;
             $scope.planVelocity = null;
             $scope.projectID = null;
             $scope.sprintstate = {};
             $scope.startDate = null;
-            $scope.taskEst = null;
+            $scope.taskEstimate = null;
             $scope.toDo = null;
           }
 
           var sprint = function() {
             this.active = 1;
             this.actuals = $scope.actuals;
-            this.description = $scope.description;
-            this.endDate = $scope.endDate;
+            this.description = document.getElementById('description').innerHTML;
+            this.endDate = moment($scope.endDate, "DD-MM-YYYY h:mm:ss A");
             this.name = $scope.name;
-            this.note = $scope.note;
-            this.planEst = $scope.planEst;
+            this.note = document.getElementById('note').innerHTML;
+            this.planEstimate = $scope.planEstimate;
             this.planVelocity = $scope.planVelocity;
-            this.sprintID = 1;
-            this.projectID = 1;
-            this.sprintstate = $scope.sprintstate;
-            this.startDate = $scope.startDate;
-            this.taskEst = $scope.taskEst;
+            this.projectID = $scope.projectID;
+            this.id = $scope.id;
+            // this.sprintstate = $scope.sprintstate;
+            this.startDate = moment($scope.startDate, "DD-MM-YYYY h:mm:ss A");
+            this.taskEstimate = $scope.taskEstimate;
             this.toDo = $scope.toDo;
           }
           /*
@@ -55,19 +56,81 @@ angular.module('hrmApp.controllers').controller(
            * $scope.deleteItem = function(item) { item.remove(function() {
            * $scope.items.splice($scope.items.indexOf(item), 1); }); };
            */
-          var reload = function(state) {
-            $state.reload(state);
-          }
+
           $scope.save = function() {
-            var newSprint = new sprint();
-            newSprint = angular.toJson(newSprint);
-            hrmService.post("sprint/create", newSprint).then(function(message) {
-              $scope.message = message.message;
-              if(true){
-                reload();
+            var data = new Array();
+            var newSprint = angular.toJson(new sprint());
+            data.push(newSprint);
+            data.push($scope.sprintstate);
+            hrmService.post("sprint/create", data).then(function(message) {
+              if (message.error) {
+                $scope.success = null;
+                $scope.error = message.error;
+              }
+              if (message.success) {
+                $scope.error = null;
+                $scope.success = message.success;
+                $scope.showDialog('#success');
               }
             });
 
+          };
+
+          $scope.saveAndClose = function(stateName) {
+            var data = new Array();
+            var newSprint = angular.toJson(new sprint());
+            data.push(newSprint);
+            data.push($scope.sprintstate);
+            hrmService.post("sprint/create", data).then(function(message) {
+              if (message.error) {
+                $scope.success = null;
+                $scope.error = message.error;
+              }
+              if (message.success) {
+                $scope.error = null;
+                $scope.success = message.success;
+                $scope.showDialog('#success');
+                setTimeout(function() {
+                  $scope.goToState(stateName);
+                }, 2000);
+              }
+            });
+          };
+
+          $scope.saveAndNew = function(stateName) {
+            var data = new Array();
+            var newSprint = angular.toJson(new sprint());
+            data.push(newSprint);
+            data.push($scope.sprintstate);
+            hrmService.post("sprint/create", data).then(function(message) {
+              if (message.error) {
+                $scope.success = null;
+                $scope.error = message.error;
+              }
+              if (message.success) {
+                $scope.error = null;
+                $scope.success = message.success;
+                $scope.showDialog('#success');
+                setTimeout(function() {
+                  $scope.reload(stateName);
+                }, 2000);
+              }
+            });
+          };
+
+          $scope.goToState = function(stateName) {
+            $state.go(stateName);
+          };
+
+          $scope.reload = function(stateName) {
+            $state.reload(stateName);
+          };
+
+          $scope.loadProjects = function() {
+            $scope.projects = new Array();
+            hrmService.get("project/getall").then(function(items) {
+              $scope.projects = items.projects;
+            });
           };
 
           $scope.loadSprintStates = function() {
@@ -84,13 +147,22 @@ angular.module('hrmApp.controllers').controller(
             });
           };
 
+          $scope.getByID = function(sprintId) {
+            hrmService.post("sprint/getByID/" + sprintId, null).then(function(message) {
+              $scope.message = message.message;
+              $scope.loadsprints();
+            });
+          };
+
           $scope.onDelete = function(sprintId) {
             hrmService.post("sprint/delete/" + sprintId, null).then(function(message) {
               $scope.message = message.message;
               $scope.loadsprints();
             });
           };
-
+          $scope.toVNDateFormat = function(date) {
+            return moment(date).format("DD/MM/YYYY");
+          }
           $scope.$on("$stateChangeSuccess", function() {
             // load list of sprint
             if ($state.is('sprint.list')) {
@@ -100,12 +172,32 @@ angular.module('hrmApp.controllers').controller(
             // load projects and sprintstates for create sprint form
             if ($state.is('sprint.create')) {
               $scope.loadSprintStates();
+              $scope.loadProjects();
             }
             // load sprint, projects and sprintstates for edit sprint form
-            if ($state.is('sprint.create')) {
+            if ($state.is('sprint.edit')) {
               $scope.loadSprintStates();
             }
-
           });
+          $scope.$on('onRepeatLast', function(scope, element, attrs) {
+            console.log(" load table 2");
+            initTable();
+          });
+
+          $scope.showDialog = function(id) {
+            $(id).dialog({
+              resizable : false,
+              autoOpen : true,
+              show : "blind",
+              hide : "blind",
+              modal : true,
+              dialogClass : 'success',
+              open : function(event, ui) {
+                setTimeout(function() {
+                  $(id).dialog('close');
+                }, 1000);
+              }
+            });
+          }
 
         } ]);

@@ -32,6 +32,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     Environment evironment;
 
     @Override
+    @Async
     public void onApplicationEvent(OnRegistrationCompleteEvent event) {
         System.out.println("Go to Listener");
         User user = event.getUser();
@@ -41,6 +42,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
         mailSender.send(email);
     }
 
+    
     private final SimpleMailMessage constructEmailMessage(OnRegistrationCompleteEvent event, User user, String token) {
         final String recipientAddress = user.getEmail();
         final String subject = "Registration Confirmation";

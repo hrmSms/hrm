@@ -35,22 +35,22 @@
             <th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>Start Date</th>
             <th>State</th>
 
-            <th>Planned Velocity</th>
-            <th>Plan Est</th>
-            <th>Task Est</th>
+            <th>Plan Velocity</th>
+            <th>Plan Estimate</th>
+            <th>Task Estimate</th>
             <th>Actuals</th>
             <th>Action</th>
           </tr>
         </thead>
 
         <tbody>
-          <tr ng-repeat="sprint in sprints">
+          <tr ng-repeat="sprint in sprints" on-last-repeat>
             <td class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
                 class="lbl"></span>
             </label></td>
 
             <td ng-bind="sprint.name"></td>
-            <td ng-bind="sprint.startDate"></td>
+            <td ng-bind="toVNDateFormat(sprint.startDate)"></td>
             <td ng-bind="sprint.sprintstate.name"></td>
             <td ng-bind="sprint.planVelocity"></td>
 
@@ -88,7 +88,6 @@
                 </div>
               </div>
             </td>
-
           </tr>
         </tbody>
       </table>
@@ -103,8 +102,7 @@
       'assets/js/dataTables/jquery.dataTables.bootstrap.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
-
-    initTable();
+    //console.log(" load table 1");
   });
 </script>
 
