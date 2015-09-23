@@ -11,10 +11,10 @@ angular.module('hrmApp.controllers').controller(
             $scope.id = null;
             $scope.active = 1;
             $scope.actuals = null;
-            //$scope.description = null;
+            // $scope.description = null;
             $scope.endDate = null;
             $scope.name = null;
-            //$scope.note = null;
+            // $scope.note = null;
             $scope.planEstimate = null;
             $scope.planVelocity = null;
             $scope.projectID = null;
@@ -25,7 +25,6 @@ angular.module('hrmApp.controllers').controller(
           }
 
           var sprint = function() {
-            console.log(document.getElementById('description').innerHTML);
             this.active = 1;
             this.actuals = $scope.actuals;
             this.description = document.getElementById('description').innerHTML;
@@ -63,41 +62,70 @@ angular.module('hrmApp.controllers').controller(
             var newSprint = angular.toJson(new sprint());
             data.push(newSprint);
             data.push($scope.sprintstate);
-            hrmService.post("sprint/create", data).then(function(message) {          
+            hrmService.post("sprint/create", data).then(function(message) {
               if (message.error) {
-                $scope.success=null;
+                $scope.success = null;
                 $scope.error = message.error;
               }
               if (message.success) {
                 $scope.error = null;
                 $scope.success = message.success;
+                $scope.showDialog('#success');
               }
             });
 
           };
-          
+
           $scope.saveAndClose = function(stateName) {
-            $scope.save();
-            if ($scope.success){
-              $scope.close(stateName);
-            }
+            var data = new Array();
+            var newSprint = angular.toJson(new sprint());
+            data.push(newSprint);
+            data.push($scope.sprintstate);
+            hrmService.post("sprint/create", data).then(function(message) {
+              if (message.error) {
+                $scope.success = null;
+                $scope.error = message.error;
+              }
+              if (message.success) {
+                $scope.error = null;
+                $scope.success = message.success;
+                $scope.showDialog('#success');
+                setTimeout(function() {
+                  $scope.goToState(stateName);
+                }, 2000);
+              }
+            });
           };
-          
+
           $scope.saveAndNew = function(stateName) {
-            $scope.save();
-            if ($scope.success){
-              new initSprint();
-            }
+            var data = new Array();
+            var newSprint = angular.toJson(new sprint());
+            data.push(newSprint);
+            data.push($scope.sprintstate);
+            hrmService.post("sprint/create", data).then(function(message) {
+              if (message.error) {
+                $scope.success = null;
+                $scope.error = message.error;
+              }
+              if (message.success) {
+                $scope.error = null;
+                $scope.success = message.success;
+                $scope.showDialog('#success');
+                setTimeout(function() {
+                  $scope.reload(stateName);
+                }, 2000);
+              }
+            });
           };
-          
+
           $scope.goToState = function(stateName) {
             $state.go(stateName);
           };
-          
+
           $scope.reload = function(stateName) {
             $state.reload(stateName);
           };
-          
+
           $scope.loadProjects = function() {
             $scope.projects = new Array();
             hrmService.get("project/getall").then(function(items) {
@@ -132,7 +160,7 @@ angular.module('hrmApp.controllers').controller(
               $scope.loadsprints();
             });
           };
-          $scope.toVNDateFormat = function(date){
+          $scope.toVNDateFormat = function(date) {
             return moment(date).format("DD/MM/YYYY");
           }
           $scope.$on("$stateChangeSuccess", function() {
@@ -140,7 +168,7 @@ angular.module('hrmApp.controllers').controller(
             if ($state.is('sprint.list')) {
               $scope.loadSprints();
             }
-            
+
             // load projects and sprintstates for create sprint form
             if ($state.is('sprint.create')) {
               $scope.loadSprintStates();
@@ -151,9 +179,25 @@ angular.module('hrmApp.controllers').controller(
               $scope.loadSprintStates();
             }
           });
-          $scope.$on('onRepeatLast', function(scope, element, attrs){
+          $scope.$on('onRepeatLast', function(scope, element, attrs) {
             console.log(" load table 2");
             initTable();
           });
+
+          $scope.showDialog = function(id) {
+            $(id).dialog({
+              resizable : false,
+              autoOpen : true,
+              show : "blind",
+              hide : "blind",
+              modal : true,
+              dialogClass : 'success',
+              open : function(event, ui) {
+                setTimeout(function() {
+                  $(id).dialog('close');
+                }, 1000);
+              }
+            });
+          }
 
         } ]);
