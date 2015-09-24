@@ -1,13 +1,11 @@
-var $hrmService = $hrmService || {};
-$hrmService.settings = {};
-$hrmService.settings.baseUrl = "/hrm/";
 
-angular.module("hrmApp.services").factory("hrmService", ["$http", "$q", function ($http, $q) {
+angular.module("hrmApp.services").factory("hrmService", ["$http", "$q", "$location", function ($http, $q, $location) {
 	var service = { onBeforeAjax: null, onAfterAjax: null };
 	service.$scope = null;
 
 	service.url = function(link) {
-		return $hrmService.settings.baseUrl + link;
+	  console.log(link);
+		return link;
 	};
 
 	service.setScope = function($scope) {
