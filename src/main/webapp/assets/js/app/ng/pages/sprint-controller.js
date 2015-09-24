@@ -81,7 +81,7 @@ angular.module('hrmApp.controllers').controller(
             var newSprint = angular.toJson(new sprint());
             data.push(newSprint);
             data.push($scope.sprintstate);
-            hrmService.post("sprint/create", data).then(function(message) {
+            hrmService.post("./sprint/create", data).then(function(message) {
               if (message.error) {
                 $scope.success = null;
                 $scope.error = message.error;
@@ -102,7 +102,7 @@ angular.module('hrmApp.controllers').controller(
             var newSprint = angular.toJson(new sprint());
             data.push(newSprint);
             data.push($scope.sprintstate);
-            hrmService.post("sprint/create", data).then(function(message) {
+            hrmService.post("./sprint/create", data).then(function(message) {
               if (message.error) {
                 $scope.success = null;
                 $scope.error = message.error;
@@ -128,34 +128,34 @@ angular.module('hrmApp.controllers').controller(
 
           $scope.loadProjects = function() {
             $scope.projects = new Array();
-            hrmService.get("project/getall").then(function(items) {
+            hrmService.get("./project/getall").then(function(items) {
               $scope.projects = items.projects;
             });
           };
 
           $scope.loadSprintStates = function() {
             $scope.sprintStates = new Array();
-            hrmService.get("sprintState/getall").then(function(items) {
+            hrmService.get("./sprintState/getall").then(function(items) {
               $scope.sprintStates = items.sprintStates;
             });
           };
 
           $scope.loadSprints = function() {
             $scope.sprints = new Array();
-            hrmService.get("sprint/getall").then(function(items) {
+            hrmService.get("./sprint/getall").then(function(items) {
               $scope.sprints = items.sprints;
             });
           };
 
           $scope.getByID = function(sprintId) {
-            hrmService.post("sprint/getByID/" + sprintId, null).then(function(message) {
+            hrmService.post("./sprint/getByID/" + sprintId, null).then(function(message) {
               $scope.message = message.message;
               $scope.loadsprints();
             });
           };
 
           $scope.onDelete = function(sprintId) {
-            hrmService.post("sprint/delete/" + sprintId, null).then(function(message) {
+            hrmService.post("./sprint/delete/" + sprintId, null).then(function(message) {
               $scope.message = message.message;
               $scope.loadsprints();
             });
