@@ -2,7 +2,6 @@
 	var HATEOAS_URL = './api/tasks';
 	var TaskFactory = function($http, SpringDataRestAdapter) {
 		function Task(item) {
-
 			if (item._resources) {
 				item.resources = item._resources("self", {}, {
 					update : {
