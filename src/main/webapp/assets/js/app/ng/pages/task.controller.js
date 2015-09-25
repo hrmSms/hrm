@@ -3,6 +3,11 @@
 	var taskController = function($scope, $state, Task) {
 		Task.query(function(response) {
 			$scope.items = response ? response : [];
+			console.log("$scope.items.length = " + $scope.items.length);
+			for (i = 0; i < $scope.items.length; i++) {
+				var item = $scope.items[i];
+				console.log("item = " + JSON.parse(JSON.stringify(item)) );
+			}
 		});
 
 		$scope.addItem = function(isNew, isClose, isReset) {
@@ -14,10 +19,10 @@
 					taskEST : $scope.ngTaskEst,
 					toDo : $scope.ngToDo,
 					spentTime : $scope.ngTimeSpent,
-					ownerId : 1,
+					//owner : 1,
 					userStoryId : 1,
-					// description :$scope.ngDescription,
-					// note : $scope.ngNote,
+					description :$('#desc').html(),
+					note : $('#note').html(),
 					assignee : $scope.ngAssignee
 				}).save(function(item) {
 					$scope.items.push(item);	
