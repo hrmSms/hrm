@@ -41,7 +41,7 @@ public class Task implements java.io.Serializable{
     private Date endDate;
     
     @ManyToOne(fetch = FetchType.EAGER) 
-	@JoinColumn(name = "ownerId")
+	@JoinColumn(name = "owner")
     private User owner;
     
     @Column
