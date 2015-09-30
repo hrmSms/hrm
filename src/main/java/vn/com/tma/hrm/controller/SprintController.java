@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.SprintState;
+import vn.com.tma.hrm.services.ProjectService;
 import vn.com.tma.hrm.services.SprintService;
 
 @Controller
@@ -39,6 +40,9 @@ public class SprintController {
 
     @Autowired
     private SprintService sprintService;
+
+    @Autowired
+    private ProjectService projectService;
 
     private static final Logger logger = LoggerFactory.getLogger(SprintController.class);
 
@@ -66,7 +70,7 @@ public class SprintController {
             jsonSprints = ow.writeValueAsString(sprints);
         } catch (JsonProcessingException e) {
             error = e.toString();
-        } catch (IOException e) {
+        } catch (Exception e) {
             error = e.toString();
         }
         if (error != null) {
@@ -87,7 +91,7 @@ public class SprintController {
         try {
             // read from json string
             newSprint = mapper.readValue(jsonString, Sprint.class);
-           
+
             Sprint duplicatedSprint = sprintService.getByProjectAndName(newSprint.getProject(), newSprint.getName());
             if (duplicatedSprint != null) {
                 error = newSprint.getName() + " was duplicated.";
@@ -117,7 +121,7 @@ public class SprintController {
             jsonSprint = ow.writeValueAsString(sprint);
         } catch (JsonProcessingException e) {
             error = e.toString();
-        } catch (IOException e) {
+        } catch (Exception e) {
             error = e.toString();
         }
         if (error != null) {
@@ -127,6 +131,7 @@ public class SprintController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @ResponseBody
     public ResponseEntity<String> editSprint(@RequestBody String[] jsonSprint) throws Exception {
 
         // sprintService.update(sprint);
@@ -138,7 +143,34 @@ public class SprintController {
 
     }
 
+    @RequestMapping(value = "/getByProjectID/{projectId}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<String> getByProjectID(@PathVariable int projectId) {
+        String jsonSprint = null;
+        String error = null;
+        Project project = projectService.getByID(projectId);
+        if (project == null) {
+            error = "Project doesn't exist";
+        } else {
+            List<Sprint> sprints = sprintService.getByProject(project);
+            try {
+                ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                jsonSprint = ow.writeValueAsString(sprints);
+            } catch (JsonProcessingException e) {
+                error = e.toString();
+            } catch (Exception e) {
+                error = e.toString();
+            }
+        }
+
+        if (error != null) {
+            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("{ \"sprints\" : " + jsonSprint + " } ", HttpStatus.ACCEPTED);
+    }
+
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @ResponseBody
     public ResponseEntity<String> deleteSprint(@PathVariable int id) throws Exception {
 
         Sprint sprint = sprintService.delete(id);

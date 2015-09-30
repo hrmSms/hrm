@@ -51,22 +51,6 @@ angular.module('hrmApp.controllers')
                 this.taskEstimate = $scope.taskEstimate;
                 this.toDo = $scope.toDo;
               }
-              /*
-               * use HATEOSE spring data rest sprintService.query(function(response) { $scope.sprints = response ?
-               * response : []; });
-               * 
-               * sprintStateService.query(function(response) { $scope.sprintStates = response ? response : []; });
-               * 
-               * projectService.query(function(response) { $scope.projects = response ? response : []; });
-               * 
-               * $scope.addItem = function(description) { new sprintService({ description : description, checked : false
-               * }).save(function(item) { console.log(item); $scope.items.push(item); }); $scope.newItem = ""; };
-               * 
-               * $scope.updateItem = function(item) { item.save(); };
-               * 
-               * $scope.deleteItem = function(item) { item.remove(function() {
-               * $scope.items.splice($scope.items.indexOf(item), 1); }); };
-               */
 
               $scope.save = function() {
                 var newSprint = angular.toJson(new sprint());
@@ -102,7 +86,7 @@ angular.module('hrmApp.controllers')
                 });
               };
 
-              $scope.goToState = function(stateName) {
+              $scope.goToState = function(stateName, param) {
                 $state.go(stateName);
               };
 
@@ -152,6 +136,12 @@ angular.module('hrmApp.controllers')
                   $scope.project = item.project;
                 });
               };
+              
+              $scope.getSprintsByProjectID = function(projectId) {
+                hrmService.get("./sprint/getByProjectID/" + projectId, null).then(function(item) {
+                  $scope.sprints = item.sprints;
+                });
+              };
 
               $scope.onDelete = function(sprintId) {
                 hrmService.post("./sprint/delete/" + sprintId, null).then(function(message) {
@@ -165,21 +155,18 @@ angular.module('hrmApp.controllers')
               $scope.$on("$stateChangeSuccess", function() {
                 // load list of sprint
                 if ($state.is('sprint.list')) {
-                  $scope.loadSprints();
-                  $scope.getByProjectID($stateParams.id);
+                  $scope.getSprintsByProjectID($stateParams.projectId);
+                  $scope.getByProjectID($stateParams.projectId);
                 }
 
                 // load projects and sprintstates for create sprint form
                 if ($state.is('sprint.create')) {
                   $scope.loadSprintStates();
-                  if ($scope.project == null) {
-                    console.log("project null ");
-                  }
-                  $scope.getByProjectID($stateParams.id);
+                  $scope.getByProjectID($stateParams.projectId);
                 }
                 // load sprint, projects and sprintstates for edit sprint form
                 if ($state.is('sprint.edit')) {
-                  $scope.getByID(1);
+                  $scope.getBySprintID($stateParams.id);
                 }
               });
               $scope.$on('onRepeatLast', function(scope, element, attrs) {
@@ -197,9 +184,4 @@ angular.module('hrmApp.controllers')
                 });
               }
 
-              /*
-               * $scope.showDialog = function(id) { $(id).dialog({ show : "blind", hide: { effect: "explode", duration:
-               * 1000 }, modal : true, dialogClass : "alert", open : function(event, ui) { setTimeout(function() {
-               * $(id).dialog('close'); }, 2000); } }); }
-               */
             } ]);

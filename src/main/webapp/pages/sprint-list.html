@@ -5,11 +5,18 @@
 <div class="row">
   <div class="col-xs-12 page-header ">
     <!-- PAGE CONTENT BEGINS -->
-    <div class="pull-left margin-top-10px">
-      <h1 class="blue">Sprint List</h1>
+    <div class="pull-left">
+      <div>
+        <h1 class="blue">
+          <a href="">{{project.name}}</a> project
+        </h1>
+      </div>
+      <div class="padding-left-50px">
+        <h4>Sprint List</h4>
+      </div>
     </div>
     <div class="pull-right">
-      <a ui-sref="sprint.create({ id: project.id })">
+      <a ui-sref="sprint.create({ projectId: project.id })">
         <button class="btn btn-info" type="button">
           <i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
         </button>
@@ -61,8 +68,7 @@
               <div class="hidden-sm hidden-xs action-buttons">
                 <a class="green" ui-sref="sprint.edit({ id: sprint.id })"> <i
                   class="ace-icon fa fa-pencil bigger-130"></i>
-                </a> <a href="" class="red" onclick="onDelete(sprint.id)"> <i
-                  class="ace-icon fa fa-trash-o bigger-130"></i>
+                </a> <a href="" class="red" onclick="onDelete(sprint.id)"> <i class="ace-icon fa fa-trash-o bigger-130"></i>
                 </a>
               </div>
 

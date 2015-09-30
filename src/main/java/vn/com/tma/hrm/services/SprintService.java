@@ -12,5 +12,6 @@ public interface SprintService {
 	public Sprint getByID(int id);
 	public List<Sprint> getAll() ;
 	public Sprint getByProjectAndName(Project project, String name) ;
+	public List<Sprint> getByProject(Project project) ;
 	
 }
