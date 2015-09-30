@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+
 import java.util.Date;
 
 /**
@@ -20,7 +22,7 @@ public class Sprint implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, updatable = false)
     private Integer id;
-    
+
     @Column(name = "active", nullable = false)
     private Byte active;
 
@@ -48,9 +50,6 @@ public class Sprint implements Serializable {
     @Column(name = "planVelocity", nullable = true)
     private Float planVelocity;
 
-    @Column(name = "projectID", nullable = false)
-    private Integer projectID;
-
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "startDate", nullable = false)
     private Date startDate;
@@ -61,10 +60,17 @@ public class Sprint implements Serializable {
     @Column(name = "toDo", nullable = true)
     private Float toDo;
 
-    // bi-directional many-to-one association to Sprintstate
+    // bi-directional many-to-one association to SprintState
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "StateID")
+    @JsonDeserialize(as=SprintState.class)
     private SprintState sprintstate;
+
+    // bi-directional many-to-one association to Project
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "ProjectID")
+    @JsonDeserialize(as=Project.class)
+    private Project project;
 
     public Sprint() {
     }
@@ -141,14 +147,6 @@ public class Sprint implements Serializable {
         this.planVelocity = planVelocity;
     }
 
-    public Integer getProjectID() {
-        return this.projectID;
-    }
-
-    public void setProjectID(Integer projectID) {
-        this.projectID = projectID;
-    }
-
     public Date getStartDate() {
         return this.startDate;
     }
@@ -179,6 +177,14 @@ public class Sprint implements Serializable {
 
     public void setSprintstate(SprintState sprintstate) {
         this.sprintstate = sprintstate;
+    }
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
     }
 
 }

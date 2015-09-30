@@ -9,7 +9,7 @@
       <h1 class="blue">Sprint List</h1>
     </div>
     <div class="pull-right">
-      <a href="#/sprint/create">
+      <a ui-sref="sprint.create({ id: project.id })">
         <button class="btn btn-info" type="button">
           <i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
         </button>
@@ -35,7 +35,7 @@
             <th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>Start Date</th>
             <th>State</th>
 
-            <th>Plan Velocity</th>
+            <th>Project</th>
             <th>Plan Estimate</th>
             <th>Task Estimate</th>
             <th>Actuals</th>
@@ -52,16 +52,16 @@
             <td ng-bind="sprint.name"></td>
             <td ng-bind="toVNDateFormat(sprint.startDate)"></td>
             <td ng-bind="sprint.sprintstate.name"></td>
-            <td ng-bind="sprint.planVelocity"></td>
+            <td ng-bind="sprint.project.name"></td>
 
-            <td><span ng-bind="sprint.planEst"></span></td>
-            <td ng-bind="sprint.taskEst"></td>
+            <td ng-bind="sprint.planEstimate">{{sprint.planEstimate}}</td>
+            <td ng-bind="sprint.taskEstimate"></td>
             <td ng-bind="sprint.actuals"></td>
             <td>
               <div class="hidden-sm hidden-xs action-buttons">
-                <a class="green" href="#/sprint/edit/{{sprint.sprintID}}"> <i
+                <a class="green" ui-sref="sprint.edit({ id: sprint.id })"> <i
                   class="ace-icon fa fa-pencil bigger-130"></i>
-                </a> <a href="" class="red" onclick="onDelete(sprint.sprintID)"> <i
+                </a> <a href="" class="red" onclick="onDelete(sprint.id)"> <i
                   class="ace-icon fa fa-trash-o bigger-130"></i>
                 </a>
               </div>
@@ -75,13 +75,13 @@
                   <ul
                     class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
 
-                    <li><a href="#/sprint/edit/{{sprint.sprintID}}" class="tooltip-success" data-rel="tooltip"
+                    <li><a ui-sref="sprint.edit({ id: sprint.id })" class="tooltip-success" data-rel="tooltip"
                       title="Edit"> <span class="green"> <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
                       </span>
                     </a></li>
 
                     <li><a href="" class="tooltip-error" data-rel="tooltip" title="Delete"
-                      onclick="onDelete(sprint.sprintID)"> <span class="red"> <i
+                      onclick="onDelete(sprint.id)"> <span class="red"> <i
                           class="ace-icon fa fa-trash-obigger-120"></i>
                       </span></a></li>
                   </ul>
@@ -98,8 +98,7 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-  var scripts = [ null, 'assets/js/dataTables/jquery.dataTables.min.js',
-      'assets/js/dataTables/jquery.dataTables.bootstrap.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  var scripts = [ null, null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
     //console.log(" load table 1");

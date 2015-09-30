@@ -1,27 +1,267 @@
 <!-- page specific plugin styles -->
 <!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
 
-<!-- page's inner styles -->
-<style></style>
+<!-- page specific plugin styles -->
+<link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
 
-<!-- ajax layout which only needs content area -->
-<div class="page-header">
-  <h1>
-    Sample page <small> <i class="ace-icon fa fa-angle-double-right"></i> This is the sample page, other pages
-      should be based on this page
-    </small>
-  </h1>
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="page-header">
+        <h1>Edit a Sprint</h1>
+      </div>
+    </div>
+    <div ng-show="success" class="col-xs-12 center" id="success">
+      <div class="alert alert-success">{{success}}</div>
+    </div>
+    <div ng-show="error" class="col-xs-12 center">
+      <div class="alert alert-danger" id="error">{{error}}</div>
+    </div>
+    <div class="col-xs-12">
+
+      <form name="form" class="form-horizontal" novalidate>
+        <!-- #section:elements.form -->
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="name"> Name <i class="red fa fa-leaf"></i></label>
+          <div class="col-sm-8 col-xs-10">
+            <div ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
+              <input type="text" id="name" name="name" class="form-control" ng-model="name" required value="{{sprint.name}}"/>
+            </div>
+            <div ng-show="form.$submitted || form.name.$touched">
+              <div ng-show="form.name.$error.required" class="alert alert-danger">Name is required</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
+          <div class="col-sm-8 col-sx-10">
+            <div class="wysiwyg-editor" id="description" ng-model="description" value="{{sprint.description}}"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="startDate">Start Date <i
+            class="red fa fa-leaf"></i></label>
+          <div class="col-sm-3 col-xs-8">
+            <div class="input-group" ng-class="{ 'has-error': form.startDate.$touched && form.startDate.$invalid }">
+              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="startDate"
+                lower-than="{{endDate}}" required /> <span class="input-group-addon"> <i
+                class="fa fa-clock-o bigger-110"></i>
+              </span>
+            </div>
+            <div ng-show="form.$submitted || form.startDate.$dirty">
+              <div ng-show="form.startDate.$error.required" class="alert alert-danger">Start Date isn't null</div>
+              <div ng-show="false" class="alert alert-danger">Start Date should be less than End Date of the
+                previous Sprint</div>
+              <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be less
+                than End Date</div>
+            </div>
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date <i
+            class="red fa fa-leaf"></i></label>
+          <div class="col-sm-3  col-xs-8">
+            <div class="input-group" ng-class="{ 'has-error': form.endDate.$touched && form.endDate.$invalid }">
+              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="endDate" required
+                higher-than="{{startDate}}" /> <span class="input-group-addon"> <i
+                class="fa fa-clock-o bigger-110"></i>
+              </span>
+            </div>
+            <div ng-show="form.$submitted || form.endDate.$dirty">
+              <div ng-show="form.endDate.$error.required" class="alert alert-danger">End Date isn't null</div>
+              <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be greater
+                than Start Date</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="project"> Project <i
+            class="red fa fa-leaf"></i></label>
+          <div class="col-md-8 col-sm-8">
+            <div ng-class="{ 'has-error': form.project.$touched && form.project.$invalid }">
+              <select class="form-control" id="project" name="project" ng-model="projectID" ng-change="" required>
+                <option ng-repeat="project in projects" value="{{project.id}}" ng-bind="project.name"></option>
+              </select>
+            </div>
+            <div ng-show="form.$submitted || form.project.$touched || form.project.$dirty">
+              <div ng-show="form.project.$error.required" class="alert alert-danger">Please choose a project</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="state"> State <i class="red fa fa-leaf"></i></label>
+          <div class="col-sm-3">
+            <div ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
+              <select class="form-control" id="state" name="state" ng-model="sprintstate" required>
+                <option ng-repeat="sprintState in sprintStates" value={{sprintState}}>{{sprintState.name}}</option>
+              </select>
+            </div>
+            <div ng-show="form.$submitted || form.state.$touched || form.state.$dirty">
+              <div ng-show="form.state.$error.required" class="alert alert-danger">Please choose a Sprint State</div>
+            </div>
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="planVelocity""> Plan Velocity </label>
+          <div class="col-sm-3">
+            <input type="text" id="planVelocity" class="form-control col-xs-10" ng-model="planVelocity" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="planEstimate"> Plan Estimate </label>
+          <div class="col-sm-3">
+            <input type="text" id="planEstimate" class="form-control col-xs-10" ng-model="planEst" />
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="taskEstimate"> Task Estimate </label>
+          <div class="col-sm-3">
+            <input type="text" id="taskEstimate" class="form-control col-xs-10" ng-model="taskEst" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="toDo"> To Do</label>
+          <div class="col-sm-3">
+            <input type="text" id="toDo" class="form-control col-xs-10" ng-model="toDo" />
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="actual"> Actual </label>
+          <div class="col-sm-3">
+            <input type="text" id="actual" class="form-control col-xs-10" ng-model="actuals" />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="note"> Note </label>
+          <div class="col-sm-8 col-sx-10">
+            <div class="wysiwyg-editor" id="note" placeholder="note" ng-model="note"></div>
+          </div>
+        </div>
+
+        <div class="form-actions center clearfix">
+          <button ng-disabled="(!form.$valid)" = "form.$valid" type="button" class="btn btn-success"
+            ng-click="saveAndClose('sprint.list')">
+            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save & close
+          </button>
+          <button ng-disabled="(!form.$valid)" type="button" class="btn btn-warning"
+            ng-click="saveAndNew('sprint.create')">
+            <i class="ace-icon fa fa-save bigger-110"></i> Save & new
+          </button>
+
+          <button ng-disabled="(!form.$valid)" type="button" class="btn btn-purple" ng-click="save()">
+            <i class="ace-icon fa fa-save bigger-110"></i> Save
+          </button>
+          <button type="button" class="btn" ng-click="goToState('sprint.list')">
+            <i class="ace-icon fa fa-times bigger-110"></i> Close
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </div>
 </div>
-<!-- /.page-header -->
+<!-- /.main-container -->
 
-<!-- PAGE CONTENT BEGINS -->
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+  jQuery(function($) {
+    // init theme
+    //ace.init.start();
+  });
+  var initAll = function() {
+    //datetimepicker plugin
+    $('#startDate').datetimepicker({
+      format : 'DD-MM-YYYY h:mm:ss A'
+    }).next().on(ace.click_event, function(e) {
+      $(this).prev().focus();
+      //$(this).data("DateTimePicker").minDate(date());
+    });
 
-<!-- PAGE CONTENT ENDS -->
+    $('#endDate').datetimepicker({
+      format : 'DD-MM-YYYY h:mm:ss A'
+    }).next().on(ace.click_event, function(e) {
+      $(this).prev().focus();
+    });
+
+    //description texterea
+    $('#description').ace_wysiwyg();
+
+    var toolbar = $('#description').prev().get(0);
+    $(toolbar).addClass('wysiwyg-style2');
+
+    //note texterea
+    $('#note').ace_wysiwyg();
+
+    var toolbar = $('#note').prev().get(0);
+    $(toolbar).addClass('wysiwyg-style2');
+
+    //RESIZE IMAGE
+
+    //Add Image Resize Functionality to Chrome and Safari
+    //webkit browsers don't have image resize functionality when content is editable
+    //so let's add something using jQuery UI resizable
+    //another option would be opening a dialog for user to enter dimensions.
+    if (typeof jQuery.ui !== 'undefined' && ace.vars['webkit']) {
+
+      var lastResizableImg = null;
+      function destroyResizable() {
+        if (lastResizableImg == null)
+          return;
+        lastResizableImg.resizable("destroy");
+        lastResizableImg.removeData('resizable');
+        lastResizableImg = null;
+      }
+
+      var enableImageResize = function() {
+        $('.wysiwyg-editor').on('mousedown', function(e) {
+          var target = $(e.target);
+          if (e.target instanceof HTMLImageElement) {
+            if (!target.data('resizable')) {
+              target.resizable({
+                aspectRatio : e.target.width / e.target.height,
+              });
+              target.data('resizable', true);
+
+              if (lastResizableImg != null) {
+                //disable previous resizable image
+                lastResizableImg.resizable("destroy");
+                lastResizableImg.removeData('resizable');
+              }
+              lastResizableImg = target;
+            }
+          }
+        }).on('click', function(e) {
+          if (lastResizableImg != null && !(e.target instanceof HTMLImageElement)) {
+            destroyResizable();
+          }
+        }).on('keydown', function() {
+          destroyResizable();
+        });
+      }
+
+      enableImageResize();
+
+      /**
+      //or we can load the jQuery UI dynamically only if needed
+      if (typeof jQuery.ui !== 'undefined') enableImageResize();
+      else {//load jQuery UI if not loaded
+      	$.getScript($path_assets+"/js/jquery-ui.custom.min.js", function(data, textStatus, jqxhr) {
+      		enableImageResize()
+      	});
+      }
+       */
+    }
+
+  };
+</script>
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null, null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
-	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-	  //inline scripts related to this page
-	});
+  var scripts = [ null, 'assets/js/date-time/bootstrap-datetimepicker.min.js', 'assets/js/bootstrap-wysiwyg.min.js',
+      'assets/js/bootbox.min.js', 'assets/js/app/ng/shared/jquery.bpopup.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+    //inline scripts related to this page
+    initAll();
+  });
 </script>

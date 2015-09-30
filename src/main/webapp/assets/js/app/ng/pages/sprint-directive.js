@@ -1,5 +1,5 @@
 /**
- * Directive for sprint
+ * Directive for sprint author: nqhuy1@tma.com.vn
  */
 'use strict';
 var checkIfOneNullOrEmpty = function(a, b) {
@@ -55,8 +55,8 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
       if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.higherThan)) {
         ngModel.$setValidity("higherThan", true);
       } else {
-        var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY h:mm:ss").format('YYYY-MM-DD');
-        var dateToCheck = moment($attrs.higherThan, "DD-MM-YYYY h:mm:ss").format('YYYY-MM-DD');
+        var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY").format('YYYY-MM-DD');
+        var dateToCheck = moment($attrs.higherThan, "DD-MM-YYYY").format('YYYY-MM-DD');
         var result = moment(myDate).isAfter(dateToCheck);
         ngModel.$setValidity("higherThan", result);
       }
@@ -66,8 +66,8 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
       if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.higherThan)) {
         ngModel.$setValidity("higherThan", true);
       } else {
-        var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY h:mm:ss").format('YYYY-MM-DD');
-        var dateToCheck = moment($attrs.higherThan, "DD-MM-YYYY h:mm:ss").format('YYYY-MM-DD');
+        var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY").format('YYYY-MM-DD');
+        var dateToCheck = moment($attrs.higherThan, "DD-MM-YYYY").format('YYYY-MM-DD');
         var result = moment(myDate).isAfter(dateToCheck);
         ngModel.$setValidity("higherThan", result);
       }
@@ -82,8 +82,51 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
 
 } ]).directive('onLastRepeat', function() {
   return function(scope, element, attrs) {
-    if (scope.$last) setTimeout(function(){
+    if (scope.$last)
+      setTimeout(function() {
         scope.$emit('onRepeatLast', element, attrs);
-    }, 1);
-};
-});
+      }, 1);
+  };
+})
+/*
+ * author:Guilherme Ferreira http://gsferreira.com/archive/2014/05/angularjs-smart-float-directive/
+ */
+.directive('smartFloat', [ function($filter) {
+  var FLOAT_REGEXP_1 = /^\d+(\.\d{3})*(\,\d+)$/; // Numbers like: 1.123,56 or 1.123.123,56
+  var FLOAT_REGEXP_2 = /^\d+(\,\d{3})*(\.\d+)$/; // Numbers like: 1,123.56 or 1,123,123.56
+  var FLOAT_REGEXP_3 = /^\d+(\.\d*)?$/; // Numbers like: 1123.56
+  var FLOAT_REGEXP_4 = /^\d+(\,\d*)?$/; // Numbers like: 1123,56
+
+  var link = function($scope, $element, $attrs, ctrl) {
+
+    var validator = function(viewValue) {
+      if (ctrl.$isEmpty(viewValue)) {
+        ctrl.$setValidity('float', true);
+        return viewValue;
+      } else if (FLOAT_REGEXP_1.test(viewValue)) {
+        ctrl.$setValidity('float', true);
+        return viewValue.replace(/\./g, '').replace(',', '.');
+      } else if (FLOAT_REGEXP_2.test(viewValue)) {
+        ctrl.$setValidity('float', true);
+        return viewValue.replace(/\,/g, '');
+      } else if (FLOAT_REGEXP_3.test(viewValue)) {
+        ctrl.$setValidity('float', true);
+        return viewValue;
+      } else if (FLOAT_REGEXP_4.test(viewValue)) {
+        ctrl.$setValidity('float', true);
+        return viewValue.replace(',', '.');
+      } else {
+        ctrl.$setValidity('float', false);
+        return undefined;
+      }
+    };
+    
+    ctrl.$parsers.unshift(validator);
+    ctrl.$formatters.unshift(validator);
+  }
+  return {
+    restrict : '',
+    require : 'ngModel',
+    link : link
+  };
+} ]);

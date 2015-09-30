@@ -4,7 +4,6 @@ angular.module("hrmApp.services").factory("hrmService", ["$http", "$q", "$locati
 	service.$scope = null;
 
 	service.url = function(link) {
-	  console.log(link);
 		return link;
 	};
 
