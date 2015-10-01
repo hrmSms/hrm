@@ -53,7 +53,7 @@ angular.module('hrmApp.controllers')
               }
 
               $scope.save = function() {
-                var newSprint = angular.toJson(new sprint());
+                var newSprint = new sprint();
                 hrmService.post("sprint/create", newSprint).then(function(message) {
                   if (message.error) {
                     $scope.success = null;
@@ -65,11 +65,11 @@ angular.module('hrmApp.controllers')
                     $scope.showDialog('#success');
                   }
                 });
-
               };
 
-              $scope.saveAndClose = function(stateName) {
-                var newSprint = angular.toJson(new sprint());
+              // save and redirect to sprint list
+              $scope.saveAndClose = function() {
+                var newSprint = new sprint();
                 hrmService.post("./sprint/create", newSprint).then(function(message) {
                   if (message.error) {
                     $scope.success = null;
@@ -78,22 +78,37 @@ angular.module('hrmApp.controllers')
                   if (message.success) {
                     $scope.error = null;
                     $scope.success = message.success;
+                    // show message success dialog
                     $scope.showDialog('#success');
+                    // redirect to sprint list page after 1 min
                     setTimeout(function() {
-                      $scope.goToState(stateName);
+                      $scope.goToSprintList();
                     }, 1000);
                   }
                 });
               };
 
-              $scope.goToState = function(stateName, param) {
-                $state.go(stateName);
+              // redirect Sprint List
+              $scope.goToSprintList = function() {
+                $state.go('sprint.list', {
+                  projectId : $scope.project.id
+                });
               };
 
+              // redirect Edit Sprint Page
+              $scope.goToEditSprint = function(sprintId) {
+                $state.go('sprint.edit', {
+                  id : sprintId,
+                  projectId : $scope.project.id
+                });
+              };
+
+              // reload state
               $scope.reload = function(stateName) {
                 $state.reload(stateName);
               };
 
+              // reset form
               $scope.reset = function(form) {
                 if (form) {
                   form.$setUntouched();
@@ -104,13 +119,7 @@ angular.module('hrmApp.controllers')
                 new initSprint();
               }
 
-              $scope.loadProjects = function() {
-                $scope.projects = new Array();
-                hrmService.get("./project/getall").then(function(items) {
-                  $scope.projects = items.projects;
-                });
-              };
-
+              // Get all SprintStates
               $scope.loadSprintStates = function() {
                 $scope.sprintStates = new Array();
                 hrmService.get("./sprintState/getall").then(function(items) {
@@ -118,57 +127,60 @@ angular.module('hrmApp.controllers')
                 });
               };
 
-              $scope.loadSprints = function() {
-                $scope.sprints = new Array();
-                hrmService.get("./sprint/getall").then(function(items) {
-                  $scope.sprints = items.sprints;
-                });
-              };
-
+              // get Sprint by id
               $scope.getBySprintID = function(sprintId) {
                 hrmService.get("./sprint/getByID/" + sprintId, null).then(function(item) {
                   $scope.sprint = item.sprint;
                 });
               };
 
+              // get project by id
               $scope.getByProjectID = function(projectId) {
                 hrmService.get("./project/getByID/" + projectId, null).then(function(item) {
                   $scope.project = item.project;
                 });
               };
-              
+
+              // get list sprints by project id
               $scope.getSprintsByProjectID = function(projectId) {
                 hrmService.get("./sprint/getByProjectID/" + projectId, null).then(function(item) {
                   $scope.sprints = item.sprints;
                 });
               };
 
+              // delete sprint by id
               $scope.onDelete = function(sprintId) {
                 hrmService.post("./sprint/delete/" + sprintId, null).then(function(message) {
                   $scope.message = message.message;
                   $scope.loadsprints();
                 });
               };
+
+              // convert date to VietNam (UK) date format
               $scope.toVNDateFormat = function(date) {
                 return moment(date).format("DD/MM/YYYY");
               }
+
+              // call when change page
               $scope.$on("$stateChangeSuccess", function() {
-                // load list of sprint
+                // load list of sprints in a project
                 if ($state.is('sprint.list')) {
                   $scope.getSprintsByProjectID($stateParams.projectId);
                   $scope.getByProjectID($stateParams.projectId);
                 }
 
-                // load projects and sprintstates for create sprint form
+                // load project and sprintstates for create sprint form
                 if ($state.is('sprint.create')) {
                   $scope.loadSprintStates();
                   $scope.getByProjectID($stateParams.projectId);
                 }
-                // load sprint, projects and sprintstates for edit sprint form
+                // load sprint, project and sprintstates for edit sprint form
                 if ($state.is('sprint.edit')) {
                   $scope.getBySprintID($stateParams.id);
                 }
               });
+
+              // load jquery table's script after generate all sprints' data
               $scope.$on('onRepeatLast', function(scope, element, attrs) {
                 initTable();
               });

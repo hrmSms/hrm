@@ -38,6 +38,7 @@
             <th class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
                 class="lbl"></span>
             </label></th>
+            <th></th>
             <th>Name</th>
             <th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>Start Date</th>
             <th>State</th>
@@ -46,7 +47,7 @@
             <th>Plan Estimate</th>
             <th>Task Estimate</th>
             <th>Actuals</th>
-            <th>Action</th>
+
           </tr>
         </thead>
 
@@ -55,7 +56,16 @@
             <td class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
                 class="lbl"></span>
             </label></td>
+            <td>
+              <button class="btn btn-xs btn-info" ng-click="goToEditSprint(sprint.id)">
+                <i class="ace-icon fa fa-pencil bigger-120"></i>
+              </button>
 
+              <button class="btn btn-xs btn-danger" ng-click="onDelete(sprint.id)">
+                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+              </button>
+
+            </td>
             <td ng-bind="sprint.name"></td>
             <td ng-bind="toVNDateFormat(sprint.startDate)"></td>
             <td ng-bind="sprint.sprintstate.name"></td>
@@ -64,36 +74,7 @@
             <td ng-bind="sprint.planEstimate">{{sprint.planEstimate}}</td>
             <td ng-bind="sprint.taskEstimate"></td>
             <td ng-bind="sprint.actuals"></td>
-            <td>
-              <div class="hidden-sm hidden-xs action-buttons">
-                <a class="green" ui-sref="sprint.edit({ id: sprint.id })"> <i
-                  class="ace-icon fa fa-pencil bigger-130"></i>
-                </a> <a href="" class="red" onclick="onDelete(sprint.id)"> <i class="ace-icon fa fa-trash-o bigger-130"></i>
-                </a>
-              </div>
 
-              <div class="hidden-md hidden-lg">
-                <div class="inline position-relative">
-                  <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                  </button>
-
-                  <ul
-                    class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-
-                    <li><a ui-sref="sprint.edit({ id: sprint.id })" class="tooltip-success" data-rel="tooltip"
-                      title="Edit"> <span class="green"> <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                      </span>
-                    </a></li>
-
-                    <li><a href="" class="tooltip-error" data-rel="tooltip" title="Delete"
-                      onclick="onDelete(sprint.id)"> <span class="red"> <i
-                          class="ace-icon fa fa-trash-obigger-120"></i>
-                      </span></a></li>
-                  </ul>
-                </div>
-              </div>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -112,11 +93,12 @@
 </script>
 
 <script type="text/javascript">
+
   var initTable = function() {
     var oTable1 = $('#sample-table-2')
     //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
     .dataTable({
-      bAutoWidth : false,
+      bAutoWidth : true,
       "aoColumns" : [ {
         "bSortable" : false
       }, null, null, null, null, null, null, null, {

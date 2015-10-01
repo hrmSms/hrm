@@ -53,11 +53,6 @@ public class SprintController {
     /*
      * @InitBinder private void initBinder(WebDataBinder binder) { binder.setValidator(validator); }
      */
-    @ModelAttribute("sprint")
-    public Sprint createSprintModel() {
-        // ModelAttribute value should be same as used in the empSave.jsp
-        return new Sprint();
-    }
 
     @RequestMapping(value = { "/getall" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -81,29 +76,24 @@ public class SprintController {
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<String> create(@RequestBody String jsonString, HttpServletRequest request) {
+    public ResponseEntity<String> create(@RequestBody @Valid Sprint newSprint, HttpServletRequest request) {
         // convert JSON string to Sprint Object
+        /*
+         * System.out.println(newSprint.getName()); System.out.println(newSprint.getProject().getName());
+         * System.out.println(newSprint.getSprintstate().getName()); return null;
+         */
 
-        ObjectMapper mapper = new ObjectMapper();
-        Sprint newSprint = null;
         String message = null;
         String error = null;
-        try {
-            // read from json string
-            newSprint = mapper.readValue(jsonString, Sprint.class);
 
-            Sprint duplicatedSprint = sprintService.getByProjectAndName(newSprint.getProject(), newSprint.getName());
-            if (duplicatedSprint != null) {
-                error = newSprint.getName() + " was duplicated.";
-            } else {
-                sprintService.create(newSprint);
-                message = newSprint.getName() + " was successfully created.";
-            }
-        } catch (JsonProcessingException e) {
-            error = e.toString();
-        } catch (IOException e) {
-            error = e.toString();
+        Sprint duplicatedSprint = sprintService.getByProjectAndName(newSprint.getProject(), newSprint.getName());
+        if (duplicatedSprint != null) {
+            error = newSprint.getName() + " was duplicated.";
+        } else {
+            sprintService.create(newSprint);
+            message = newSprint.getName() + " was successfully created.";
         }
+
         if (error != null) {
             return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
         }
