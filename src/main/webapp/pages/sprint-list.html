@@ -5,11 +5,18 @@
 <div class="row">
   <div class="col-xs-12 page-header ">
     <!-- PAGE CONTENT BEGINS -->
-    <div class="pull-left margin-top-10px">
-      <h1 class="blue">Sprint List</h1>
+    <div class="pull-left">
+      <div>
+        <h1 class="blue">
+          <a href="">{{project.name}}</a> project
+        </h1>
+      </div>
+      <div class="padding-left-50px">
+        <h4>Sprint List</h4>
+      </div>
     </div>
     <div class="pull-right">
-      <a href="#/sprint/create">
+      <a ui-sref="sprint.create({ projectId: project.id })">
         <button class="btn btn-info" type="button">
           <i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
         </button>
@@ -31,15 +38,16 @@
             <th class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
                 class="lbl"></span>
             </label></th>
+            <th></th>
             <th>Name</th>
             <th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>Start Date</th>
             <th>State</th>
 
-            <th>Plan Velocity</th>
+            <th>Project</th>
             <th>Plan Estimate</th>
             <th>Task Estimate</th>
             <th>Actuals</th>
-            <th>Action</th>
+
           </tr>
         </thead>
 
@@ -48,46 +56,25 @@
             <td class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
                 class="lbl"></span>
             </label></td>
+            <td>
+              <button class="btn btn-xs btn-info" ng-click="goToEditSprint(sprint.id)">
+                <i class="ace-icon fa fa-pencil bigger-120"></i>
+              </button>
 
+              <button class="btn btn-xs btn-danger" ng-click="onDelete(sprint.id)">
+                <i class="ace-icon fa fa-trash-o bigger-120"></i>
+              </button>
+
+            </td>
             <td ng-bind="sprint.name"></td>
             <td ng-bind="toVNDateFormat(sprint.startDate)"></td>
             <td ng-bind="sprint.sprintstate.name"></td>
-            <td ng-bind="sprint.planVelocity"></td>
+            <td ng-bind="sprint.project.name"></td>
 
-            <td><span ng-bind="sprint.planEst"></span></td>
-            <td ng-bind="sprint.taskEst"></td>
+            <td ng-bind="sprint.planEstimate">{{sprint.planEstimate}}</td>
+            <td ng-bind="sprint.taskEstimate"></td>
             <td ng-bind="sprint.actuals"></td>
-            <td>
-              <div class="hidden-sm hidden-xs action-buttons">
-                <a class="green" href="#/sprint/edit/{{sprint.sprintID}}"> <i
-                  class="ace-icon fa fa-pencil bigger-130"></i>
-                </a> <a href="" class="red" onclick="onDelete(sprint.sprintID)"> <i
-                  class="ace-icon fa fa-trash-o bigger-130"></i>
-                </a>
-              </div>
 
-              <div class="hidden-md hidden-lg">
-                <div class="inline position-relative">
-                  <button class="btn btn-minier btn-yellow dropdown-toggle" data-toggle="dropdown" data-position="auto">
-                    <i class="ace-icon fa fa-caret-down icon-only bigger-120"></i>
-                  </button>
-
-                  <ul
-                    class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
-
-                    <li><a href="#/sprint/edit/{{sprint.sprintID}}" class="tooltip-success" data-rel="tooltip"
-                      title="Edit"> <span class="green"> <i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
-                      </span>
-                    </a></li>
-
-                    <li><a href="" class="tooltip-error" data-rel="tooltip" title="Delete"
-                      onclick="onDelete(sprint.sprintID)"> <span class="red"> <i
-                          class="ace-icon fa fa-trash-obigger-120"></i>
-                      </span></a></li>
-                  </ul>
-                </div>
-              </div>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -98,8 +85,7 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-  var scripts = [ null, 'assets/js/dataTables/jquery.dataTables.min.js',
-      'assets/js/dataTables/jquery.dataTables.bootstrap.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  var scripts = [ null, null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
     //console.log(" load table 1");
@@ -107,11 +93,12 @@
 </script>
 
 <script type="text/javascript">
+
   var initTable = function() {
     var oTable1 = $('#sample-table-2')
     //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
     .dataTable({
-      bAutoWidth : false,
+      bAutoWidth : true,
       "aoColumns" : [ {
         "bSortable" : false
       }, null, null, null, null, null, null, null, {

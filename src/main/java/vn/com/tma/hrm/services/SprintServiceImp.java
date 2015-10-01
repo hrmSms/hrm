@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.repository.SprintRepository;
 
@@ -38,7 +39,7 @@ public class SprintServiceImp implements SprintService{
 		updateSprint.setNote(sprint.getNote());
 		updateSprint.setPlanEstimate(sprint.getPlanEstimate());
 		updateSprint.setPlanVelocity(sprint.getPlanVelocity());
-		updateSprint.setProjectID(sprint.getProjectID());
+		updateSprint.setProject(sprint.getProject());
 		updateSprint.setSprintstate(sprint.getSprintstate());
 		updateSprint.setStartDate(sprint.getStartDate());
 		updateSprint.setTaskEstimate(sprint.getTaskEstimate());
@@ -72,7 +73,13 @@ public class SprintServiceImp implements SprintService{
 	
 	@Override
         @Transactional(value="txManager") 
-	public Sprint getByProjectIDAndName(int projectID, String name) {
-	    return sprintRepository.findByProjectIDAndName(projectID, name);
+	public Sprint getByProjectAndName(Project project, String name) {
+	    return sprintRepository.findByProjectAndName(project, name);
+	}
+	
+	@Override
+        @Transactional(value="txManager") 
+	public List<Sprint> getByProject(Project project) {
+	    return sprintRepository.findByProject(project);
 	}
 }

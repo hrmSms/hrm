@@ -79,18 +79,18 @@ angular.module('hrmApp.route', [])
     template: '<ui-view/>'
   })
   .state('sprint.list', {
-    url: '/sprint',
+    url: '^/sprint?projectId',
     templateUrl: 'pages/sprint-list.html',
     controller: 'SprintCtrl'
   })
   .state('sprint.create', {
-    url: '/sprint/create',
+    url: '^/sprint/create?projectId',
     templateUrl: 'pages/sprint-create.html',
     controller: 'SprintCtrl'
   })
   .state('sprint.edit', {
-    url: '/sprint/edit',
-    templateUrl: 'pages/sprint-editus/list.html',
+    url: '^/sprint/edit?id&projectId',
+    templateUrl: 'pages/sprint-edit.html',
     controller: 'SprintCtrl'
   });
 
