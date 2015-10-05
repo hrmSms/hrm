@@ -41,7 +41,7 @@
         </style>
 	</head>
 
-	<body class="login-layout" ng-app="myApp">
+	<body class="login-layout">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
@@ -68,37 +68,35 @@
 											</h4>
 
 											<div class="space-6"></div>
-											<form name="loginForm" action="" method="post" id="loginform" ng-controller="regController">
+											<form name="loginForm" action="" method="post">
 												<fieldset>
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="email" class="form-control" placeholder="Email"
-                                                                   required="true" validate-email="" name="email" id="email" ng-model="email"/>
+															<input type="email" class="form-control" placeholder="Email" name="email"/>
 															<i class="ace-icon fa fa-user"></i>
 														</span>
 													</label>
 
 													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<input type="password" class="form-control" placeholder="Password" name="password" id="password"
-                                                                   ng-model="password" required="true" ng-minlength="3" ng-trim="true" />
+															<input type="password" class="form-control" placeholder="Password" name="password"/>
 															<i class="ace-icon fa fa-lock"></i>
+															<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
+																<font color="red"> <spring:message
+																		code="auth.mesage.loginfailed"></spring:message>
+																</font>
+															</c:if>
 														</span>
 													</label>
 
 													<div class="space"></div>
-												<c:if test="${not empty SPRING_SECURITY_LAST_EXCEPTION}">
-													<font color="red">
-															<spring:message code="auth.mesage.loginfailed"></spring:message>
-													</font>
-												</c:if>
 												<div class="clearfix">
 														<label class="inline">
-															<input type="checkbox" name="remember-me" id="remember-me" class="ace" />
+															<input type="checkbox" name="remember-me" class="ace" />
 															<span class="lbl"> Remember Me</span>
 														</label>
 
-														<button type="submit" ng-disabled="loginForm.$invalid" class="width-35 pull-right btn btn-sm btn-primary">
+														<button type="submit" class="width-35 pull-right btn btn-sm btn-primary">
 															<i class="ace-icon fa fa-key"></i>
 															<span class="bigger-110">Login</span>
 														</button>
@@ -108,7 +106,7 @@
 												</fieldset>
 											</form>
 
-											<div class="social-or-login center">
+											<!-- <div class="social-or-login center">
 												<span class="bigger-110">Or Login Using</span>
 											</div>
 
@@ -126,7 +124,7 @@
 												<a class="btn btn-danger">
 													<i class="ace-icon fa fa-google-plus"></i>
 												</a>
-											</div>
+											</div> -->
 										</div><!-- /.widget-main -->
 
 										<div class="toolbar clearfix">
@@ -188,7 +186,7 @@
 		</script>
 
         <script src="./assets/js/app/angular.min.js"></script>
-		<script src="./assets/js/app/ng/pages/email-directive.js"></script>
+        <script src="./assets/js/app/ng/pages/reg-controller.js"></script>
 		<!-- inline scripts related to this page -->
 		<script type="text/javascript">
 			

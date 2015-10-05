@@ -23,9 +23,6 @@ public class Task implements java.io.Serializable{
     private String name;   
     
     @Column
-    private Integer assignee;
-    
-    @Column
     private Integer taskEst;
     
     @Column
@@ -54,9 +51,6 @@ public class Task implements java.io.Serializable{
     private Integer userStoryId;
     
     @Column
-    private Integer taskStatusId;
-    
-    @Column
     private Integer taskStateId;
     
 	public Integer getId() {
@@ -73,14 +67,6 @@ public class Task implements java.io.Serializable{
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public Integer getAssignee() {
-		return assignee;
-	}
-
-	public void setAssignee(Integer assignee) {
-		this.assignee = assignee;
 	}
 
 	public Integer getTaskEst() {
@@ -154,14 +140,6 @@ public class Task implements java.io.Serializable{
 
 	public void setUserStoryId(int userStoryId) {
 		this.userStoryId = userStoryId;
-	}
-
-	public Integer getTaskStatusId() {
-		return taskStatusId;
-	}
-
-	public void setTaskStatusId(Integer taskStatusId) {
-		this.taskStatusId = taskStatusId;
 	}
 
 	public Integer getTaskStateId() {
