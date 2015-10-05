@@ -16,7 +16,8 @@ angular.module('myApp', ['validation.match'])
 			if(data.error) {
 				console.log('go to error');
 				$location.path='./register';
-				
+				$scope.password="";
+				$scope.repeatpassword="";
 				$scope.message=data.error;
 				console.log('message: '+ $scope.message);
 			}

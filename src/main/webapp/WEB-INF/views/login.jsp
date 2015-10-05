@@ -106,7 +106,7 @@
 												</fieldset>
 											</form>
 
-											<div class="social-or-login center">
+											<!-- <div class="social-or-login center">
 												<span class="bigger-110">Or Login Using</span>
 											</div>
 
@@ -124,7 +124,7 @@
 												<a class="btn btn-danger">
 													<i class="ace-icon fa fa-google-plus"></i>
 												</a>
-											</div>
+											</div> -->
 										</div><!-- /.widget-main -->
 
 										<div class="toolbar clearfix">
