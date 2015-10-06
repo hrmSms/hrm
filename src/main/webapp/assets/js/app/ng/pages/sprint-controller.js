@@ -16,45 +16,33 @@ angular.module('hrmApp.controllers')
             'hrmService',
             function($scope, $location, $state, $stateParams, sprintService, sprintStateService, projectService,
                 hrmService) {
-              $scope.project = {};
-              var initSprint = function() {
-                $scope.id = null;
-                $scope.active = 1;
-                $scope.actuals = null;
-                $('#description').html('');
-                $scope.endDate = null;
-                $scope.name = null;
-                $('#note').html('');
-                $scope.planEstimate = null;
-                $scope.planVelocity = null;
-                $scope.project = null;
-                $scope.sprintstate = {};
-                $scope.startDate = null;
-                $scope.taskEstimate = null;
-                $scope.toDo = null;
-              }
 
-              var sprint = function() {
+              $scope.sprint = {};
+
+              // clear description and note div on UIs
+              $('#description').html(this.description);
+              $('#note').html(this.note);
+
+              var newSprint = function() {
                 this.active = 1;
-                this.actuals = $scope.actuals;
+                this.actuals = $scope.sprint.actuals;
                 this.description = document.getElementById('description').innerHTML;
-                this.endDate = moment($scope.endDate, "DD-MM-YYYY hh:mm:ss");
-                this.name = $scope.name;
+                this.endDate = moment($scope.sprint.endDate, "DD-MM-YYYY hh:mm:ss");
+                this.name = $scope.sprint.name;
                 this.note = document.getElementById('note').innerHTML;
-                this.planEstimate = $scope.planEstimate;
-                this.planVelocity = $scope.planVelocity;
+                this.planEstimate = $scope.sprint.planEstimate;
+                this.planVelocity = $scope.sprint.planVelocity;
                 this.project = $scope.project;
-                this.id = $scope.id;
+                this.id = $scope.sprint.id;
                 // convert JSON to Object sprintstate
-                this.sprintstate = JSON.parse($scope.sprintstate);
-                this.startDate = moment($scope.startDate, "DD-MM-YYYY hh:mm:ss");
-                this.taskEstimate = $scope.taskEstimate;
-                this.toDo = $scope.toDo;
+                this.sprintstate = JSON.parse($scope.sprint.sprintstate);
+                this.startDate = moment($scope.sprint.startDate, "DD-MM-YYYY hh:mm:ss");
+                this.taskEstimate = $scope.sprint.taskEstimate;
+                this.toDo = $scope.sprint.toDo;
               }
 
               $scope.save = function() {
-                var newSprint = new sprint();
-                hrmService.post("sprint/create", newSprint).then(function(message) {
+                hrmService.post("sprint/create", new newSprint()).then(function(message) {
                   if (message.error) {
                     $scope.success = null;
                     $scope.error = message.error;
@@ -69,8 +57,7 @@ angular.module('hrmApp.controllers')
 
               // save and redirect to sprint list
               $scope.saveAndClose = function() {
-                var newSprint = new sprint();
-                hrmService.post("./sprint/create", newSprint).then(function(message) {
+                hrmService.post("./sprint/create", new newSprint()).then(function(message) {
                   if (message.error) {
                     $scope.success = null;
                     $scope.error = message.error;
@@ -91,6 +78,13 @@ angular.module('hrmApp.controllers')
               // redirect Sprint List
               $scope.goToSprintList = function() {
                 $state.go('sprint.list', {
+                  projectId : $scope.project.id
+                });
+              };
+
+              // redirect Create Sprint Page
+              $scope.goToCreateSprint = function() {
+                $state.go('sprint.create', {
                   projectId : $scope.project.id
                 });
               };
@@ -163,6 +157,7 @@ angular.module('hrmApp.controllers')
 
               // call when change page
               $scope.$on("$stateChangeSuccess", function() {
+
                 // load list of sprints in a project
                 if ($state.is('sprint.list')) {
                   $scope.getSprintsByProjectID($stateParams.projectId);
@@ -177,6 +172,8 @@ angular.module('hrmApp.controllers')
                 // load sprint, project and sprintstates for edit sprint form
                 if ($state.is('sprint.edit')) {
                   $scope.getBySprintID($stateParams.id);
+                  $scope.loadSprintStates();
+                  $scope.getByProjectID($stateParams.projectId);
                 }
               });
 

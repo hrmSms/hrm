@@ -38,13 +38,14 @@
 		<script src="./assets/js/respond.min.js"></script>
 		<![endif]-->
 		<style>
-            #registerform .ng-invalid{
+            .errMsg {
                 color:red;
+                font-size: 13px;
             }
         </style>
 	</head>
 
-	<body class="login-layout" ng-app="myApp">
+	<body class="login-layout" data-ng-app="myApp">
 		<div class="main-container">
 			<div class="main-content">
 				<div class="row">
@@ -62,90 +63,92 @@
 							<div class="space-6"></div>
 
 							<div class="position-relative">
-								<div id="signup-box" class="signup-box visible widget-box no-border">
-                            <div class="widget-body">
-                                <div class="widget-main">
-                                    <h4 class="header green lighter bigger">
-                                        <i class="ace-icon fa fa-users blue"></i>
-                                        New User Registration
-                                    </h4>
+								<div id="signup-box" class="signup-box widget-box no-border visible">
+									<div class="widget-body">
+										<div class="widget-main">
+											<h4 class="header green lighter bigger">
+												<i class="ace-icon fa fa-users blue"></i>
+												New User Registration
+											</h4>
+											
+											<div class="space-6"></div>
+											<p> Enter your details to begin: </p>
 
-                                    <div class="space-6"></div>
-                                    <p> Enter your details to begin: </p>
-									<c:url var="register_url" value="/register"/>
-                                    <form:form name="registerform" id="registerform" action="${register_url}" method="post" commandName="registrationForm"
-                                    			ng-controller="regController" ng-submit="registerform.$valid && submit()" novalidate="novalidate" >
-                                        <%-- <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/> --%>
-                                        <fieldset>
-                                            <label class="block clearfix">
+											<form name="regForm" data-ng-submit="submit()" data-ng-controller="regController">
+												<p class="errMsg">{{message}}</p>
+												<fieldset>
+													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<form:input type="email" path="email" class="form-control" placeholder="Email" required="true"
-																validate-email="validate-email" name="email" id="email" ng-model="email"/>
+															<input type="text" name="email" class="form-control" placeholder="Email" 
+															data-ng-model="email"  data-ng-blur="validateEmail()" data-ng-required="true" data-ng-change="clrEmMsg()"/>
 															<i class="ace-icon fa fa-envelope"></i>
+															<span class="errMsg" data-ng-show="regForm.email.$error.isValidated && !regForm.email.$pristine">Email already exists</span>
+															<span class="errMsg" data-ng-show="regForm.email.$error.isValid && !regForm.email.$pristine">Email is NOT valid</span>
+															<span class="errMsg" data-ng-show="regForm.email.$error.required && !regForm.email.$pristine">Please enter your email</span>
 														</span>
-                                            </label>
-
-                                            <label class="block clearfix">
+													</label>
+													
+													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<form:input type="text" path="username" class="form-control" placeholder="Username"
-																		ng-pattern="/^([a-zA-Z0-9]+)$/" ng-model="username" ng-trim="true" 
-																		required="true" ng-minlength="3" ng-maxlength="20"/>
+															<input type="text" name="username" class="form-control" placeholder="Username" 
+																	data-ng-model="username" data-ng-blur="validateUsername()" data-ng-required="true" data-ng-change="clrUsrMsg()"/>
 															<i class="ace-icon fa fa-user"></i>
+															<span class="errMsg" data-ng-show="regForm.username.$error.isValidated && !regForm.username.$pristine">Username already exists</span>
+															<span class="errMsg" data-ng-show="regForm.username.$error.isValid && !regForm.username.$pristine">Username is NOT valid</span>
+															<span class="errMsg" data-ng-show="regForm.username.$error.required && !regForm.username.$pristine">Please enter your username</span>
 														</span>
-                                            </label>
-
-                                            <label class="block clearfix">
+													</label>
+													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<form:input type="password" path="password" class="form-control" placeholder="Password" required="true"
-															 			ng-minlength="3" ng-model="password" ng-trim="true"/>
+															<input type="password" name="password" class="form-control" placeholder="Password" data-ng-model="password" data-ng-required="true" data-ng-min-length="3" data-ng-max-length="20"/>
 															<i class="ace-icon fa fa-lock"></i>
+															<span class="errMsg" data-ng-show="regForm.password.$error.required && !regForm.password.$pristine">Please enter your password</span>
 														</span>
-                                            </label>
+													</label>
 
-                                            <label class="block clearfix">
+													<label class="block clearfix">
 														<span class="block input-icon input-icon-right">
-															<form:input type="password" path="passwordRepeated" class="form-control" placeholder="Repeat password"  required="true"
-																		ng-minlength="3" ng-model="repeatpassword" ng-trim="true"/>
+															<input type="password" name="repeatpassword" class="form-control" placeholder="Repeat password" data-ng-model="repeatpassword" data-match="password" data-ng-required="true"/>
 															<i class="ace-icon fa fa-retweet"></i>
+															<span class="errMsg" data-ng-show="regForm.repeatpassword.$error.match && !regForm.repeatpassword.$pristine && !regForm.password.$error.required">Passwords do not match!</span>
+															
 														</span>
-                                            </label>
+													</label>
 
-                                            <label class="block">
-                                                <form:checkbox path="agreement"/>
+													<label class="block">
+														<input type="checkbox" class="ace" data-ng-model="agreement" data-ng-required="true"/>
 														<span class="lbl">
 															I accept the
 															<a href="#">User Agreement</a>
 														</span>
-                                            </label>
-                                            <ul>
-                                                <form:errors path="*" class="errorBox"/>
-                                            </ul>
-                                            <div class="space-24"></div>
+													</label>
 
-                                            <div class="clearfix">
-                                                <button type="reset" class="width-30 pull-left btn btn-sm">
-                                                    <i class="ace-icon fa fa-refresh"></i>
-                                                    <span class="bigger-110">Reset</span>
-                                                </button>
+													<div class="space-24"></div>
 
-                                                <button type="submit" ng-disabled="registerform.$invalid" class="width-65 pull-right btn btn-sm btn-success">
-                                                    <span class="bigger-110">Register</span>
+													<div class="clearfix">
+														<button type="reset" class="width-30 pull-left btn btn-sm">
+															<i class="ace-icon fa fa-refresh"></i>
+															<span class="bigger-110">Reset</span>
+														</button>
 
-                                                    <i class="ace-icon fa fa-arrow-right icon-on-right"></i>
-                                                </button>
-                                            </div>
-                                        </fieldset>
-                                    </form:form>
-                                </div>
+														<button type="submit" data-ng-disabled="regForm.$invalid" class="width-65 pull-right btn btn-sm btn-success">
+															<span class="bigger-110">Register</span>
 
-                                <div class="toolbar center">
-                                    <a href="<c:url value="/login"/>" data-target="#login-box" class="back-to-login-link">
-                                        <i class="ace-icon fa fa-arrow-left"></i>
-                                        Back to login
-                                    </a>
-                                </div>
-                            </div><!-- /.widget-body -->
-                        </div><!-- /.signup-box -->
+															<i class="ace-icon fa fa-arrow-right icon-on-right"></i>
+														</button>
+													</div>
+												</fieldset>
+											</form>
+										</div>
+
+										<div class="toolbar center">
+											<a href="<c:url value="/login"/>" data-target="#login-box" class="back-to-login-link">
+												<i class="ace-icon fa fa-arrow-left"></i>
+												Back to login
+											</a>
+										</div>
+									</div><!-- /.widget-body -->
+								</div><!-- /.signup-box -->
 							</div><!-- /.position-relative -->
 
 							<div class="navbar-fixed-top align-right">
@@ -187,7 +190,8 @@
 		</script>
 
         <script src="./assets/js/app/angular.min.js"></script>
-        <script src="./assets/js/app/ng/pages/email-directive.js"></script>
+        <script src="./assets/js/app/ng/pages/reg-controller.js"></script>
+        <script src="./assets/js/app/angular-validation-match.js"></script>
         
 		<!-- inline scripts related to this page -->
 		<!-- <script>

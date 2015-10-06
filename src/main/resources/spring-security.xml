@@ -25,6 +25,8 @@
     <csrf disabled="true"/>
     <intercept-url pattern="/login" access="permitAll()" />
     <intercept-url pattern="/register" access="permitAll()" />
+    <intercept-url pattern="/validate" access="permitAll()" />
+    <intercept-url pattern="/greeting" access="permitAll()" />
     <intercept-url pattern="/registrationConfirm" access="permitAll()" />
     <intercept-url pattern="/**" access="hasRole('ADMIN') or hasRole('USER')" />
     <form-login login-page='/login' 

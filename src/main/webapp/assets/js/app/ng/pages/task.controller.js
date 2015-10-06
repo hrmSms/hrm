@@ -36,13 +36,15 @@
 			} 	
 			
 			if (isReset) {
+				console.log("before reset");
 				$scope.ngName = "";
 				$scope.ngState = "";
-				$scope.ngStatus = "";
 				$scope.ngTaskEst = "";
 				$scope.ngToDo = "";
 				$scope.ngTimeSpent = "";
-				$scope.ngAssignee = "";
+				$('#desc').innerHTML = "";
+				$('#note').innerHTML = "";
+				console.log("after reset");
 			}
 			
 			if (isClose) {
@@ -58,15 +60,21 @@
 		$scope.deleteItem = function(item) {
 			item.remove(function() {
 				$scope.items.splice($scope.items.indexOf(item), 1);
-				$state.reload('task.list');
+				//$state.go('task.list', {}, {reload: true}); 
+				//$state.reload('task.list');
+				$state.transitionTo($state.current, $stateParams, {
+				    reload: true,
+				    inherit: false,
+				    notify: true
+				});
 			});
 		};
 		
 		$scope.redirect = function() {
-			window.location = "#/task/list/";
+			$state.go('task.list', {}, {reload: true}); 
 		};
 	};
 
 	angular.module("hrmApp.controllers").controller("taskController",
-			[ '$scope', '$state', 'TaskService', taskController ]);
+			[ '$scope', '$state','TaskService', taskController ]);
 }(angular));

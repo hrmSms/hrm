@@ -3,6 +3,7 @@ package vn.com.tma.hrm.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,8 +74,12 @@ public class SprintServiceImp implements SprintService{
 	
 	@Override
         @Transactional(value="txManager") 
-	public Sprint getByProjectAndName(Project project, String name) {
-	    return sprintRepository.findByProjectAndName(project, name);
+	public Boolean getByProjectAndName(Project project, String name) {
+	    Sprint duplicatedSprint = sprintRepository.findByProjectAndName(project, name);
+	    if(duplicatedSprint!=null){
+	        return false;
+	    }
+	    return true;
 	}
 	
 	@Override
