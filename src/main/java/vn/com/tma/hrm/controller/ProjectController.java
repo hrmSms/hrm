@@ -1,10 +1,7 @@
 package vn.com.tma.hrm.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,22 +22,6 @@ public class ProjectController {
 
     @Autowired
     private ProjectService projectService;
-
-    @RequestMapping(value = { "/getall" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<String> getAll() {
-        List<Project> projects = projectService.getAll();
-        String jsonprojects = null;
-        try {
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            jsonprojects = ow.writeValueAsString(projects);
-        } catch (JsonProcessingException e) {
-            System.out.println(e.toString());
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-        return new ResponseEntity<String>("{ \"projects\" : " + jsonprojects + " } ", HttpStatus.ACCEPTED);
-    }
 
     @RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)
     @ResponseBody

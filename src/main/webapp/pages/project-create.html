@@ -78,7 +78,7 @@
 										ng-change="updateProject(item)" /> <span class="lbl"></span>
 								</label></td>
 
-								<td><a href="#">{{item.description}}</a></td>
+								<td><a ui-sref="sprint.list({ projectId: item.id})">{{item.description}}</a></td>
 								<td></td>
 								<td>Start Date</td>
 								<td>End date</td>
