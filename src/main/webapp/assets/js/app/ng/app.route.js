@@ -28,12 +28,12 @@ angular.module('hrmApp.route', [])
 	.state('task.list', {
 	    url: '^/task?usId',
 	    templateUrl: 'pages/task-list.html',
-	    controller: 'taskController'
+	    controller: 'TaskController'
 	})
 	.state('task.create', {
 	    url: '^/task/create?usId',
 	    templateUrl: 'pages/task-create.html',
-	    controller: 'taskController'
+	    controller: 'TaskController'
 	});
   
 //Routes for Project
