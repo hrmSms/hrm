@@ -29,7 +29,7 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
     });
 
     $attrs.$observe("lowerThan", function() {
-      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.lowerThan)) {
+      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.lowerThan) || $attrs.showError) {
         ngModel.$setValidity("lowerThan", true);
       } else {
         var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY h:mm:ss").format('YYYY-MM-DD');
@@ -63,7 +63,7 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
     });
 
     $attrs.$observe("higherThan", function() {
-      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.higherThan)) {
+      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.higherThan) || $attrs.showError) {
         ngModel.$setValidity("higherThan", true);
       } else {
         var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY").format('YYYY-MM-DD');
@@ -81,10 +81,10 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
   };
 
 } ]).directive('onLastRepeat', function() {
-  return function(scope, element, attrs) {
-    if (scope.$last)
+  return function($scope, $element, $attrs) {
+    if ($scope.$last)
       setTimeout(function() {
-        scope.$emit('onRepeatLast', element, attrs);
+        $scope.$emit('onRepeatLast', $element, $attrs);
       }, 1);
   };
 })
@@ -117,10 +117,10 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
         return viewValue.replace(',', '.');
       } else {
         ctrl.$setValidity('float', false);
-        return undefined;
+        return null;
       }
     };
-    
+
     ctrl.$parsers.unshift(validator);
     ctrl.$formatters.unshift(validator);
   }

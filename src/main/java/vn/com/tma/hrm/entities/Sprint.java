@@ -60,13 +60,11 @@ public class Sprint implements Serializable {
     @Column(name = "toDo", nullable = true)
     private Float toDo;
 
-    // bi-directional many-to-one association to SprintState
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "StateID")
     @JsonDeserialize(as=SprintState.class)
     private SprintState sprintstate;
 
-    // bi-directional many-to-one association to Project
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ProjectID")
     @JsonDeserialize(as=Project.class)

@@ -16,12 +16,8 @@ angular.module('hrmApp.controllers')
             'hrmService',
             function($scope, $location, $state, $stateParams, sprintService, sprintStateService, projectService,
                 hrmService) {
-
+              $scope.empty = {};
               $scope.sprint = {};
-
-              // clear description and note div on UIs
-              $('#description').html(this.description);
-              $('#note').html(this.note);
 
               var newSprint = function() {
                 this.active = 1;
@@ -110,7 +106,11 @@ angular.module('hrmApp.controllers')
                   // directive check float number
                   form.$setValidity('float', true);
                 }
-                new initSprint();
+                $scope.sprint = {};
+                // clear description and note div on UIs
+                $('#description').html('');
+                $('#note').html('');
+
               }
 
               // Get all SprintStates
@@ -143,10 +143,17 @@ angular.module('hrmApp.controllers')
               };
 
               // delete sprint by id
-              $scope.onDelete = function(sprintId) {
-                hrmService.post("./sprint/delete/" + sprintId, null).then(function(message) {
-                  $scope.message = message.message;
-                  $scope.loadsprints();
+              $scope.onDelete = function(sprint) {
+                bootbox.confirm("Do you want to delete " + sprint.name + " ?", function(result) {
+                  if (result) {
+                    hrmService.post("./sprint/delete/" + sprint.id, null).then(function(message) {
+                      $scope.deleteSuccess = message.success;
+                      // show message success dialog
+                      $scope.showDialog('#message');
+                      // reload
+                      $scope.getSprintsByProjectID(sprint.project.id);
+                    });
+                  }
                 });
               };
 
@@ -179,9 +186,9 @@ angular.module('hrmApp.controllers')
 
               // load jquery table's script after generate all sprints' data
               $scope.$on('onRepeatLast', function(scope, element, attrs) {
-                initTable();
+                //initTable();
               });
-
+              
               $scope.showDialog = function(id) {
                 $(id).bPopup({
                   opacity : 0.6,
@@ -192,5 +199,4 @@ angular.module('hrmApp.controllers')
                   position : [ 0, 0 ]
                 });
               }
-
             } ]);

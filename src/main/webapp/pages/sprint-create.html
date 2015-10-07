@@ -53,8 +53,8 @@
           <div class="col-sm-3 col-xs-8">
             <div class="input-group" ng-class="{ 'has-error': form.startDate.$touched && form.startDate.$invalid }">
               <input id="startDate" name="startDate" type="text" class="form-control" ng-model="sprint.startDate"
-                lower-than="{{sprint.endDate}}" required /> <span class="input-group-addon"> <i
-                class="fa fa-clock-o bigger-110"></i>
+                lower-than="{{sprint.endDate}}" show-error="{{form.endDate.$error.higherThan}}" required /> <span
+                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
             <div ng-show="form.$submitted || form.startDate.$dirty">
@@ -69,9 +69,9 @@
           <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date <i class="red">*</i></label>
           <div class="col-sm-3  col-xs-8">
             <div class="input-group" ng-class="{ 'has-error': form.endDate.$touched && form.endDate.$invalid }">
-              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="sprint.endDate" required
-                higher-than="{{sprint.startDate}}" /> <span class="input-group-addon"> <i
-                class="fa fa-clock-o bigger-110"></i>
+              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="sprint.endDate"
+                higher-than="{{sprint.startDate}}" show-error="{{form.startDate.$error.lowerThan}}" required /> <span
+                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
             <div ng-show="form.$submitted || form.endDate.$dirty">
@@ -94,7 +94,8 @@
               </select>
             </div>
             <div ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
-              <div ng-show="form.state.$error.required && !error.sprintstate" class="alert alert-danger">Please choose a Sprint State</div>
+              <div ng-show="form.state.$error.required && !error.sprintstate" class="alert alert-danger">Please
+                choose a Sprint State</div>
               <div ng-show="error.sprintstate" class="alert alert-danger">{{error.sprintstate}}</div>
             </div>
           </div>
@@ -155,7 +156,7 @@
         </div>
 
         <div class="center clearfix">
-          <button type="button" class="btn btn-success" ng-click="saveAndClose()">
+          <button ng-disabled="!form.$valid" type="button" class="btn btn-success" ng-click="saveAndClose()">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
           </button>
           <button type="button" class="btn btn-warning" ng-click="reset(form)">
@@ -271,8 +272,9 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-  var scripts = [ null, 'assets/js/date-time/bootstrap-datetimepicker.min.js', 'assets/js/bootstrap-wysiwyg.min.js',
-      'assets/js/bootbox.min.js', 'assets/js/app/ng/shared/jquery.bpopup.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  var scripts = [ null, './assets/js/date-time/bootstrap-datetimepicker.min.js',
+      './assets/js/bootstrap-wysiwyg.min.js', './assets/js/bootbox.min.js',
+      './assets/js/app/ng/shared/jquery.bpopup.min.js', './assets/js/bootbox.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
     initAll();
