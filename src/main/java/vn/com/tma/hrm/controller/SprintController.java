@@ -61,26 +61,6 @@ public class SprintController {
         binder.addValidators(sprintValidator);
     }
 
-    @RequestMapping(value = { "/getall" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<String> getAll() {
-        List<Sprint> sprints = sprintService.getAll();
-        String jsonSprints = null;
-        String error = null;
-        try {
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            jsonSprints = ow.writeValueAsString(sprints);
-        } catch (JsonProcessingException e) {
-            error = e.toString();
-        } catch (Exception e) {
-            error = e.toString();
-        }
-        if (error != null) {
-            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("{ \"sprints\" : " + jsonSprints + " } ", HttpStatus.ACCEPTED);
-    }
-
     @RequestMapping(value = "/create", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> create(@Valid @RequestBody Sprint newSprint, BindingResult result) {
@@ -132,11 +112,8 @@ public class SprintController {
     @ResponseBody
     public ResponseEntity<String> editSprint(@RequestBody String[] jsonSprint) throws Exception {
 
-        // sprintService.update(sprint);
         String message = "Sprint was successfully updated.";
 
-        // return new ResponseEntity<String>("{ \"message\" : " + new JSONSerializer().serialize(message) + " } " ,
-        // HttpStatus.ACCEPTED);
         return null;
 
     }
@@ -170,15 +147,16 @@ public class SprintController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<String> deleteSprint(@PathVariable int id) throws Exception {
-
-        Sprint sprint = sprintService.delete(id);
-        System.out.println(sprint.getName());
-
-        String message = "Sprint " + sprint.getName() + " was successfully deleted.";
-
-        // return new ResponseEntity<String>("{ \"message\" : " + new JSONSerializer().serialize(message) + " } " ,
-        // HttpStatus.ACCEPTED);
-        return null;
+        String message = null;
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            Sprint sprint = sprintService.delete(id);
+            message = sprint.getName() + " was successfully deleted.";
+            message = ow.writeValueAsString(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("{ \"success\" : " + message + "} ", HttpStatus.OK);
     }
 
 }
