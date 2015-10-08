@@ -24,7 +24,7 @@
         item.save = function(callback) {
           Item.resources.save(item, function(item, headers) {
             var deferred = $http.get(headers().location);
-            return SpringDataRestAdapter.processWithPromise(deferred).then(function(newItem) {
+            return SpringDataRestAdapter.process(deferred).then(function(newItem) {
               callback && callback(new Item(newItem));
             });
           });
@@ -36,7 +36,8 @@
     
     Item.query = function(callback) {
       var deferred = $http.get(HATEOAS_URL);
-      return SpringDataRestAdapter.processWithPromise(deferred).then(function(data) {
+      //return SpringDataRestAdapter.processWithPromise(deferred).then(function(data) {
+      return SpringDataRestAdapter.process(deferred).then(function(data) {
         Item.resources = data._resources("self");
         callback && callback(_.map(data._embeddedItems, function(item) {
           return new Item(item);
@@ -50,5 +51,5 @@
   };
   
   ItemFactory.$inject = ['$http', 'SpringDataRestAdapter'];
-  angular.module("myApp.services").factory("Item", ItemFactory);
+  angular.module("hrmApp.services").factory("Item", ItemFactory);
 }(angular));

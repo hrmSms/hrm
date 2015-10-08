@@ -1,0 +1,47 @@
+.margin-top-10px {
+  margin-top: 10px;
+}
+
+.border-top {
+  border-top: 1px solid #E3E3E3;
+  border-top-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-right {
+  border-right: 1px solid #E3E3E3;
+  border-right-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-bottom {
+  border-bottom: 1px solid #E3E3E3;
+  border-bottom-color: rgba(0, 0, 0, 0.11);
+}
+
+.border-left {
+  border-left: 1px solid #E3E3E3;
+  border-left-color: rgba(0, 0, 0, 0.11);
+}
+
+.h-navbar {
+  z-index: 1;  
+}
+
+.h-navbar ~ .main-container {
+  
+}
+
+.user-min.dropdown-hover:hover .user-info {
+  display: inline-block !important;
+}
+
+.errorBox {
+	color: red;
+}
+
+.padding-left-50px {
+  padding-left: 50px;
+}
+
+.width-100px{
+  width:100px;
+}

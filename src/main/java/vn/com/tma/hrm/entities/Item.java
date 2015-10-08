@@ -10,7 +10,7 @@ public class Item {
   private int id;
   
   @Column
-  private boolean checked;
+  private Boolean checked;
   
   @Column
   private String description;
@@ -23,11 +23,11 @@ public class Item {
     this.id = id;
   }
 
-  public boolean isChecked() {
+  public Boolean isChecked() {
     return checked;
   }
 
-  public void setChecked(boolean checked) {
+  public void setChecked(Boolean checked) {
     this.checked = checked;
   }
 

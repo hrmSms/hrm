@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration;
 
+import vn.com.tma.hrm.entities.Project;
+
 @Configuration
 public class RestMvcConfig extends RepositoryRestMvcConfiguration {
 
@@ -11,6 +13,7 @@ public class RestMvcConfig extends RepositoryRestMvcConfiguration {
     public RepositoryRestConfiguration config() {
         RepositoryRestConfiguration config = super.config();
         config.setBasePath("/api");
+        config.exposeIdsFor(Project.class);
         return config;
     }
 }
