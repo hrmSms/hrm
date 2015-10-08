@@ -84,4 +84,12 @@ public class TaskServiceImp implements TaskService{
 	public List<Task> getByUserStory(UserStory us) {
 	    return taskRepository.findByUserStoryId(us);
 	}
+	
+	@Override
+    @Transactional(value="txManager") 
+	public List<Task> getByName(String name) {
+	    return taskRepository.findByName(name);
+	}
+	
+	
 }

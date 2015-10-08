@@ -104,28 +104,20 @@ public class TaskController {
         return new ResponseEntity<String>("{ \"task\" : " + jsonTask + " } ", HttpStatus.ACCEPTED);
     }
 
-	public ResponseEntity<String> getByUsID(@PathVariable int usId) {
-        String jsonSprint = null;
+	@RequestMapping(value = "/getByUserStoryID/{usId}", method = RequestMethod.GET)
+    @ResponseBody
+	public List<Task> getByUsID(@PathVariable int usId) {
         String error = null;
+        List<Task> tasks = null; 
         UserStory us = usService.getByID(usId);
         if (us == null) {
             error = "UserStory doesn't exist";
         } else {
-            List<Task> tasks = taskService.getByUserStory(us);
-            try {
-                ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-                jsonSprint = ow.writeValueAsString(tasks);
-            } catch (JsonProcessingException e) {
-                error = e.toString();
-            } catch (Exception e) {
-                error = e.toString();
-            }
+            //List<Task> tasks = taskService.getByUserStory(us);
+            tasks = taskService.getByUserStory(us);
         }
 
-        if (error != null) {
-            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("{ \"tasks\" : " + jsonSprint + " } ", HttpStatus.ACCEPTED);
+        return tasks;
     }
 	
 	@RequestMapping(method = RequestMethod.GET)

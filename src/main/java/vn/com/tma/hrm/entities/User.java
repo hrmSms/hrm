@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 //@Table(name = "user")
 public class User {
@@ -41,15 +43,16 @@ public class User {
     @Column(name = "username", nullable = false, unique = true)
     private String username;
     
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
-    private List<Task> lstTasks;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    private List<Task> Tasks;
     
-    public List<Task> getLstTasks() {
-		return lstTasks;
+    @JsonIgnore
+    public List<Task> getTasks() {
+		return Tasks;
 	}
 
-	public void setLstTasks(List<Task> lstTasks) {
-		this.lstTasks = lstTasks;
+	public void setTasks(List<Task> tasks) {
+		this.Tasks = tasks;
 	}
 
 	public String getUsername() {

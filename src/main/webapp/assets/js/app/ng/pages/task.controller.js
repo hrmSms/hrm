@@ -91,7 +91,7 @@ angular.module('hrmApp.controllers').controller(
 
 					// redirect Edit Sprint Page
 					$scope.goToEditTask = function(taskId) {
-						$state.go('sprint.edit', {
+						$state.go('task.edit', {
 							id : taskId,
 						});
 					};
@@ -140,7 +140,7 @@ angular.module('hrmApp.controllers').controller(
 						hrmService.get("./task/getByUserStoryID/" + usId, null)
 								.then(function(item) {
 									alert("Get data");
-									$scope.tasks = item.tasks;
+									$scope.tasks = item;
 								});
 					};
 
@@ -161,21 +161,22 @@ angular.module('hrmApp.controllers').controller(
 					// call when change page
 					$scope.$on("$stateChangeSuccess", function() {
 						// load list of sprints in a project
-						if ($state.is('task.list')) {							
+						if ($state.is('task.list')) {	
+							alert("task.list!!!");
 							$scope.getTasksByUSID($stateParams.usId);
 							//$scope.getByProjectID($stateParams.projectId);
 						}
 
 						// load project and sprintstates for create sprint form
-						if ($state.is('task.create')) {
+						/*if ($state.is('task.create')) {
 							alert("task.create!!!");							
-						}
+						}*/
 						// load sprint, project and sprintstates for edit sprint form
-						if ($state.is('sprint.edit')) {
+						/*if ($state.is('task.edit')) {
 							$scope.getBySprintID($stateParams.id);
 							$scope.loadSprintStates();
 							$scope.getByProjectID($stateParams.projectId);
-						}
+						}*/
 					});
 
 					// load jquery table's script after generate all sprints' data

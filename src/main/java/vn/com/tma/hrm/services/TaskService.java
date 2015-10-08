@@ -13,4 +13,5 @@ public interface TaskService {
 	public List<Task> getAll() ;
 	//public Boolean getByProjectAndName(Project project, String name) ;
 	public List<Task> getByUserStory(UserStory us) ;
+	public List<Task> getByName(String name) ;
 }
