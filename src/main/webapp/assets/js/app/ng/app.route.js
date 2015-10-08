@@ -16,24 +16,25 @@ angular.module('hrmApp.route', [])
       url: '/blank',
       templateUrl: 'pages/blank.html',
       controller: ''
-    });
-  // Routes for tasks
-  $stateProvider
-    .state('task', {
-      abstract: true,
-      // Note: abstract still needs a ui-view for its children to populate
-      template: '<ui-view/>'
-    })
-    .state('task.list', {
-      url: '/task/list',
-      templateUrl: 'pages/task-list.html',
-      controller: 'taskController'
-    })
-    .state('task.create', {
-      url: '/task/create',
-      templateUrl: 'pages/task-create.html',
-      controller: 'taskController'
-    });
+    });			
+					
+	// Routes for tasks
+	$stateProvider.state('task', {
+		abstract : true,
+		// Note: abstract still needs a ui-view for its children
+		// to populate
+		template : '<ui-view/>'
+	})
+	.state('task.list', {
+	    url: '^/task?usId',
+	    templateUrl: 'pages/task-list.html',
+	    controller: 'TaskController'
+	})
+	.state('task.create', {
+	    url: '^/task/create?usId',
+	    templateUrl: 'pages/task-create.html',
+	    controller: 'TaskController'
+	});
   
 //Routes for Project
   $stateProvider

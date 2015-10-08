@@ -8,11 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
-public class Task implements java.io.Serializable{
+@Table(name = "Task")
+public class Task implements Serializable{
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
