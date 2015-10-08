@@ -29,7 +29,7 @@
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-state">State</label>
-				<select class="form-control" id="t-state" ng-model="ngState">
+				<select class="form-control" id="t-state" ng-model="task.state">
 					<option value="1" selected="selected">New</option>
 					<option value="2">Defined</option>
 					<option value="3">In-Progress</option>
@@ -46,17 +46,17 @@
 			
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-est">Estimation</label> <input type="number" class="form-control" id="t-est"
-					ng-model="ngTaskEst" placeholder="hour(s)" value="">
+					ng-model="task.taskEst" placeholder="hour(s)" value="">
 			</div>
 			
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-to-do">To
-					Do </label> <input type="number" class="form-control" id="t-to-do" ng-model="ngToDo"
+					Do </label> <input type="number" class="form-control" id="t-to-do" ng-model="task.todo"
 					placeholder="hour(s)"  disabled="disabled">
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-time-spent">Time
-					spent</label> <input type="number" class="form-control" id="t-time-spent" ng-model="ngTimeSpent"
+					spent</label> <input type="number" class="form-control" id="t-time-spent" ng-model="task.timespent"
 					placeholder="hour(s)"  disabled="disabled">
 			</div>
 		</div>
@@ -65,7 +65,7 @@
 				<label class="col-md-1 control-label no-padding-right" for="t-desc">
 					Description </label>
 				<div class="col-md-12">
-					<div class="wysiwyg-editor" id="desc" ng-model="ngDescription"></div>
+					<div class="wysiwyg-editor" id="desc" ng-model="task.description"></div>
 				</div>
 			</div>
 		</div>
@@ -107,7 +107,7 @@
 				<label class="col-md-1 control-label no-padding-right" for="note">
 					Note </label>
 				<div class="col-md-12">
-					<div class="wysiwyg-editor" id="note" ng-model="ngNote"></div>
+					<div class="wysiwyg-editor" id="note" ng-model="task.note"></div>
 				</div>
 			</div>
 		</div>
@@ -116,7 +116,7 @@
 	<div class="col-md-4">
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-owner">Owner</label>
-			<select class="form-control" id="t-owner" ng-model="ngOwner">
+			<select class="form-control" id="t-owner" ng-model="task.owner">
 				<option value="1">Long Nguyen</option>
 				<option value="2">Huy Nguyen</option>
 				<option value="3">Anh Nguyen</option>

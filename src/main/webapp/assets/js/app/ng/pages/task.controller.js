@@ -17,22 +17,26 @@ angular.module('hrmApp.controllers').controller(
 					$('#description').html(this.description);
 					$('#note').html(this.note);
 
-					var newSprint = function() {
-						this.active = 1;
-						this.actuals = $scope.sprint.actuals;
-						this.description = document
+					var newTask = function() {
+						this.name = 1;
+						this.taskEst = $scope.sprint.actuals;
+						this.toDo = document
 								.getElementById('description').innerHTML;
-						this.endDate = moment($scope.sprint.endDate,
+						this.spentTime = moment($scope.sprint.endDate,
 								"DD-MM-YYYY hh:mm:ss");
-						this.name = $scope.sprint.name;
-						this.note = document.getElementById('note').innerHTML;
-						this.planEstimate = $scope.sprint.planEstimate;
-						this.planVelocity = $scope.sprint.planVelocity;
-						this.project = $scope.project;
-						this.id = $scope.sprint.id;
+						this.startDate = $scope.sprint.name;
+						this.endDate = document.getElementById('note').innerHTML;
+						this.owner = $scope.sprint.planEstimate;
+						this.description = $scope.sprint.planVelocity;
+						this.note = $scope.project;
+						this.userStoryId = $scope.sprint.id;
 						// convert JSON to Object sprintstate
-						this.sprintstate = JSON
+						this.taskStateId = JSON
 								.parse($scope.sprint.sprintstate);
+						
+						
+						
+						
 						this.startDate = moment($scope.sprint.startDate,
 								"DD-MM-YYYY hh:mm:ss");
 						this.taskEstimate = $scope.sprint.taskEstimate;
@@ -40,7 +44,7 @@ angular.module('hrmApp.controllers').controller(
 					}
 
 					$scope.save = function() {
-						hrmService.post("task/create", new newSprint()).then(
+						hrmService.post("task/create", new newTask()).then(
 								function(message) {
 									if (message.error) {
 										$scope.success = null;

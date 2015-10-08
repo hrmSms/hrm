@@ -59,13 +59,12 @@
 							Start Date</th>
 						<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
 							End Date</th>
-						<th class="hidden-480">Assignee</th>
 						<th>Operations</th>
 					</tr>
 				</thead>
 				<tbody>
 
-					<tr ng-repeat="item in items">
+					<tr ng-repeat="item in tasks">
 						<td class="center"><label class="position-relative">
 								<input type="checkbox" class="ace" ng-model="item.checked"
 								ng-change="updateItem(item)" /> <span class="lbl"></span>
@@ -73,9 +72,9 @@
 
 						<td><a href="#">{{item.name}}</a></td>
 						<td>{{item.description}}</td>
-						<td>{{item.startDate}}</td>
-						<td>{{item.endDate}}</td>
-						<td>{{item.ownerId}}</td>
+						<!-- <td ng-bind="toVNDateFormat(item.startDate)"></td> -->
+						<td>{{item.startDate | date:'mediumDate'}}</td>
+						<td>{{item.endDate | date:'mediumDate'}}</td>
 						<td>
 							<div class="hidden-sm hidden-xs action-buttons">
 								<a class="red" href="#/task/list" ng-click="deleteItem(item)">
