@@ -1,15 +1,26 @@
 (function(angular) {
   var AppController = function($scope, Project) {
-    Project.query(function(response) {
+	  Project.query(function(response) {
       $scope.projects = response ? response : [];
+      var proj = $scope.projects[0];
+
+      console.log('Tri 1  '+proj.description);      
     });
     
-    $scope.addProject = function(description) {
+	$scope.addProject = function(p) {    	
+      var d = new Date(p.startDate);
+      var d2 = new Date(p.endDate);
+      p.startDate = d.toISOString();
+      p.endDate = d2.toISOString();
+      p.clientId = Number(p.clientId);
+      console.log('Project '+p);
       new Project({
-        description: description,
-        name: description,
+        description: p.description,
+        name: p.name,
+        startDate: p.startDate,
+        endDate: p.endDate,
         ProjectOwner: 1,        
-        ClientId: 1,
+        ClientId: p.clientId,
         Active: 1
       }).save(function(project) {
         $scope.projects.push(project);
