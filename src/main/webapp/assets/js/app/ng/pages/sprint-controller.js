@@ -195,8 +195,6 @@ angular.module('hrmApp.controllers').controller(
             // initTable();
           });
           $scope.show = function() {
-            bootbox.confirm("'<script>alert('hi,there!');</script>'", function(result) {
-            }); 
           }
           $scope.showDialog = function(id) {
             $(id).bPopup({
