@@ -92,10 +92,10 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
  * author:Guilherme Ferreira http://gsferreira.com/archive/2014/05/angularjs-smart-float-directive/
  */
 .directive('smartFloat', [ function($filter) {
-  var FLOAT_REGEXP_1 = /^\d+(\.\d{3})*(\,\d+)$/; // Numbers like: 1.123,56 or 1.123.123,56
-  var FLOAT_REGEXP_2 = /^\d+(\,\d{3})*(\.\d+)$/; // Numbers like: 1,123.56 or 1,123,123.56
-  var FLOAT_REGEXP_3 = /^\d+(\.\d*)?$/; // Numbers like: 1123.56
-  var FLOAT_REGEXP_4 = /^\d+(\,\d*)?$/; // Numbers like: 1123,56
+  var FLOAT_REGEXP_1 = /^\d{1}(\.\d{3})*(\,\d{1,2})$/; // Numbers like: 1.123,56
+  var FLOAT_REGEXP_2 = /^\d{1}(\,\d{3})*(\.\d{1,2})$/; // Numbers like: 1,123.56
+  var FLOAT_REGEXP_3 = /^\d{1,4}(\.\d{1,2})?$/; // Numbers like: 1123.56
+  var FLOAT_REGEXP_4 = /^\d{1,4}(\,\d{1,2})?$/; // Numbers like: 1123,56
 
   var link = function($scope, $element, $attrs, ctrl) {
 
@@ -117,7 +117,7 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
         return viewValue.replace(',', '.');
       } else {
         ctrl.$setValidity('float', false);
-        return null;
+        return viewValue;
       }
     };
 
