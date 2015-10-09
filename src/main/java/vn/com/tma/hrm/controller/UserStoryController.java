@@ -59,7 +59,7 @@ public class UserStoryController {
 	public ResponseEntity<String> getAllRelatedData() {
 		List<UserStoryState> usStates = usStateService.getAll();
 		List<UserStoryStatus> usStatus = usStatusService.getAll();
-		List<Sprint> sprints = sprintService.getAll();
+		List<Sprint> sprints = sprintService.getByProject(project);
 		Collection<User> users = userService.getAllUsers();
 
 		logger.debug("go to get related data of us");
