@@ -24,12 +24,22 @@
         item.save = function(callback) {
         	//console.log(item);
         	//console.log(item.resources);
-        	Project.resources.save(item, function(project, headers) {
-            var deferred = $http.get(headers().location);
-            return SpringDataRestAdapter.process(deferred).then(function(newProject) {
-              callback && callback(new Project(newProject));
+        	var urlBase = 'api';
+        	$http.get(urlBase + '/projects/search/findByName?name='+item.name).
+            success(function (data) {
+                if (data._embedded != undefined) {
+                    console.log(data._embedded.projects[0].name);
+                    alert('Existed project '+item.name + '. Please enter other name!');
+                } else {
+                	Project.resources.save(item, function(project, headers) {
+                        var deferred = $http.get(headers().location);
+                        return SpringDataRestAdapter.process(deferred).then(function(newProject) {
+                          callback && callback(new Project(newProject));
+                        });
+                      });
+                }
+                
             });
-          });
         };
       }
 
