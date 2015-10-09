@@ -29,7 +29,7 @@ public class ProjectEventHandler {
 	    @HandleBeforeCreate
 	    public void handleBeforeCreates(Project agent) {
 
-	    	//System.out.println("[Before Create] Setting Agent name to " + agent.getName());
+
 	        //agent.setName(NEW_NAME + agent.getName());
 	        agent.setClientId(1);
 	        agent.setProjectOwner(1);
