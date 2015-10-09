@@ -67,7 +67,7 @@ angular.module('hrmApp.route', [])
     controller: 'UserStoryCtrl'
   })
   .state('us.create', {
-    url: '/us/create',
+	url: '^/us/create?projectId',
     templateUrl: 'pages/us-create.html',
     controller: 'UserStoryCtrl'
   });
