@@ -10,8 +10,7 @@ public interface SprintService {
 	public Sprint update(Sprint sprint) throws Exception;
 	public Sprint delete(int id) throws Exception;
 	public Sprint getByID(int id);
-	public List<Sprint> getAll() ;
-	public Boolean getByProjectAndName(Project project, String name) ;
+	public Sprint getByProjectAndName(Project project, String name) ;
 	public List<Sprint> getByProject(Project project) ;
 	
 }

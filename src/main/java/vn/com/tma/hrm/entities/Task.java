@@ -41,7 +41,7 @@ public class Task implements Serializable{
     private Date endDate;
     
     @ManyToOne(fetch = FetchType.EAGER) 
-	@JoinColumn(name = "ownerId")
+	@JoinColumn(name = "owner")
     private User owner;
     
     @Column
@@ -50,8 +50,9 @@ public class Task implements Serializable{
     @Column
     private String note;
     
-    @Column
-    private Integer userStoryId;
+    @ManyToOne(fetch = FetchType.EAGER) 
+	@JoinColumn(name = "userStoryId")
+    private UserStory userStoryId;
     
     @Column
     private Integer taskStateId;
@@ -137,11 +138,11 @@ public class Task implements Serializable{
 		this.note = note;
 	}
 
-	public int getUserStoryId() {
+	public UserStory getUserStoryId() {
 		return userStoryId;
 	}
 
-	public void setUserStoryId(int userStoryId) {
+	public void setUserStoryId(UserStory userStoryId) {
 		this.userStoryId = userStoryId;
 	}
 
