@@ -3,41 +3,34 @@
 <style></style>
 
 <div class="row">
-  <div class="col-xs-12 page-header ">
+  <div class="col-sm-12 page-header" >
     <!-- PAGE CONTENT BEGINS -->
-    <div class="pull-left">
-      <div>
-        <h1 class="blue">
-          <a href="">{{project.name}}</a> project
-        </h1>
-      </div>
-      <div class="padding-left-50px">
-        <h4>Sprint List</h4>
-      </div>
-    </div>
-    <div class="pull-right">
+    <div class="pull-left margin-top-10px">
       <a ui-sref="sprint.create({ projectId: project.id })">
         <button class="btn btn-info" type="button">
           <i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
         </button>
       </a>
     </div>
+    <div class="pull-right" ng-show="project.name">
+      <h2 class="blue">
+        Project <a href="">{{project.name}}</a>
+      </h2>
+    </div>
+
   </div>
 </div>
-
+<div ng-show="deleteSuccess" class="col-xs-12 center" id="message">
+  <div class="alert alert-success">{{deleteSuccess}}</div>
+</div>
 <div class="row">
   <div class="col-xs-12">
-    <div ng-show="message">
-      <h3 class="lighter red">{{message}}</h3>
-    </div>
     <!-- <div class="dataTables_borderWrap"> -->
     <div>
       <table id="sample-table-2" class="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
-                class="lbl"></span>
-            </label></th>
+
             <th></th>
             <th>Name</th>
             <th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>Start Date</th>
@@ -53,15 +46,13 @@
 
         <tbody>
           <tr ng-repeat="sprint in sprints" on-last-repeat>
-            <td class="center"><label class="position-relative"> <input type="checkbox" class="ace" /> <span
-                class="lbl"></span>
-            </label></td>
             <td>
-              <button class="btn btn-xs btn-info" ng-click="goToEditSprint(sprint.id)">
+              <button class="btn btn-xs btn-info" ng-click="goToEditSprint(sprint.id)" show="tooltip"
+                title="Edit selected row">
                 <i class="ace-icon fa fa-pencil bigger-120"></i>
               </button>
 
-              <button class="btn btn-xs btn-danger" ng-click="onDelete(sprint.id)">
+              <button class="btn btn-xs btn-danger" ng-click="onDelete(sprint)" title="Delete selected row">
                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
               </button>
 
@@ -85,53 +76,40 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-  var scripts = [ null, null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  var scripts = [ null, './assets/js/bootbox.min.js', './assets/js/app/ng/shared/jquery.bpopup.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
   $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
     //inline scripts related to this page
-    //console.log(" load table 1");
+
   });
 </script>
 
 <script type="text/javascript">
-
   var initTable = function() {
-    var oTable1 = $('#sample-table-2')
-    //.wrap("<div class='dataTables_borderWrap' />")   //if you are applying horizontal scrolling (sScrollX)
-    .dataTable({
-      bAutoWidth : true,
+    var table = $('#sample-table-2').dataTable({
+      "bPaginate" : false,
+      "bInfo" : true,
+      "bRetrieve" : true,
+      //"bProcessing": true,
+      //"bJQueryUI": true,
+      "bDestroy" : true,
+      "bAutoWidth" : true,
       "aoColumns" : [ {
         "bSortable" : false
-      }, null, null, null, null, null, null, null, {
-        "bSortable" : false
-      } ],
+      }, null, null, null, null, null, null, null ],
       "aaSorting" : [],
-
+      //"aaData": data,
+      "dom" : "<'row'<'col-sm-6 toolbar'l><'col-sm-6'f>>" + "t" + "<'row'<'col-sm-6'i><'col-sm-6'p>>",
     });
+    $("div.toolbar").html("<h4 class='blue'>Sprint List</h4>");
 
-    $(document).on('click', 'th input:checkbox', function() {
+    /* $(document).on('click', 'th input:checkbox', function() {
       var that = this;
       $(this).closest('table').find('tr > td:first-child input:checkbox').each(function() {
         this.checked = that.checked;
         $(this).closest('tr').toggleClass('selected');
       });
 
-    });
+    }); */
 
-    $('[data-rel="tooltip"]').tooltip({
-      placement : tooltip_placement
-    });
-    function tooltip_placement(context, source) {
-      var $source = $(source);
-      var $parent = $source.closest('table')
-      var off1 = $parent.offset();
-      var w1 = $parent.width();
-
-      var off2 = $source.offset();
-      //var w2 = $source.width();
-
-      if (parseInt(off2.left) < parseInt(off1.left) + parseInt(w1 / 2))
-        return 'right';
-      return 'left';
-    }
   }
 </script>

@@ -31,7 +31,6 @@ public class SprintState implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    // bi-directional many-to-one association to Sprint
     @OneToMany(mappedBy = "sprintstate", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Sprint> sprints;
 

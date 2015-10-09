@@ -8,11 +8,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
+import java.io.Serializable;
 import java.util.*;
 
 @Entity
-public class Task implements java.io.Serializable{
+@Table(name = "Task")
+public class Task implements Serializable{
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -38,7 +41,7 @@ public class Task implements java.io.Serializable{
     private Date endDate;
     
     @ManyToOne(fetch = FetchType.EAGER) 
-	@JoinColumn(name = "ownerId")
+	@JoinColumn(name = "owner")
     private User owner;
     
     @Column
@@ -47,8 +50,9 @@ public class Task implements java.io.Serializable{
     @Column
     private String note;
     
-    @Column
-    private Integer userStoryId;
+    @ManyToOne(fetch = FetchType.EAGER) 
+	@JoinColumn(name = "userStoryId")
+    private UserStory userStoryId;
     
     @Column
     private Integer taskStateId;
@@ -134,11 +138,11 @@ public class Task implements java.io.Serializable{
 		this.note = note;
 	}
 
-	public int getUserStoryId() {
+	public UserStory getUserStoryId() {
 		return userStoryId;
 	}
 
-	public void setUserStoryId(int userStoryId) {
+	public void setUserStoryId(UserStory userStoryId) {
 		this.userStoryId = userStoryId;
 	}
 

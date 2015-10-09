@@ -29,7 +29,7 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
     });
 
     $attrs.$observe("lowerThan", function() {
-      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.lowerThan)) {
+      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.lowerThan) || $attrs.showError) {
         ngModel.$setValidity("lowerThan", true);
       } else {
         var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY h:mm:ss").format('YYYY-MM-DD');
@@ -63,7 +63,7 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
     });
 
     $attrs.$observe("higherThan", function() {
-      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.higherThan)) {
+      if (checkIfOneNullOrEmpty(ngModel.$modelValue, $attrs.higherThan) || $attrs.showError) {
         ngModel.$setValidity("higherThan", true);
       } else {
         var myDate = moment(ngModel.$modelValue, "DD-MM-YYYY").format('YYYY-MM-DD');
@@ -81,10 +81,10 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
   };
 
 } ]).directive('onLastRepeat', function() {
-  return function(scope, element, attrs) {
-    if (scope.$last)
+  return function($scope, $element, $attrs) {
+    if ($scope.$last)
       setTimeout(function() {
-        scope.$emit('onRepeatLast', element, attrs);
+        $scope.$emit('onRepeatLast', $element, $attrs);
       }, 1);
   };
 })
@@ -92,10 +92,10 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
  * author:Guilherme Ferreira http://gsferreira.com/archive/2014/05/angularjs-smart-float-directive/
  */
 .directive('smartFloat', [ function($filter) {
-  var FLOAT_REGEXP_1 = /^\d+(\.\d{3})*(\,\d+)$/; // Numbers like: 1.123,56 or 1.123.123,56
-  var FLOAT_REGEXP_2 = /^\d+(\,\d{3})*(\.\d+)$/; // Numbers like: 1,123.56 or 1,123,123.56
-  var FLOAT_REGEXP_3 = /^\d+(\.\d*)?$/; // Numbers like: 1123.56
-  var FLOAT_REGEXP_4 = /^\d+(\,\d*)?$/; // Numbers like: 1123,56
+  var FLOAT_REGEXP_1 = /^\d{1}(\.\d{3})*(\,\d{1,2})$/; // Numbers like: 1.123,56
+  var FLOAT_REGEXP_2 = /^\d{1}(\,\d{3})*(\.\d{1,2})$/; // Numbers like: 1,123.56
+  var FLOAT_REGEXP_3 = /^\d{1,4}(\.\d{1,2})?$/; // Numbers like: 1123.56
+  var FLOAT_REGEXP_4 = /^\d{1,4}(\,\d{1,2})?$/; // Numbers like: 1123,56
 
   var link = function($scope, $element, $attrs, ctrl) {
 
@@ -117,10 +117,10 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
         return viewValue.replace(',', '.');
       } else {
         ctrl.$setValidity('float', false);
-        return undefined;
+        return viewValue;
       }
     };
-    
+
     ctrl.$parsers.unshift(validator);
     ctrl.$formatters.unshift(validator);
   }

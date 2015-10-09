@@ -1,28 +1,31 @@
 package vn.com.tma.hrm.controller;
 
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,11 +33,11 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
-import vn.com.tma.hrm.entities.SprintState;
 import vn.com.tma.hrm.services.ProjectService;
 import vn.com.tma.hrm.services.SprintService;
+import vn.com.tma.hrm.validator.SprintValidator;
 
-@Controller
+@RestController
 @RequestMapping("/sprint")
 public class SprintController {
 
@@ -42,7 +45,13 @@ public class SprintController {
     private SprintService sprintService;
 
     @Autowired
+    private SprintValidator sprintValidator;
+
+    @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private MessageSource messageSource;
 
     private static final Logger logger = LoggerFactory.getLogger(SprintController.class);
 
@@ -50,91 +59,70 @@ public class SprintController {
      * @Autowired private Validator validator;
      */
 
-    /*
-     * @InitBinder private void initBinder(WebDataBinder binder) { binder.setValidator(validator); }
-     */
-
-    @RequestMapping(value = { "/getall" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<String> getAll() {
-        List<Sprint> sprints = sprintService.getAll();
-        String jsonSprints = null;
-        String error = null;
-        try {
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            jsonSprints = ow.writeValueAsString(sprints);
-        } catch (JsonProcessingException e) {
-            error = e.toString();
-        } catch (Exception e) {
-            error = e.toString();
-        }
-        if (error != null) {
-            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("{ \"sprints\" : " + jsonSprints + " } ", HttpStatus.ACCEPTED);
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.addValidators(sprintValidator);
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> create(@RequestBody @Valid Sprint newSprint, HttpServletRequest request) {
-        // convert JSON string to Sprint Object
-        /*
-         * System.out.println(newSprint.getName()); System.out.println(newSprint.getProject().getName());
-         * System.out.println(newSprint.getSprintstate().getName()); return null;
-         */
+    public ResponseEntity<String> create(@Valid @RequestBody Sprint newSprint, BindingResult result) {
 
-        String message = null;
-        String error = null;
+        String successString = null;
+        String errorString = null;
+        Map<String, String> error = new HashMap<String, String>();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            if (result.hasErrors()) {
+                for (FieldError errorMessage : result.getFieldErrors()) {
+                    error.put(errorMessage.getField(), errorMessage.getCode());
+                }
+                errorString = ow.writeValueAsString(error);
+                return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
+            } else {
+                sprintService.create(newSprint);
+                String message = messageSource.getMessage("create.success", new Object[] { newSprint.getName() }, Locale.US);
+                successString = ow.writeValueAsString(message);
+            }
 
-        Sprint duplicatedSprint = sprintService.getByProjectAndName(newSprint.getProject(), newSprint.getName());
-        if (duplicatedSprint != null) {
-            error = newSprint.getName() + " was duplicated.";
-        } else {
-            sprintService.create(newSprint);
-            message = newSprint.getName() + " was successfully created.";
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
         }
-
-        if (error != null) {
-            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("{ \"success\" : \"" + message + " \"} ", HttpStatus.CREATED);
+        return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
     }
 
     @RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)
-    @ResponseBody
-    public ResponseEntity<String> getByID(@PathVariable int id) {
+    public Sprint getByID(@PathVariable int id) throws MethodArgumentNotValidException{
         Sprint sprint = sprintService.getByID(id);
-        String jsonSprint = null;
-        String error = null;
-        try {
-            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-            jsonSprint = ow.writeValueAsString(sprint);
-        } catch (JsonProcessingException e) {
-            error = e.toString();
-        } catch (Exception e) {
-            error = e.toString();
-        }
-        if (error != null) {
-            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
-        }
-        return new ResponseEntity<String>("{ \"sprint\" : " + jsonSprint + " } ", HttpStatus.ACCEPTED);
+        return sprint;
     }
 
-    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    @ResponseBody
-    public ResponseEntity<String> editSprint(@RequestBody String[] jsonSprint) throws Exception {
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public ResponseEntity<String> editSprint(@Valid @RequestBody Sprint updateSprint, BindingResult result) throws Exception {
+        String successString = null;
+        String errorString = null;
+        Map<String, String> error = new HashMap<String, String>();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            if (result.hasErrors()) {
+                for (FieldError errorMessage : result.getFieldErrors()) {
+                    error.put(errorMessage.getField(), errorMessage.getCode());
+                }
+                errorString = ow.writeValueAsString(error);
+                return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
+            } else {
+                sprintService.update(updateSprint);
+                String message = messageSource.getMessage("update.success", new Object[] { updateSprint.getName() }, Locale.US);
+                successString = ow.writeValueAsString(message);
+            }
 
-        // sprintService.update(sprint);
-        String message = "Sprint was successfully updated.";
-
-        // return new ResponseEntity<String>("{ \"message\" : " + new JSONSerializer().serialize(message) + " } " ,
-        // HttpStatus.ACCEPTED);
-        return null;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
 
     }
 
     @RequestMapping(value = "/getByProjectID/{projectId}", method = RequestMethod.GET)
-    @ResponseBody
     public ResponseEntity<String> getByProjectID(@PathVariable int projectId) {
         String jsonSprint = null;
         String error = null;
@@ -160,17 +148,17 @@ public class SprintController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    @ResponseBody
     public ResponseEntity<String> deleteSprint(@PathVariable int id) throws Exception {
-
-        Sprint sprint = sprintService.delete(id);
-        System.out.println(sprint.getName());
-
-        String message = "Sprint " + sprint.getName() + " was successfully deleted.";
-
-        // return new ResponseEntity<String>("{ \"message\" : " + new JSONSerializer().serialize(message) + " } " ,
-        // HttpStatus.ACCEPTED);
-        return null;
+        String message = null;
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            Sprint sprint = sprintService.delete(id);
+            message = messageSource.getMessage("delete.success", new Object[] { sprint.getName() }, Locale.US);
+            message = ow.writeValueAsString(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("{ \"success\" : " + message + "} ", HttpStatus.OK);
     }
 
 }
