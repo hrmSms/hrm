@@ -46,7 +46,7 @@ public class ProjectEventHandler {
 	     */
 	    @HandleBeforeSave
 	    public void handleBeforeSave(Project agent) {
-	        agent.setName(NEW_NAME + "..update");
+	       // agent.setName(NEW_NAME + "..update");
 	        log.info("[Before Save] Setting Agent name to " + agent.getName());
 
 	    }	    
