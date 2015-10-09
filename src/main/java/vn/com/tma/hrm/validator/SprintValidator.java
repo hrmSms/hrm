@@ -50,9 +50,8 @@ public class SprintValidator implements Validator {
         // validate name
         if (!errors.hasFieldErrors("name")) {
             Sprint duplicate = sprintService.getByProjectAndName(newSprint.getProject(), newSprint.getName());
-            if (duplicate!=null && (newSprint.getId()==null || duplicate.getId() == newSprint.getId())) {
+            if (duplicate!=null && (newSprint.getId()==null || duplicate.getId().intValue() != newSprint.getId().intValue())) {
                 errors.rejectValue("name", messageSource.getMessage("name.duplicate", new Object[] { newSprint.getName() }, Locale.US),"Name is duplicated.");
-               
             }
         }
 
