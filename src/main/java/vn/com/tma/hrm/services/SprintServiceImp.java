@@ -70,18 +70,8 @@ public class SprintServiceImp implements SprintService {
 
     @Override
     @Transactional(value = "txManager")
-    public List<Sprint> getAll() {
-        return sprintRepository.findAll();
-    }
-
-    @Override
-    @Transactional(value = "txManager")
-    public Boolean getByProjectAndName(Project project, String name) {
-        Sprint duplicatedSprint = sprintRepository.findByProjectAndNameAndActive(project, name, (byte) 1);
-        if (duplicatedSprint != null) {
-            return false;
-        }
-        return true;
+    public Sprint getByProjectAndName(Project project, String name) {
+        return sprintRepository.findByProjectAndNameAndActive(project, name, (byte) 1);
     }
 
     @Override

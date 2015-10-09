@@ -12,7 +12,7 @@
       <div class="pull-left">
         <div>
           <h1 class="blue">
-           Project <a ui-sref="sprint.list({ projectId: project.id })">{{project.name}}</a>
+            Project <a ui-sref="sprint.list({ projectId: project.id })">{{project.name}}</a>
           </h1>
         </div>
         <div class="padding-left-50px">
@@ -23,9 +23,6 @@
     </div>
     <div ng-show="success" class="col-xs-12 center" id="success">
       <div class="alert alert-success">{{success}}</div>
-    </div>
-    <div ng-show="error" class="col-xs-12 center">
-      <div class="alert alert-danger" id="error">{{error}}</div>
     </div>
     <div class="col-xs-12">
 
@@ -38,15 +35,16 @@
               <input type="text" id="name" name="name" class="form-control" ng-model="sprint.name" required />
             </div>
             <div ng-show="form.$submitted || form.name.$touched">
-              <div ng-show="form.name.$error.required" class="alert alert-danger">Name is required</div>
+              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">Name is required</div>
             </div>
+            <div ng-show="error.name" class="alert alert-danger">{{error.name}}</div>
           </div>
         </div>
 
         <div class="form-group ">
           <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
           <div class="col-sm-8 col-sx-10">
-            <div class="wysiwyg-editor" id="description" ng-model="sprint.description"></div>
+            <div class="wysiwyg-editor" id="description"></div>
           </div>
         </div>
 
@@ -102,8 +100,8 @@
           <label class="col-sm-2 control-label no-padding-right" for="state"> State <i class="red">*</i></label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
-              <select class="form-control" id="state" name="state" ng-model="sprint.sprintstate" ng-init="sprint.sprintstate=sprintStates[0]" required
-                ng-option="sprintState.name for sprintState in sprintStates">
+              <select class="form-control" id="state" name="state" ng-model="sprint.sprintstate" required>
+              <option ng-repeat="sprintState in sprintStates" value={{sprintState}} ng-selected="sprint.sprintstate.id==sprintState.id">{{sprintState.name}}</option>
               </select>
             </div>
             <div ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
@@ -113,10 +111,10 @@
           <label class="col-sm-2 control-label no-padding-right" for="planVelocity""> Plan Velocity </label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.planVelocity.$untouched && form.planVelocity.$invalid }">
-              <input type="text" id="planVelocity" name="planVelocity" class="col-sm-9"
-                ng-model="sprint.planVelocity" smart-float /><label class="col-sm-3 no-padding-right"> (Points)</label>
+              <input type="text" id="planVelocity" name="planVelocity" class="col-sm-9" ng-model="sprint.planVelocity"
+                smart-float placeholder="0.00" /><label class="col-sm-3 no-padding-right"> (Points)</label>
             </div>
-            <div ng-show="form.planVelocity.$error.float" class="alert alert-danger">Invalid float number</div>
+            <div ng-show="form.planVelocity.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
           </div>
 
         </div>
@@ -144,12 +142,12 @@
           <label class="col-sm-2 control-label no-padding-right" for="toDo"> To Do</label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.toDo.$touched && form.toDo.$invalid }">
-              <input type="text" id="toDo" name="toDo" class="col-sm-9" ng-model="toDo" smart-float placeholder="0.00" />
-              <label class="col-sm-3 no-padding-right"> (Hours)</label>
+              <input type="text" id="toDo" name="toDo" class="col-sm-9" ng-model="sprint.toDo" smart-float
+                placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
             <div ng-show="form.toDo.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
           </div>
-          <label class="col-sm-2 control-label no-padding-right" for="actual"> Actual </label>
+          <label class="col-sm-2 control-label no-padding-right" for="actual"> Actuals </label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.actual.$touched && form.actual.$invalid }">
               <input type="text" id="actual" name="actual" class="col-sm-9" ng-model="sprint.actuals" smart-float
@@ -162,18 +160,16 @@
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="note"> Note </label>
           <div class="col-sm-8 col-sx-10">
-            <div class="wysiwyg-editor" id="note" placeholder="note" ng-model="sprint.note"></div>
+            <div class="wysiwyg-editor" id="note" placeholder="note"></div>
           </div>
         </div>
 
         <div class="center clearfix">
-          <button ng-disabled="(!form.$valid)" = "form.$valid" type="button" class="btn btn-success" ng-click="saveAndClose()">
+          <button ng-disabled="(!form.$valid)" = "form.$valid" type="button" class="btn btn-success width-100px"
+            ng-click="show()">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
           </button>
-          <button type="button" class="btn btn-warning" ng-click="reset(form)">
-            <i class="ace-icon fa fa-undo bigger-110"></i> Reset
-          </button>
-          <button type="button" class="btn btn-purple" ng-click="goToSprintList()">
+          <button type="button" class="btn btn-purple width-100px" ng-click="goToSprintList()">
             <i class="ace-icon fa fa-times bigger-110"></i> Close
           </button>
         </div>

@@ -6,16 +6,16 @@ angular.module('hrmApp.controllers').controller(
     'SprintCtrl',
     [ '$scope', '$location', '$state', '$stateParams', 'hrmService',
         function($scope, $location, $state, $stateParams, hrmService) {
-          $scope.empty = {};
+          $scope.temp = {};
           $scope.sprint = {};
 
-          var newSprint = function() {
+          var getSprint = function() {
             this.active = 1;
             this.actuals = $scope.sprint.actuals;
-            this.description = document.getElementById('description').innerHTML;
+            this.description = $('#description').html();
             this.endDate = moment($scope.sprint.endDate, "DD-MM-YYYY hh:mm:ss");
             this.name = $scope.sprint.name;
-            this.note = document.getElementById('note').innerHTML;
+            this.note = $('#note').html();
             this.planEstimate = $scope.sprint.planEstimate;
             this.planVelocity = $scope.sprint.planVelocity;
             this.project = $scope.project;
@@ -27,8 +27,17 @@ angular.module('hrmApp.controllers').controller(
             this.toDo = $scope.sprint.toDo;
           }
 
-          $scope.save = function() {
-            hrmService.post("sprint/create", new newSprint()).then(function(message) {
+          var loadSprint = function(sprint) {
+            $scope.sprint = sprint;
+            $('#description').html(sprint.description);
+            $scope.sprint.endDate = $scope.toVNDateFormat(sprint.endDate);
+            $('#note').html(sprint.note);
+            $scope.sprint.startDate = $scope.toVNDateFormat(sprint.startDate);
+            $scope.sprint.sprintstate = angular.toJson(sprint.sprintstate);
+          }
+
+          $scope.saveAndClose = function() {
+            hrmService.post("./sprint/edit", new getSprint()).then(function(message) {
               if (message.error) {
                 $scope.success = null;
                 $scope.error = message.error;
@@ -36,14 +45,19 @@ angular.module('hrmApp.controllers').controller(
               if (message.success) {
                 $scope.error = null;
                 $scope.success = message.success;
+                // show message success dialog
                 $scope.showDialog('#success');
+                // redirect to sprint list page after 1 min
+                setTimeout(function() {
+                  $scope.goToSprintList();
+                }, 1000);
               }
             });
           };
 
           // save and redirect to sprint list
-          $scope.saveAndClose = function() {
-            hrmService.post("./sprint/create", new newSprint()).then(function(message) {
+          $scope.createAndClose = function() {
+            hrmService.post("./sprint/create", new getSprint()).then(function(message) {
               if (message.error) {
                 $scope.success = null;
                 $scope.error = message.error;
@@ -114,7 +128,8 @@ angular.module('hrmApp.controllers').controller(
           // get Sprint by id
           $scope.getBySprintID = function(sprintId) {
             hrmService.get("./sprint/getByID/" + sprintId, null).then(function(item) {
-              $scope.sprint = item.sprint;
+              $scope.temp = item;
+              loadSprint($scope.temp);
             });
           };
 
@@ -134,7 +149,8 @@ angular.module('hrmApp.controllers').controller(
 
           // delete sprint by id
           $scope.onDelete = function(sprint) {
-            bootbox.confirm("Do you want to delete " + sprint.name + " ?", function(result) {
+            var message = sprint.name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
+            bootbox.confirm("Are you sure to delete "+message+" ?", function(result) {
               if (result) {
                 hrmService.post("./sprint/delete/" + sprint.id, null).then(function(message) {
                   $scope.deleteSuccess = message.success;
@@ -149,7 +165,7 @@ angular.module('hrmApp.controllers').controller(
 
           // convert date to VietNam (UK) date format
           $scope.toVNDateFormat = function(date) {
-            return moment(date).format("DD/MM/YYYY");
+            return moment(date).format("DD-MM-YYYY");
           }
 
           // call when change page
@@ -178,7 +194,10 @@ angular.module('hrmApp.controllers').controller(
           $scope.$on('onRepeatLast', function(scope, element, attrs) {
             // initTable();
           });
-
+          $scope.show = function() {
+            bootbox.confirm("'<script>alert('hi,there!');</script>'", function(result) {
+            }); 
+          }
           $scope.showDialog = function(id) {
             $(id).bPopup({
               opacity : 0.6,

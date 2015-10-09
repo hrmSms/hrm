@@ -44,7 +44,7 @@
         <div class="form-group ">
           <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
           <div class="col-sm-8 col-sx-10">
-            <div class="wysiwyg-editor" id="description" ng-model="sprint.description"></div>
+            <div class="wysiwyg-editor" id="description"></div>
           </div>
         </div>
 
@@ -138,7 +138,7 @@
             </div>
             <div ng-show="form.toDo.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
           </div>
-          <label class="col-sm-2 control-label no-padding-right" for="actual"> Actual </label>
+          <label class="col-sm-2 control-label no-padding-right" for="actual"> Actuals </label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.actual.$touched && form.actual.$invalid }">
               <input type="text" id="actual" name="actual" class="col-sm-9" ng-model="sprint.actuals" smart-float
@@ -151,12 +151,12 @@
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="note"> Note </label>
           <div class="col-sm-8 col-sx-10">
-            <div class="wysiwyg-editor" id="note" placeholder="note" ng-model="sprint.note"></div>
+            <div class="wysiwyg-editor" id="note" placeholder="note"></div>
           </div>
         </div>
 
         <div class="center clearfix">
-          <button ng-disabled="!form.$valid" type="button" class="btn btn-success width-100px" ng-click="saveAndClose()">
+          <button ng-disabled="!form.$valid" type="button" class="btn btn-success width-100px" ng-click="createAndClose()">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
           </button>
           <button type="button" class="btn btn-warning width-100px" ng-click="reset(form)">
