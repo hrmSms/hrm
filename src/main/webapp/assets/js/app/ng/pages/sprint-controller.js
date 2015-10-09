@@ -119,7 +119,6 @@ angular.module('hrmApp.controllers').controller(
 
           // Get all SprintStates
           $scope.loadSprintStates = function() {
-            $scope.sprintStates = new Array();
             hrmService.get("./sprintState/getall").then(function(items) {
               $scope.sprintStates = items.sprintStates;
             });
@@ -127,30 +126,35 @@ angular.module('hrmApp.controllers').controller(
 
           // get Sprint by id
           $scope.getBySprintID = function(sprintId) {
-            hrmService.get("./sprint/getByID/" + sprintId, null).then(function(item) {
-              $scope.temp = item;
-              loadSprint($scope.temp);
+            hrmService.get("./sprintState/getall").then(function(items) {
+              $scope.sprintStates = items.sprintStates;
+              // get sprint by id after get all sprint state
+              hrmService.get("./sprint/getByID/" + sprintId).then(function(item) {
+                $scope.temp = item;
+                loadSprint($scope.temp);
+              });
             });
+
           };
 
           // get project by id
           $scope.getByProjectID = function(projectId) {
-            hrmService.get("./project/getByID/" + projectId, null).then(function(item) {
+            hrmService.get("./project/getByID/" + projectId).then(function(item) {
               $scope.project = item.project;
             });
           };
 
           // get list sprints by project id
           $scope.getSprintsByProjectID = function(projectId) {
-            hrmService.get("./sprint/getByProjectID/" + projectId, null).then(function(item) {
+            hrmService.get("./sprint/getByProjectID/" + projectId).then(function(item) {
               $scope.sprints = item.sprints;
             });
           };
 
           // delete sprint by id
           $scope.onDelete = function(sprint) {
-            var message = sprint.name.replace(/</g,'&lt;').replace(/>/g,'&gt;');
-            bootbox.confirm("Are you sure to delete "+message+" ?", function(result) {
+            var message = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
               if (result) {
                 hrmService.post("./sprint/delete/" + sprint.id, null).then(function(message) {
                   $scope.deleteSuccess = message.success;
@@ -173,8 +177,8 @@ angular.module('hrmApp.controllers').controller(
 
             // load list of sprints in a project
             if ($state.is('sprint.list')) {
-              $scope.getSprintsByProjectID($stateParams.projectId);
               $scope.getByProjectID($stateParams.projectId);
+              $scope.getSprintsByProjectID($stateParams.projectId);
             }
 
             // load project and sprintstates for create sprint form
@@ -184,9 +188,8 @@ angular.module('hrmApp.controllers').controller(
             }
             // load sprint, project and sprintstates for edit sprint form
             if ($state.is('sprint.edit')) {
-              $scope.getBySprintID($stateParams.id);
-              $scope.loadSprintStates();
               $scope.getByProjectID($stateParams.projectId);
+              $scope.getBySprintID($stateParams.id);
             }
           });
 
