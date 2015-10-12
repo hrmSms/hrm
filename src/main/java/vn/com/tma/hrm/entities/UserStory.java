@@ -9,11 +9,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
 @Table(name = "userstory")
@@ -40,11 +44,16 @@ public class UserStory implements Serializable{
 	@OneToOne(targetEntity = Sprint.class)
 	private Sprint sprint;
 	
-	@Column(name = "status", nullable = true, updatable = true)
-	private Long statusId;
+	@ManyToOne(targetEntity = Project.class, fetch = FetchType.EAGER)
+	@JoinColumn(name="project_id")
+	private Project project;
 	
-	@Column(name = "state", nullable = false, updatable = true)
-	private Long stateId;
+	@OneToOne(targetEntity = UserStoryStatus.class)
+	private UserStoryStatus status;
+	
+	@ManyToOne(targetEntity = UserStoryState.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "state_id")
+	private UserStoryState state;
 	
 	@Column(name = "business_value", nullable = true, updatable = true)
 	private Long businessValue;
@@ -71,9 +80,7 @@ public class UserStory implements Serializable{
 	
 	@Column(name = "velocity", nullable = true, updatable = true)
 	private Long velocity;
-    
-    @OneToOne(targetEntity = UserStoryState.class)
-	private UserStoryState userStoryState;
+
 
 	public Long getId() {
 		return id;
@@ -115,12 +122,12 @@ public class UserStory implements Serializable{
 		this.sprint = sprint;
 	}
 
-	public Long getStateId() {
-		return stateId;
+	public UserStoryState getState() {
+		return state;
 	}
 
-	public void setStateId(Long stateId) {
-		this.stateId = stateId;
+	public void setState(UserStoryState state) {
+		this.state = state;
 	}
 
 	public Long getBusinessValue() {
@@ -171,20 +178,12 @@ public class UserStory implements Serializable{
 		this.point = point;
 	}
 
-	public UserStoryState getUserStoryState() {
-		return userStoryState;
+	public UserStoryStatus getStatus() {
+		return status;
 	}
 
-	public void setUserStoryState(UserStoryState userStoryState) {
-		this.userStoryState = userStoryState;
-	}
-
-	public Long getStatusId() {
-		return statusId;
-	}
-
-	public void setStatusId(Long statusId) {
-		this.statusId = statusId;
+	public void setStatus(UserStoryStatus status) {
+		this.status = status;
 	}
 
 	public Long getVelocity() {

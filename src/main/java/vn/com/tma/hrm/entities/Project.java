@@ -42,6 +42,10 @@ public class Project implements Serializable {
     // bi-directional many-to-one association to Sprint
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Sprint> sprints;
+    
+ // bi-directional many-to-one association to User Story
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<UserStory> userStories;
 
     public Project() {
     }

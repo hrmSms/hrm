@@ -3,34 +3,38 @@ angular.module('hrmApp.controllers')
 .controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService',
                               function($scope, $http, $state, $stateParams, hrmService) {
 	 // Get all USStates
-	$scope.loadUsRelatedData = function() {
+	$scope.loadUsRelatedData = function(projectId) {
 	      $scope.usStates = new Array();
-	      $http.get("./us/create/relateddata").success(function(data) {
+	      $http.get("./userstory/getrelateddata/" + projectId).success(function(data) {
 	        $scope.usStates = data.usStates;
 	        $scope.usStatus = data.usStatus;
 	        $scope.sprints = data.sprints;
 	        $scope.users = data.users;
+	        $scope.project = data.project;
 	      });
 	    };
 
 	 // save and redirect to sprint list
         $scope.saveAndClose = function() {
+        	console.log($scope.usstate);
         	var formData = {
     				"name" : $scope.name,
-    				"userStoryState" : $scope.usstate,
-    				"userStoryStatus" : $scope.usstatus,
-    				"owner" : $scope.assignee,
+    				"userStoryState" : JSON.parse($scope.usstate),
+    				"userStoryStatus" : JSON.parse($scope.usstatus),
+    				"owner" : JSON.parse($scope.assignee),
     				"planEst" : $scope.planest,
     				"todoEst" : $scope.todo,
     				"actual" : $scope.actual,
-    				"description" : $scope.description,
-    				"sprint" : iteration,
-    				"velocity" : velocity,
-    				"businessValue" : businessval,
-    				"point" : pointval,
-    				"note" : note
+    				"description" :$('#description').html(),
+    				"sprint" : JSON.parse($scope.iteration),
+    				"velocity" : $scope.velocity,
+    				"businessValue" : $scope.businessval,
+    				"point" : $scope.pointval,
+    				"note" : $('#note').html(),
+    				"project" : $scope.project
     		};
-          hrmService.post("./us/create", formData).then(function(message) {
+        	console.log('formdata: ' + formData.owner);
+          $http.post("./userstory/create", formData).then(function(message) {
             if (message.error) {
               $scope.success = null;
               $scope.error = message.error;
@@ -48,15 +52,14 @@ angular.module('hrmApp.controllers')
           });
         };
         
-   // get project by id
-      $scope.getByProjectID = function(projectId) {
-    	  console.log("go to get project");
-        hrmService.get("./project/getByID/" + projectId).then(function(data) {
-        	console.log("project: " + data);
-          $scope.project = data.project;
-        });
-      };
+        // Get all SprintStates
+        $scope.loadUsStates = function() {
+          hrmService.get("./userstory/getAllUsStates").then(function(data) {
+            $scope.usStates = data.usStates;
+          });
+        };
 
+        
     // call when change page
     $scope.$on("$stateChangeSuccess", function() {
       // load list of sprints in a project
@@ -67,8 +70,8 @@ angular.module('hrmApp.controllers')
 
       // load project and sprintstates for create sprint form
       if ($state.is('us.create')) {
-    	$scope.loadUsRelatedData();
-     	$scope.getByProjectID($stateParams.projectId);     
+    	  /*$scope.loadUsStates();*/
+    	  $scope.loadUsRelatedData($stateParams.projectId);    
       }
       // load sprint, project and sprintstates for edit sprint form
       if ($state.is('us.edit')) {

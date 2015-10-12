@@ -11,11 +11,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Lob;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "userstory_state")
+@NamedQuery(name = "UserStoryState.findAll", query = "SELECT uss FROM UserStoryState uss")
 public class UserStoryState implements Serializable{
 	/**
 	 * 
@@ -34,7 +38,8 @@ public class UserStoryState implements Serializable{
     @Column(name = "name", nullable = false)
     private String name;
     
-    @OneToMany(targetEntity = UserStory.class, mappedBy = "userStoryState", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "state", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<UserStory> userStories;
 
 	public Integer getId() {

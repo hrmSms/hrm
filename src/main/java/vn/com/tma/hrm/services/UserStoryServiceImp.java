@@ -5,9 +5,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.UserStory;
+import vn.com.tma.hrm.model.UserStoryInputForm;
 import vn.com.tma.hrm.repository.UserStoryRepository;
 
 @Component
@@ -17,9 +19,25 @@ public class UserStoryServiceImp implements UserStoryService {
 	UserStoryRepository userStoryRepository;
 
 	@Override
-	public UserStory create(UserStory userStory) {
+	public UserStory create(UserStoryInputForm usForm) {
 		// TODO Auto-generated method stub
-		return userStoryRepository.save(userStory);
+		UserStory us = new UserStory();
+		us.setActual(usForm.getActual());
+		us.setBusinessValue(usForm.getBusinessValue());
+		us.setDescription(usForm.getDescription());
+		us.setName(usForm.getName());
+		us.setNote(usForm.getNote());
+		us.setOwner(usForm.getOwner());
+		us.setPlanEst(usForm.getPlanEst());
+		us.setPoint(usForm.getPoint());
+		us.setSprint(usForm.getSprint());
+		us.setState(usForm.getUserStoryState());
+		us.setStatus(usForm.getUserStoryStatus());
+		us.setVelocity(usForm.getVelocity());
+		us.setTodoEst(usForm.getTodoEst());
+		
+		System.out.println("us.getstate: " + us.getState().getId());
+		return userStoryRepository.save(us);
 	}
 
 	@Override
