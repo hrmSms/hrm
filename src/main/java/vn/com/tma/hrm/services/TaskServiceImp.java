@@ -3,6 +3,7 @@ package vn.com.tma.hrm.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,7 +11,7 @@ import vn.com.tma.hrm.entities.Task;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.repository.TaskRepository;
 
-@Service
+@Component
 public class TaskServiceImp implements TaskService{
 	
 	@Autowired

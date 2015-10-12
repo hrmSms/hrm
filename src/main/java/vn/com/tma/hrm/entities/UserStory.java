@@ -1,84 +1,107 @@
 package vn.com.tma.hrm.entities;
 
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.*;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
-public class UserStory {
-    
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private int id;
-    
-    @Column
-    private String name;   
-    
-    @Column
-    private int owner;
-    
-    @Column
-    private int parentId;
-    
-    @Column
-    private int businessValue;
-    
-    @Column
-    private int planEst;
-    
-    @Column
-    private int taskEst;
-    
-    @Column
-    private int todo;
-    
-    @Column
-    private int actual;
-    
-    @Column
-    private String note;
-    
-    @Column
-    private int point;
-    
-    @Column
-    private Date startDate;
-    
-    @Column
-    private Date endDate;
-    
-    @Column
-    private boolean active;
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userStoryId")
-    private List<Task> tasks;
+@Table(name = "userstory")
+public class UserStory implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-    @JsonIgnore
-	public List<Task> getTasks() {
-		return tasks;
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
+	private Long id;
+	
+	@Column(name = "name", nullable = false, unique = true)
+    private String name;
+	
+	@OneToOne(targetEntity = User.class)
+	private User owner;
+	
+	@OneToOne(targetEntity = UserStory.class, fetch = FetchType.EAGER)
+	@JsonIgnore
+	private UserStory parent;
+	
+	@OneToOne(targetEntity = Sprint.class)
+	private Sprint sprint;
+	
+	@ManyToOne(targetEntity = Project.class, fetch = FetchType.EAGER)
+	@JoinColumn(name="project_id")
+	private Project project;
+	
+	@OneToOne(targetEntity = UserStoryStatus.class)
+	private UserStoryStatus status;
+	
+	@ManyToOne(targetEntity = UserStoryState.class, fetch = FetchType.EAGER)
+	@JoinColumn(name = "state_id")
+	private UserStoryState state;
+	
+	@Column(name = "business_value", nullable = true, updatable = true)
+	private Long businessValue;
+	
+	@Column(name = "plan_est", nullable = true, updatable = true)
+	private Float planEst;
+	
+	@Column(name = "todo_est", nullable = true, updatable = true)
+	private Float todoEst;
+	
+	@Column(name = "actual", nullable = true, updatable = true)
+	private Float actual;
+	
+	@Lob
+    @Column(name = "note", nullable = true, updatable = true)
+    private String note;
+	
+	@Lob
+    @Column(name = "description", nullable = true, updatable = true)
+    private String description;
+	
+	@Column(name = "point", nullable = true, updatable = true)
+	private Long point;
+	
+	@Column(name = "velocity", nullable = true, updatable = true)
+	private Long velocity;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userStoryId")	
+    private List<Task> Tasks;    
+    
+	@JsonIgnore
+    public List<Task> getTasks() {
+		return Tasks;
 	}
 
 	public void setTasks(List<Task> tasks) {
-		this.tasks = tasks;
+		this.Tasks = tasks;
 	}
 
-	public UserStory() {
-		super();
-	}
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -90,59 +113,67 @@ public class UserStory {
 		this.name = name;
 	}
 
-	public int getOwner() {
+	public User getOwner() {
 		return owner;
 	}
 
-	public void setOwner(int owner) {
+	public void setOwner(User owner) {
 		this.owner = owner;
 	}
 
-	public int getParentId() {
-		return parentId;
+	public UserStory getParent() {
+		return parent;
 	}
 
-	public void setParentId(int parentId) {
-		this.parentId = parentId;
+	public void setParent(UserStory parent) {
+		this.parent = parent;
 	}
 
-	public int getBusinessValue() {
+	public Sprint getSprint() {
+		return sprint;
+	}
+
+	public void setSprint(Sprint sprint) {
+		this.sprint = sprint;
+	}
+
+	public UserStoryState getState() {
+		return state;
+	}
+
+	public void setState(UserStoryState state) {
+		this.state = state;
+	}
+
+	public Long getBusinessValue() {
 		return businessValue;
 	}
 
-	public void setBusinessValue(int businessValue) {
+	public void setBusinessValue(Long businessValue) {
 		this.businessValue = businessValue;
 	}
 
-	public int getPlanEst() {
+	public Float getPlanEst() {
 		return planEst;
 	}
 
-	public void setPlanEst(int planEst) {
+	public void setPlanEst(Float planEst) {
 		this.planEst = planEst;
 	}
 
-	public int getTaskEst() {
-		return taskEst;
+	public Float getTodoEst() {
+		return todoEst;
 	}
 
-	public void setTaskEst(int taskEst) {
-		this.taskEst = taskEst;
+	public void setTodoEst(Float todoEst) {
+		this.todoEst = todoEst;
 	}
 
-	public int getTodo() {
-		return todo;
-	}
-
-	public void setTodo(int todo) {
-		this.todo = todo;
-	}
-
-	public int getActual() {
+	public Float getActual() {
 		return actual;
 	}
 
-	public void setActual(int actual) {
+	public void setActual(Float actual) {
 		this.actual = actual;
 	}
 
@@ -154,35 +185,35 @@ public class UserStory {
 		this.note = note;
 	}
 
-	public int getPoint() {
+	public Long getPoint() {
 		return point;
 	}
 
-	public void setPoint(int point) {
+	public void setPoint(Long point) {
 		this.point = point;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public UserStoryStatus getStatus() {
+		return status;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setStatus(UserStoryStatus status) {
+		this.status = status;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public Long getVelocity() {
+		return velocity;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setVelocity(Long velocity) {
+		this.velocity = velocity;
 	}
 
-	public boolean isActive() {
-		return active;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

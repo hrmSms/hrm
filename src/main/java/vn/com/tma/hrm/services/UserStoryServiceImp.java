@@ -1,86 +1,84 @@
 package vn.com.tma.hrm.services;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.UserStory;
+import vn.com.tma.hrm.model.UserStoryInputForm;
 import vn.com.tma.hrm.repository.UserStoryRepository;
 
-@Service
-public class UserStoryServiceImp implements UserStoryService{
+@Component
+public class UserStoryServiceImp implements UserStoryService {
 	
 	@Autowired
-	private UserStoryRepository userStoryRepository;
-	
+	UserStoryRepository userStoryRepository;
+
 	@Override
-	@Transactional(value="txManager") 
-	public UserStory create(UserStory us){
-		UserStory createdUserStory = us;
-		return userStoryRepository.save(createdUserStory);
-	}
-	
-	@Override
-	@Transactional(value="txManager") 
-	public UserStory update(UserStory us) throws Exception{
-		UserStory updateUS = userStoryRepository.findOne(us.getId());
+	public UserStory create(UserStoryInputForm usForm) {
+		// TODO Auto-generated method stub
+		UserStory us = new UserStory();
+		us.setActual(usForm.getActual());
+		us.setBusinessValue(usForm.getBusinessValue());
+		us.setDescription(usForm.getDescription());
+		us.setName(usForm.getName());
+		us.setNote(usForm.getNote());
+		us.setOwner(usForm.getOwner());
+		us.setPlanEst(usForm.getPlanEst());
+		us.setPoint(usForm.getPoint());
+		us.setSprint(usForm.getSprint());
+		us.setState(usForm.getUserStoryState());
+		us.setStatus(usForm.getUserStoryStatus());
+		us.setVelocity(usForm.getVelocity());
+		us.setTodoEst(usForm.getTodoEst());
 		
-		if(updateUS == null){
+		System.out.println("us.getstate: " + us.getState().getId());
+		return userStoryRepository.save(us);
+	}
+
+	@Override
+	public UserStory update(UserStory userStory) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public UserStory delete(long id) throws Exception {
+		// TODO Auto-generated method stub
+		UserStory deletedUserStory = userStoryRepository.findOne(id);
+		if(deletedUserStory == null){
 			throw new Exception();
 		}
-		/*updateUS.setName(us.getName());
-		updateUS.setTaskEst(us.getTaskEst());
-		updateUS.setToDo(us.getToDo());
-		updateUS.setSpentTime(us.getSpentTime());
-		updateUS.setStartDate(us.getStartDate());
-		updateUS.setEndDate(us.getEndDate());
-		updateUS.setOwner(us.getOwner());
-		updateUS.setDescription(us.getDescription());*/
-		updateUS.setNote(us.getNote());
-		/*updateUS.setUserStoryId(us.getUserStoryId());
-		updateUS.setTaskStateId(us.getTaskStateId());*/
-		return updateUS;
+		userStoryRepository.delete(deletedUserStory);
+		return deletedUserStory;
 	}
-	
+
 	@Override
-	@Transactional(value="txManager") 
-	public UserStory delete(int id) throws Exception{
-		UserStory deletedUS = userStoryRepository.findOne(id);
-		
-		if(deletedUS == null){
-			throw new Exception();
-		}
-		userStoryRepository.delete(deletedUS);
-		return deletedUS;
-	}
-	
-	@Override
-	@Transactional(value="txManager") 
-	public UserStory getByID(int id){
+	public UserStory getByID(long id) {
+		// TODO Auto-generated method stub
 		return userStoryRepository.findOne(id);
 	}
-	
+
 	@Override
-	@Transactional(value="txManager") 
-	public List<UserStory> getAll(){
+	public List<UserStory> getAll() {
+		// TODO Auto-generated method stub
 		return userStoryRepository.findAll();
 	}
-	
-	/*@Override
-        @Transactional(value="txManager") 
-	public Boolean getByProjectAndName(Project project, String name) {
-	    Task duplicatedTask = taskRepository.findByProjectAndName(project, name);
-	    if(duplicatedTask!=null){
-	        return false;
-	    }
-	    return true;
-	}
-	
+
 	@Override
-        @Transactional(value="txManager") 
-	public List<Task> getByProject(Project project) {
-	    return taskRepository.findByProject(project);
-	}*/
+	public Optional<UserStory> getBySprintAndName(Sprint sprint, String name) {
+		// TODO Auto-generated method stub
+	    return userStoryRepository.findBySprintAndName(sprint, name);
+	}
+
+	@Override
+	public List<UserStory> getBySprint(Sprint sprint) {
+		// TODO Auto-generated method stub
+		return userStoryRepository.findBySprint(sprint);
+	}
+
 }
