@@ -2,8 +2,7 @@
 
 'use strict';
 angular.module('hrmApp.controllers').controller(
-		'TaskController',
-		[
+		'TaskController',		[
 				'$scope',
 				'$location',
 				'$state',
@@ -143,7 +142,6 @@ angular.module('hrmApp.controllers').controller(
 					$scope.getTasksByUSID = function(usId) {
 						hrmService.get("./task/getByUserStoryID/" + usId, null)
 								.then(function(item) {
-									alert("Get data");
 									$scope.tasks = item;
 								});
 					};
@@ -166,7 +164,6 @@ angular.module('hrmApp.controllers').controller(
 					$scope.$on("$stateChangeSuccess", function() {
 						// load list of sprints in a project
 						if ($state.is('task.list')) {	
-							alert("task.list!!!");
 							$scope.getTasksByUSID($stateParams.usId);
 							//$scope.getByProjectID($stateParams.projectId);
 						}
