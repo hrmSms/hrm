@@ -104,8 +104,9 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
     }, function(newVal, oldVal) {
       var limit = parseInt($attrs.smartFloat);
       angular.element($element).on("keyup", function() {
-        if (this.value.length == limit)
-          this.value = this.value.substring(0, limit);
+        if (this.value.length >= limit){
+          this.value=this.value.substring(0, limit) ;
+        }
       });
     });
 
