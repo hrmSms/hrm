@@ -112,9 +112,9 @@
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.planVelocity.$untouched && form.planVelocity.$invalid }">
               <input type="text" id="planVelocity" name="planVelocity" class="col-sm-9" ng-model="sprint.planVelocity"
-                smart-float placeholder="0.00" /><label class="col-sm-3 no-padding-right"> (Points)</label>
+                smart-float="8" placeholder="0.00" /><label class="col-sm-3 no-padding-right"> (Points)</label>
             </div>
-            <div ng-show="form.planVelocity.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
+            <div ng-show="form.planVelocity.$error.float" class="col-sm-9 alert alert-danger">Please enter first 4 digits</div>
           </div>
 
         </div>
@@ -124,17 +124,17 @@
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.planEstimate.$touched && form.planEstimate.$invalid }">
               <input type="text" id="planEstimate" name="planEstimate" class="col-sm-9" ng-model="sprint.planEstimate"
-                smart-float placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
+                smart-float="8" placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.planEstimate.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
+            <div ng-show="form.planEstimate.$error.float" class="col-sm-9 alert alert-danger">Please enter first 4 digits</div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="taskEstimate"> Task Estimate </label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.taskEstimate.$touched && form.taskEstimate.$invalid }">
               <input type="text" id="taskEstimate" name="taskEstimate" class="col-sm-9" ng-model="sprint.taskEstimate"
-                smart-float placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
+                smart-float="8" placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.taskEstimate.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
+            <div ng-show="form.taskEstimate.$error.float" class="col-sm-9 alert alert-danger">Please enter first 4 digits</div>
           </div>
         </div>
 
@@ -142,18 +142,18 @@
           <label class="col-sm-2 control-label no-padding-right" for="toDo"> To Do</label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.toDo.$touched && form.toDo.$invalid }">
-              <input type="text" id="toDo" name="toDo" class="col-sm-9" ng-model="sprint.toDo" smart-float
-                 /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
+              <input type="text" id="toDo" name="toDo" class="col-sm-9" ng-model="sprint.toDo" smart-float="8"
+                placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.toDo.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
+            <div ng-show="form.toDo.$error.float" class="col-sm-9 alert alert-danger">Please enter first 4 digits</div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="actual"> Actuals </label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.actual.$touched && form.actual.$invalid }">
-              <input type="text" id="actual" name="actual" class="col-sm-9" ng-model="sprint.actuals" smart-float
+              <input type="text" id="actual" name="actual" class="col-sm-9" ng-model="sprint.actuals" smart-float="8"
                 placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.actual.$error.float" class="col-sm-9 alert alert-danger">Invalid float number</div>
+            <div ng-show="form.actual.$error.float" class="col-sm-9 alert alert-danger">Please enter first 4 digits</div>
           </div>
         </div>
 
