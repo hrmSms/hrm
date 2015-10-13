@@ -52,6 +52,9 @@ public class User implements Serializable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
     private List<Task> Tasks;
     
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "owner")
+    private List<UserStory> userStories;
+    
     @JsonIgnore
     public List<Task> getTasks() {
 		return Tasks;

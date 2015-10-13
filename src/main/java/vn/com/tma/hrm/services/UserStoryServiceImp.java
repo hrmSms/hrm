@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.model.UserStoryInputForm;
@@ -22,6 +23,7 @@ public class UserStoryServiceImp implements UserStoryService {
 	public UserStory create(UserStoryInputForm usForm) {
 		// TODO Auto-generated method stub
 		UserStory us = new UserStory();
+		us.setActive(usForm.getActive());
 		us.setActual(usForm.getActual());
 		us.setBusinessValue(usForm.getBusinessValue());
 		us.setDescription(usForm.getDescription());
@@ -32,11 +34,10 @@ public class UserStoryServiceImp implements UserStoryService {
 		us.setPoint(usForm.getPoint());
 		us.setSprint(usForm.getSprint());
 		us.setState(usForm.getUserStoryState());
-		us.setStatus(usForm.getUserStoryStatus());
-		us.setVelocity(usForm.getVelocity());
+		us.setBuildDate(usForm.getBuildDate());
 		us.setTodoEst(usForm.getTodoEst());
-		
-		System.out.println("us.getstate: " + us.getState().getId());
+		us.setProject(usForm.getProject());
+		us.setParent(usForm.getParent());
 		return userStoryRepository.save(us);
 	}
 
@@ -70,15 +71,21 @@ public class UserStoryServiceImp implements UserStoryService {
 	}
 
 	@Override
-	public Optional<UserStory> getBySprintAndName(Sprint sprint, String name) {
+	public Optional<UserStory> getByProjectAndName(Project project, String name) {
 		// TODO Auto-generated method stub
-	    return userStoryRepository.findBySprintAndName(sprint, name);
+	    return userStoryRepository.findByProjectAndName(project, name);
 	}
 
 	@Override
 	public List<UserStory> getBySprint(Sprint sprint) {
 		// TODO Auto-generated method stub
 		return userStoryRepository.findBySprint(sprint);
+	}
+
+	@Override
+	public List<UserStory> getByProject(Project project) {
+		// TODO Auto-generated method stub
+		return userStoryRepository.findByProject(project);
 	}
 
 }
