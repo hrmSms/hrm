@@ -1,19 +1,15 @@
 package vn.com.tma.hrm.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.NotEmpty;
-
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.User;
+import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.entities.UserStoryState;
-import vn.com.tma.hrm.entities.UserStoryStatus;
 
 public class UserStoryInputForm implements Serializable{
 
@@ -22,6 +18,9 @@ public class UserStoryInputForm implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@NotNull
+	private Byte active = null;
+	
 	@NotEmpty
 	private String name = "";
 	
@@ -33,46 +32,24 @@ public class UserStoryInputForm implements Serializable{
 	@NotNull
 	private UserStoryState userStoryState = null;
 	
-	private UserStoryStatus userStoryStatus = null;
+	private Date buildDate = null;
 	
-/*	@Pattern.List({
-		@Pattern(regexp="[-+]?[0-9]*.?[0-9]+"),
-		@Pattern(regexp="^s*$")
-	})*/
+	private UserStory parent = null;
+		
 	private Float planEst;
 	
-/*	@Pattern.List({
-		@Pattern(regexp="[-+]?[0-9]*.?[0-9]+"),
-		@Pattern(regexp="^s*$")
-	})*/
 	private Float todoEst;
 	
-/*	@Pattern.List({
-		@Pattern(regexp="[-+]?[0-9]*.?[0-9]+"),
-		@Pattern(regexp="^s*$")
-	})*/
 	private Float actual;
 	
     private String description = "";
     
 	private Sprint sprint = null;
-	
-	/*@Pattern.List({
-		@Pattern(regexp="^(0|[1-9][0-9]*)$"),
-		@Pattern(regexp="^s*$")
-	})*/
+
 	private Long velocity;
     
-/*	@Pattern.List({
-		@Pattern(regexp="^(0|[1-9][0-9]*)$"),
-		@Pattern(regexp="^s*$")
-	})*/
 	private Long businessValue;
-	
-/*	@Pattern.List({
-		@Pattern(regexp="^(0|[1-9][0-9]*)$"),
-		@Pattern(regexp="^s*$")
-	})*/
+
 	private Long point;
 	
     private String note = "";
@@ -99,14 +76,6 @@ public class UserStoryInputForm implements Serializable{
 
 	public void setUserStoryState(UserStoryState userStoryState) {
 		this.userStoryState = userStoryState;
-	}
-
-	public UserStoryStatus getUserStoryStatus() {
-		return userStoryStatus;
-	}
-
-	public void setUserStoryStatus(UserStoryStatus userStoryStatus) {
-		this.userStoryStatus = userStoryStatus;
 	}
 
 	public Float getPlanEst() {
@@ -179,5 +148,37 @@ public class UserStoryInputForm implements Serializable{
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+	public Byte getActive() {
+		return active;
+	}
+
+	public void setActive(Byte active) {
+		this.active = active;
+	}
+
+	public Date getBuildDate() {
+		return buildDate;
+	}
+
+	public void setBuildDate(Date buildDate) {
+		this.buildDate = buildDate;
+	}
+
+	public UserStory getParent() {
+		return parent;
+	}
+
+	public void setParent(UserStory parent) {
+		this.parent = parent;
 	}
 }

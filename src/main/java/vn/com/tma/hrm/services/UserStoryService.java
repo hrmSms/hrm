@@ -2,7 +2,10 @@ package vn.com.tma.hrm.services;
 
 import java.util.List;
 import java.util.Optional;
+
 import org.springframework.stereotype.Service;
+
+import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.model.UserStoryInputForm;
@@ -14,6 +17,7 @@ public interface UserStoryService {
 	public UserStory delete(long id) throws Exception;
 	public UserStory getByID(long id);
 	public List<UserStory> getAll() ;
-	public Optional<UserStory> getBySprintAndName(Sprint sprint, String name) ;
+	public Optional<UserStory> getByProjectAndName(Project project, String name) ;
 	public List<UserStory> getBySprint(Sprint sprint) ;
+	public List<UserStory> getByProject(Project project);
 }
