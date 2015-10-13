@@ -31,6 +31,10 @@ label {
 .widget-title {
 	font-weight: bold;
 }
+
+.wysiwyg-editor {
+	height: 150px;
+}
 </style>
 
 <!-- ajax layout which only needs content area -->
@@ -38,7 +42,9 @@ label {
 	<h1>Create UserStory</h1>
 </div>
 <!-- /.page-header -->
-
+<div data-ng-show="success" class="col-xs-12 center" id="success">
+      <div class="alert alert-success">{{success}}</div>
+</div>
 <!-- PAGE CONTENT BEGINS -->
 <form role="form" name="form">
 	<div class="col-md-9 border-right">
@@ -47,8 +53,7 @@ label {
 				<label class="control-label no-padding-right" for="name">Name<i class="red">*</i></label>
 			</div>
 			<div class="form-group col-md-11">
-				<div
-					data-ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
+				<div data-ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
 					<input type="text" id="name" name="name" data-ng-model="name"
 						class="form-control" required>
 				</div>
@@ -59,16 +64,17 @@ label {
 				</div>
 			</div>
 			<div class="form-group col-md-3">
-				<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
-				<select class="form-control" id="state" data-ng-model="usstate">
-					<option data-ng-repeat="usState in usStates" value={{usState}}>{{usState.name}}</option>
-				</select>
-			</div>
-			<div class="form-group col-md-3">
-				<label class="control-label no-padding-right" for="status">Status</label>
-				<select class="form-control" id="status" data-ng-model="usstatus">
-					<option data-ng-repeat="usStatus in usStatus" value={{usStatus}}>{{usStatus.name}}</option>
-				</select>
+				<div data-ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
+					<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
+					<select class="form-control" id="state" data-ng-model="usstate" required>
+						<option data-ng-repeat="usState in usStates" value={{usState}}>{{usState.name}}</option>
+					</select>
+				</div>
+				<div data-ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
+					<div data-ng-show="form.state.$error.required && !error.userStoryState"
+						class="alert alert-danger">Please choose a UserStory State</div>
+					<div data-ng-show="error.userStoryState" class="alert alert-danger">{{error.userStoryState}}</div>
+				</div>
 				
 			</div>
 			<div class="form-group col-md-2">
@@ -130,9 +136,14 @@ label {
 									<div data-ng-show="form.businessval.$error.float" class="alert alert-danger">Invalid number</div>
 								</div>
 								<div class="form-group col-md-4">
-									<label class="control-label no-padding-right" for="velocity">Plan Velocity</label>
-									<div data-ng-class="{ 'has-error': form.velocity.$touched && form.velocity.$invalid }">
-										<input type="text" class="form-control" id="velocity" name="velocity" data-ng-model="velocity" data-smart-float>
+									<label class="control-label no-padding-right" for="builddate">Build Date</label>
+									<div class="input-group"
+										data-ng-class="{ 'has-error': form.builddate.$invalid }">
+										<input id="builddate" name="builddate" type="text"
+											class="form-control" data-ng-model="builddate"/>
+										<span class="input-group-addon"> <i
+											class="fa fa-clock-o bigger-110"></i>
+										</span>
 									</div>
 									<div data-ng-show="form.velocity.$error.float" class="alert alert-danger">Invalid number</div>
 									<br/>
@@ -151,7 +162,7 @@ label {
 			</div>
 		</div>
 		<br />
-		<div class="row">
+		<!-- <div class="row">
 			<div class="form-group col-md-12">
 				<div class="widget-box">
 					<div class="widget-header widget-header-flat">
@@ -189,7 +200,7 @@ label {
 					</div>
 				</div>	
 			</div>
-		</div>
+		</div> -->
 		<div class="row">
 			<div class="form-group col-md-12">
 				<div class="widget-box">
@@ -204,12 +215,6 @@ label {
 		</div>
 	</div>
 	<div class="col-md-3">
-		<div class="form-group">
-			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
-			<select class="form-control" id="t-assignee" data-ng-model="assignee">
-				<option data-ng-repeat="user in users" value={{user}}>{{user.username}}</option>
-			</select>
-		</div>
 		<div class="form-group">
 			<div class="widget-box widget-color-dark light-border ui-sortable-handle">
 				<div class="widget-header">
@@ -228,6 +233,19 @@ label {
 			</div>
 			
 		</div>
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
+			<select class="form-control" id="t-assignee" data-ng-model="assignee">
+				<option data-ng-repeat="user in users" value={{user}}>{{user.username}}</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label class="control-label no-padding-right" for="parent">Parent</label>
+			<select class="form-control" id="parent" data-ng-model="parent">
+				<option data-ng-repeat="parent in parents" value={{parent}}>{{parent.name}}</option>
+			</select>
+		</div>
+		
 		<!-- <div class="form-group">
 			<label class="control-label no-padding-right" for="t-project">Project</label>
 			<select class="form-control" id="t-project" data-ng-model="project">
@@ -238,7 +256,7 @@ label {
 	<div class="clearfix"></div>
 	<div class="form-group col-md-9">
 		<div class="form-actions center clearfix">
-	  <button data-ng-disabled="form.$invalid" type="button" class="btn btn-success" data-ng-click="saveAndClose()">
+	  <button data-ng-disabled="form.$invalid" type="button" id="createbtn" class="btn btn-success" data-ng-click="saveAndClose()">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
           </button>
           <button type="button" class="btn btn-warning" ng-click="reset(form)">
@@ -254,14 +272,24 @@ label {
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [null, 'assets/js/bootstrap-wysiwyg.min.js','assets/js/bootbox.min.js', 'assets/js/date-time/bootstrap-datetimepicker.min.js', null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+	var scripts = [null, 'assets/js/bootstrap-wysiwyg.min.js','assets/js/bootbox.min.js', 
+	               'assets/js/date-time/bootstrap-datetimepicker.min.js', './assets/js/app/ng/shared/jquery.bpopup.min.js', null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
 	  //inline scripts related to this page
-	  initNote();
+	  initAll();
 	});
 </script>
 <script type="text/javascript">
-	var initNote = function() {
+	var initAll = function() {
+		
+		//datetimepicker plugin
+	    $('#builddate').datetimepicker({
+	      format : 'DD-MM-YYYY'
+	    }).next().on(ace.click_event, function(e) {
+	      $(this).prev().focus();
+	      //$(this).data("DateTimePicker").minDate(date());
+	    });
+		
 		//note texterea
 		$('#note').ace_wysiwyg();
 
@@ -271,7 +299,12 @@ label {
 
 		var description = $('#description').prev().get(0);
 		$(description).addClass('wysiwyg-style2');
+		
+		/* $("#createbtn").on("click", function() {
+		    $("body").scrollTop(0);
+		}); */
 	};
+	
 	jQuery(function($) {
 
 		//RESIZE IMAGE

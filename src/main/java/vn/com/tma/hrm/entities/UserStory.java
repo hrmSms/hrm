@@ -35,8 +35,12 @@ public class UserStory implements Serializable{
 	@Column(name = "name", nullable = false, unique = true)
     private String name;
 	
-	@OneToOne(targetEntity = User.class)
+	@ManyToOne(targetEntity = User.class)
+	@JoinColumn(name="owner_id")
 	private User owner;
+	
+	@Column(name = "active", nullable = false)
+    private Byte active;
 	
 	@OneToOne(targetEntity = UserStory.class, fetch = FetchType.EAGER)
 	private UserStory parent;
@@ -48,8 +52,9 @@ public class UserStory implements Serializable{
 	@JoinColumn(name="project_id")
 	private Project project;
 	
-	@OneToOne(targetEntity = UserStoryStatus.class)
-	private UserStoryStatus status;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "build_date", nullable = true)
+    private Date buildDate;
 	
 	@ManyToOne(targetEntity = UserStoryState.class, fetch = FetchType.EAGER)
 	@JoinColumn(name = "state_id")
@@ -77,10 +82,6 @@ public class UserStory implements Serializable{
 	
 	@Column(name = "point", nullable = true, updatable = true)
 	private Long point;
-	
-	@Column(name = "velocity", nullable = true, updatable = true)
-	private Long velocity;
-
 
 	public Long getId() {
 		return id;
@@ -178,20 +179,20 @@ public class UserStory implements Serializable{
 		this.point = point;
 	}
 
-	public UserStoryStatus getStatus() {
-		return status;
+	public Byte getActive() {
+		return active;
 	}
 
-	public void setStatus(UserStoryStatus status) {
-		this.status = status;
+	public void setActive(Byte active) {
+		this.active = active;
 	}
 
-	public Long getVelocity() {
-		return velocity;
+	public Project getProject() {
+		return project;
 	}
 
-	public void setVelocity(Long velocity) {
-		this.velocity = velocity;
+	public void setProject(Project project) {
+		this.project = project;
 	}
 
 	public String getDescription() {
@@ -200,5 +201,13 @@ public class UserStory implements Serializable{
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Date getBuildDate() {
+		return buildDate;
+	}
+
+	public void setBuildDate(Date buildDate) {
+		this.buildDate = buildDate;
 	}
 }

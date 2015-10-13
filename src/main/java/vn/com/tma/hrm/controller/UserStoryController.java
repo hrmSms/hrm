@@ -19,6 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,14 +36,15 @@ import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.entities.UserStoryState;
-import vn.com.tma.hrm.entities.UserStoryStatus;
 import vn.com.tma.hrm.model.UserStoryInputForm;
 import vn.com.tma.hrm.services.ProjectService;
 import vn.com.tma.hrm.services.SprintService;
 import vn.com.tma.hrm.services.UserService;
 import vn.com.tma.hrm.services.UserStoryService;
 import vn.com.tma.hrm.services.UserStoryStateService;
-import vn.com.tma.hrm.services.UserStoryStatusService;
+import vn.com.tma.hrm.validator.SprintValidator;
+import vn.com.tma.hrm.validator.UserStoryValidator;
+
 
 @Controller
 @RequestMapping(value = "/userstory")
@@ -51,10 +54,7 @@ public class UserStoryController {
 	
 	@Autowired
 	UserStoryStateService usStateService;
-	
-	@Autowired
-	UserStoryStatusService usStatusService;
-	
+
 	@Autowired
 	UserStoryService usService;
 	
@@ -68,39 +68,48 @@ public class UserStoryController {
 	ProjectService projectService;
 	
 	@Autowired
+	UserStoryService userstoryService;
+	
+	@Autowired
     private MessageSource messageSource;
+	
+    @Autowired
+    private UserStoryValidator usValidator;
+	
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.addValidators(usValidator);
+    }
 	
 	@RequestMapping(value="/getrelateddata/{projectId}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> getAllRelatedData(@PathVariable int projectId) {
 		String error = null;
 		String jsonUsStates = null;
-        String jsonUsStatus = null;
         String jsonSprints = null;
         String jsonUsers = null;
         String jsonProject = null;
+        String jsonParent = null;
         
 		Project project = projectService.getByID(projectId);
         if (project == null) {
             error = "Project doesn't exist";
         } else {
         	List<UserStoryState> usStates = usStateService.getAll();
-    		List<UserStoryStatus> usStatus = usStatusService.getAll();
     		List<Sprint> sprints = sprintService.getByProject(project);
     		Collection<User> users = userService.getAllUsers();
-    		
+    		List<UserStory> userStories = userstoryService.getByProject(project);
     		logger.debug("go to get related data of us");
 	        
 	        try {
 	            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
 	            jsonUsStates = ow.writeValueAsString(usStates);
-	            jsonUsStatus = ow.writeValueAsString(usStatus);
 	            jsonSprints = ow.writeValueAsString(sprints);
 	            jsonUsers = ow.writeValueAsString(users);
 	            jsonProject = ow.writeValueAsString(project);
+	            jsonParent = ow.writeValueAsString(userStories);
 	            
 	            logger.debug("jsonUsStates: " + jsonUsStates);
-	            logger.debug("jsonUsStatus: " + jsonUsStatus);
 	            logger.debug("jsonSprints: " + jsonSprints);
 	            logger.debug("jsonUsers: " + jsonUsers);
 	            
@@ -117,10 +126,10 @@ public class UserStoryController {
             return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
         }
         return new ResponseEntity<String>(" { \"usStates\" : " + jsonUsStates +
-        		" , \"usStatus\" : " + jsonUsStatus +
         		" , \"sprints\" : " + jsonSprints +
         		" , \"users\" : " + jsonUsers +
         		" , \"project\" : " + jsonProject +
+        		" , \"parents\" : " + jsonParent +
         		"} ", HttpStatus.ACCEPTED);
 	}
 	
@@ -136,15 +145,16 @@ public class UserStoryController {
         try {
             if (result.hasErrors()) {
                 for (FieldError errorMessage : result.getFieldErrors()) {
-                	logger.debug("error message: " + errorMessage);
                     error.put(errorMessage.getField(), errorMessage.getCode());
                 }
                 errorString = ow.writeValueAsString(error);
+                logger.debug("error message: " + errorString);
                 return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
             } else {
                 UserStory us = usService.create(usForm);
                 String message = messageSource.getMessage("create.success", new Object[] { us.getName() }, Locale.US);
                 successString = ow.writeValueAsString(message);
+                logger.debug("successString: " + successString);
             }
 
         } catch (JsonProcessingException e) {
@@ -152,69 +162,5 @@ public class UserStoryController {
         }
         return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
     }
-	
-	
-	@RequestMapping(value="/getAllUsStates", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<String> getAllStates() {
-		List<UserStoryState> usStates = usStateService.getAll();
-	        String jsonUsStates = null;
-	        try {
-	            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-	            jsonUsStates = ow.writeValueAsString(usStates);
-	            logger.debug("jsonUsStates: " + jsonUsStates);
-	        } catch (JsonProcessingException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	            System.out.println(e.toString());
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            System.out.println(e.toString());
-	        }
-	        return new ResponseEntity<String>("{ \"usStates\" : " + jsonUsStates + " } ", HttpStatus.ACCEPTED);
-	}
-	
-	@RequestMapping(value="/getAllUsStatus", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<String> getAllStatus() {
-		List<UserStoryStatus> usStatus = usStatusService.getAll();
-	        String jsonUsStatus = null;
-	        try {
-	            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-	            jsonUsStatus = ow.writeValueAsString(usStatus);
-	            logger.debug("jsonUsStatus: " + jsonUsStatus);
-	        } catch (JsonProcessingException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	            System.out.println(e.toString());
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            System.out.println(e.toString());
-	        }
-	        return new ResponseEntity<String>("{ \"usStatus\" : " + jsonUsStatus + " } ", HttpStatus.ACCEPTED);
-	}
-	
-	
-	
-	@RequestMapping(value="/getAllUsers", method = RequestMethod.GET)
-	@ResponseBody
-	public ResponseEntity<String> getAllUsers() {
-		Collection<User> users = userService.getAllUsers();
-	        String jsonUsers = null;
-	        try {
-	            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-	            jsonUsers = ow.writeValueAsString(users);
-	            logger.debug("jsonSprints: " + jsonUsers);
-	        } catch (JsonProcessingException e) {
-	            // TODO Auto-generated catch block
-	            e.printStackTrace();
-	            System.out.println(e.toString());
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	            System.out.println(e.toString());
-	        }
-	        return new ResponseEntity<String>("{ \"users\" : " + jsonUsers + " } ", HttpStatus.ACCEPTED);
-	}
-	
 	
 }
