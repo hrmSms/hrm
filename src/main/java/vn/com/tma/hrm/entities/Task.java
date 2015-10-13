@@ -19,7 +19,7 @@ public class Task implements Serializable{
     
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    @Column(name = "TASK_ID", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private Integer id;
     
     @Column
@@ -53,9 +53,10 @@ public class Task implements Serializable{
     @ManyToOne(fetch = FetchType.EAGER) 
 	@JoinColumn(name = "userStoryId")
     private UserStory userStoryId;
-    
-    @Column
-    private Integer taskStateId;
+        
+    @ManyToOne(fetch = FetchType.EAGER) 
+	@JoinColumn(name = "taskStateId")
+    private TaskState taskStateId;
     
 	public Integer getId() {
 		return id;
@@ -146,11 +147,11 @@ public class Task implements Serializable{
 		this.userStoryId = userStoryId;
 	}
 
-	public Integer getTaskStateId() {
+	public TaskState getTaskStateId() {
 		return taskStateId;
 	}
 
-	public void setTaskStateId(Integer taskStateId) {
+	public void setTaskStateId(TaskState taskStateId) {
 		this.taskStateId = taskStateId;
 	}
 }

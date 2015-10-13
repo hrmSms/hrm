@@ -2,6 +2,7 @@ package vn.com.tma.hrm.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +13,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 @Entity
@@ -43,6 +46,7 @@ public class UserStory implements Serializable{
     private Byte active;
 	
 	@OneToOne(targetEntity = UserStory.class, fetch = FetchType.EAGER)
+	@JsonIgnore
 	private UserStory parent;
 	
 	@OneToOne(targetEntity = Sprint.class)
@@ -82,6 +86,18 @@ public class UserStory implements Serializable{
 	
 	@Column(name = "point", nullable = true, updatable = true)
 	private Long point;
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userStoryId")	
+    private List<Task> Tasks;    
+    
+	@JsonIgnore
+    public List<Task> getTasks() {
+		return Tasks;
+	}
+
+	public void setTasks(List<Task> tasks) {
+		this.Tasks = tasks;
+	}
 
 	public Long getId() {
 		return id;

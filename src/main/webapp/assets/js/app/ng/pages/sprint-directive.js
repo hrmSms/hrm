@@ -91,7 +91,7 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
 /*
  * author:Guilherme Ferreira http://gsferreira.com/archive/2014/05/angularjs-smart-float-directive/
  */
-.directive('smartFloat', [ function($filter) {
+.directive('smartFloat', [ function() {
   var FLOAT_REGEXP_1 = /^\d{1}(\.\d{3})*(\,\d{1,2})$/; // Numbers like: 1.123,56
   var FLOAT_REGEXP_2 = /^\d{1}(\,\d{3})*(\.\d{1,2})$/; // Numbers like: 1,123.56
   var FLOAT_REGEXP_3 = /^\d{1,4}(\.\d{1,2})?$/; // Numbers like: 1123.56
@@ -99,22 +99,33 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
 
   var link = function($scope, $element, $attrs, ctrl) {
 
+    $scope.$watch(function() {
+      return ctrl.$modelValue;
+    }, function(newVal, oldVal) {
+      var limit = parseInt($attrs.smartFloat);
+      angular.element($element).on("keyup", function() {
+        if (this.value.length >= limit){
+          this.value=this.value.substring(0, limit) ;
+        }
+      });
+    });
+
     var validator = function(viewValue) {
       if (ctrl.$isEmpty(viewValue)) {
         ctrl.$setValidity('float', true);
         return viewValue;
       } else if (FLOAT_REGEXP_1.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(/\./g, '').replace(',', '.');
+        return viewValue.replace(/\./g, '').replace(',', '.').substring(0, 8);
       } else if (FLOAT_REGEXP_2.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(/\,/g, '');
+        return viewValue.replace(/\,/g, '').substring(0, 8);
       } else if (FLOAT_REGEXP_3.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue;
+        return viewValue.substring(0, 7);
       } else if (FLOAT_REGEXP_4.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(',', '.');
+        return viewValue.replace(',', '.').substring(0, 7);
       } else {
         ctrl.$setValidity('float', false);
         return viewValue;
