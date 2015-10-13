@@ -80,23 +80,23 @@ label {
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="planest">PlanEST</label> 
 				<div data-ng-class="{ 'has-error': form.planest.$touched && form.planest.$invalid }">
-					<input type="text" class="form-control" id="planest" name="planest" placeholder="0.00 (hours)" data-ng-model="userstory.planest" data-smart-float placeholder="0.00" >
+					<input type="text" class="form-control" id="planest" name="planest" placeholder="0.00 (hours)" data-ng-model="userstory.planest" data-smart-float="6" placeholder="0.00" >
 				</div>
-				<div data-ng-show="form.planest.$error.float" class="alert alert-danger">Invalid float number</div>
+				<div data-ng-show="form.planest.$error.float" class="alert alert-danger">Please enter float number between 0 to 999</div>
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-todo">ToDo</label> 
 				<div data-ng-class="{ 'has-error': form.todo.$touched && form.todo.$invalid }">
-					<input type="text" id="t-todo" name="todo" class="form-control" placeholder="0.00 (hours)" data-ng-model="userstory.todo" data-smart-float>
+					<input type="text" id="t-todo" name="todo" class="form-control" placeholder="0.00 (hours)" data-ng-model="userstory.todo" data-smart-float="6">
 				</div>
-				<div data-ng-show="form.todo.$error.float" class="alert alert-danger">Invalid float number</div>
+				<div data-ng-show="form.todo.$error.float" class="alert alert-danger">Please enter float number between 0 to 999</div>
 			</div>
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-actual">Actual</label>
 				<div data-ng-class="{ 'has-error': form.actual.$touched && form.actual.$invalid }">
-					<input type="text" id="t-actual" name="actual" class="form-control" placeholder="0.00 (hours)" data-ng-model="userstory.actual" data-smart-float>
+					<input type="text" id="t-actual" name="actual" class="form-control" placeholder="0.00 (hours)" data-ng-model="userstory.actual" data-smart-float="6">
 				</div>
-				<div data-ng-show="form.actual.$error.float" class="alert alert-danger">Invalid float number</div>
+				<div data-ng-show="form.actual.$error.float" class="alert alert-danger">Please enter float number between 0 to 999</div>
 			</div>
 		</div>
 		<br />
@@ -131,7 +131,7 @@ label {
 									<br/>
 									<label class="control-label no-padding-right" for="businessval">Business Value</label>
 									<div data-ng-class="{ 'has-error': form.businessval.$touched && form.businessval.$invalid }">
-										<input type="text" class="form-control" id="businessval" name="businessval" data-ng-model="userstory.businessval" data-smart-float>
+										<input type="text" class="form-control" id="businessval" name="businessval" data-ng-model="userstory.businessval" data-smart-float="6">
 									</div>
 									<div data-ng-show="form.businessval.$error.float" class="alert alert-danger">Invalid number</div>
 								</div>
@@ -149,7 +149,7 @@ label {
 									<br/>
 									<label class="control-label no-padding-right" for="pointval">Point Value</label>
 									<div data-ng-class="{ 'has-error': form.pointval.$touched && form.pointval.$invalid }">
-										<input type="text" class="form-control" id="pointval" name="pointval" data-ng-model="userstory.pointval" data-smart-float>
+										<input type="text" class="form-control" id="pointval" name="pointval" data-ng-model="userstory.pointval" data-smart-float="6">
 									</div>
 									<div data-ng-show="form.pointval.$error.float" class="alert alert-danger">Invalid number</div>
 								</div>
