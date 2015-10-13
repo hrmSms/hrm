@@ -54,9 +54,6 @@ public class UserStoryController {
 	
 	@Autowired
 	UserStoryStateService usStateService;
-
-	@Autowired
-	UserStoryService usService;
 	
 	@Autowired
 	UserService userService;
@@ -151,7 +148,7 @@ public class UserStoryController {
                 logger.debug("error message: " + errorString);
                 return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
             } else {
-                UserStory us = usService.create(usForm);
+                UserStory us = userstoryService.create(usForm);
                 String message = messageSource.getMessage("create.success", new Object[] { us.getName() }, Locale.US);
                 successString = ow.writeValueAsString(message);
                 logger.debug("successString: " + successString);
@@ -162,5 +159,36 @@ public class UserStoryController {
         }
         return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
     }
+	
+	@RequestMapping(value = "/getByProjectID/{projectId}", method = RequestMethod.GET)
+    @ResponseBody
+	public ResponseEntity<String> getByProjectID(@PathVariable int projectId) {
+        String jsonUserStory = null;
+        String jsonProject = null;
+        String error = null;
+        Project project = projectService.getByID(projectId);
+        if (project == null) {
+            error = "Project doesn't exist";
+        } else {
+            List<UserStory> userStories = userstoryService.getByProject(project);
+            try {
+                ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+                jsonUserStory = ow.writeValueAsString(userStories);
+                jsonProject = ow.writeValueAsString(project);
+            } catch (JsonProcessingException e) {
+                error = e.toString();
+            } catch (Exception e) {
+                error = e.toString();
+            }
+        }
+
+        if (error != null) {
+            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("{ \"userstories\" : " + jsonUserStory +
+        									" , \"project\" : " + jsonProject +
+        									" } ", HttpStatus.ACCEPTED);
+    }
+
 	
 }

@@ -2,42 +2,43 @@
 angular.module('hrmApp.controllers')
 .controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService',
                               function($scope, $http, $state, $stateParams, hrmService) {
-	 // Get all USStates
-	$scope.loadUsRelatedData = function(projectId) {
-	      $scope.usStates = new Array();
-	      $http.get("./userstory/getrelateddata/" + projectId).success(function(data) {
-	        $scope.usStates = data.usStates;
-	        $scope.sprints = data.sprints;
-	        $scope.users = data.users;
-	        $scope.project = data.project;
-	        $scope.parents = data.parents;
-	      });
-	    };
-
+	
+		$scope.userstory = {};
+		 // Get all USStates
+		$scope.loadUsRelatedData = function(projectId) {
+		      $http.get("./userstory/getrelateddata/" + projectId).success(function(data) {
+		        $scope.usStates = data.usStates;
+		        $scope.sprints = data.sprints;
+		        $scope.users = data.users;
+		        $scope.project = data.project;
+		        $scope.parents = data.parents;
+		      });
+		    };
+	    console.log('userstory object: ' + $scope.userstory.usStates);
 	 // save and redirect to sprint list
         $scope.saveAndClose = function() {
         	var formData = {
         			"active" : 1,
-    				"name" : $scope.name,
-    				"userStoryState" : JSON.parse($scope.usstate),
-    				"planEst" : $scope.planest,
-    				"todoEst" : $scope.todo,
-    				"actual" : $scope.actual,
+    				"name" : $scope.userstory.name,
+    				"userStoryState" : JSON.parse($scope.userstory.usstate),
+    				"planEst" : $scope.userstory.planest,
+    				"todoEst" : $scope.userstory.todo,
+    				"actual" : $scope.userstory.actual,
     				"description" :$('#description').html(),
-    				"businessValue" : $scope.businessval,
-    				"point" : $scope.pointval,
+    				"businessValue" : $scope.userstory.businessval,
+    				"point" : $scope.userstory.pointval,
     				"note" : $('#note').html(),
     				"project" : $scope.project
     		};
         	
-        	if(typeof $scope.assignee !== "undefined" && $scope.assignee !== null)
-        		formData["owner"] = JSON.parse($scope.assignee);
-        	if(typeof $scope.iteration !== "undefined" && $scope.iteration !== null)
-        		formData["sprint"] = JSON.parse($scope.iteration);
-        	if(typeof $scope.parent != "undefined" && $scope.parent !== null)
-        		formData["parent"] = JSON.parse($scope.parent);
-        	if(typeof $scope.builddate !== "undefined" && $scope.builddate !== "")
-        		formData["buildDate"] = moment($scope.builddate,"DD-MM-YYYY hh:mm:ss");
+        	if(typeof $scope.userstory.assignee !== "undefined" && $scope.userstory.assignee !== null)
+        		formData["owner"] = JSON.parse($scope.userstory.assignee);
+        	if(typeof $scope.userstory.iteration !== "undefined" && $scope.userstory.iteration !== null)
+        		formData["sprint"] = JSON.parse($scope.userstory.iteration);
+        	if(typeof $scope.userstory.parent != "undefined" && $scope.userstory.parent !== null)
+        		formData["parent"] = JSON.parse($scope.userstory.parent);
+        	if(typeof $scope.userstory.builddate !== "undefined" && $scope.userstory.builddate !== "")
+        		formData["buildDate"] = moment($scope.userstory.builddate,"DD-MM-YYYY hh:mm:ss");
        	
         	console.log('formdata: ' + formData);
         	hrmService.post("./userstory/create", formData).then(function(message) {
@@ -56,34 +57,60 @@ angular.module('hrmApp.controllers')
               $scope.showDialog('#success');
               // redirect to sprint list page after 1 min
               setTimeout(function() {
-            	  $state.go('sprint.list', {
-                      projectId : $scope.project.id
-                    });
+            	  $scope.goToUsList();
               }, 1000);
             }
           });
         };
         
-     
-        // Get all UsStates
-        $scope.loadUsStates = function() {
-          hrmService.get("./userstory/getAllUsStates").then(function(data) {
-            $scope.usStates = data.usStates;
+        //go to US list
+        $scope.goToUsList = function() {
+        	$state.go('us.list', {
+                projectId : $scope.project.id
+              });
+        }
+        
+     // reset form
+        $scope.reset = function(form) {
+        	console.log('reset form');
+          if (form) {
+            form.$setUntouched();
+            form.$setPristine();
+            // directive check float number
+            form.$setValidity('float', true);
+          }
+          $scope.userstory={};
+          // clear description and note div on UIs
+          $('#description').html('');
+          $('#note').html('');
+
+        }
+  
+     // get list sprints by project id
+        $scope.getUserStoriesByProjectID = function(projectId) {
+          hrmService.get("./userstory/getByProjectID/" + projectId).then(function(data) {
+            $scope.userstories = data.userstories;
+            $scope.project = data.project;
           });
         };
-
+     
+        // convert date to VietNam (UK) date format
+        $scope.toVNDateFormat = function(date) {
+        	console.log('date: ' + date);
+        	if(typeof date !== undefined && date !== null)
+        		return moment(date).format("DD-MM-YYYY");
+        }
         
     // call when change page
     $scope.$on("$stateChangeSuccess", function() {
       // load list of sprints in a project
       if ($state.is('us.list')) {
-        /*$scope.getSprintsByProjectID($stateParams.projectId);
-        $scope.getByProjectID($stateParams.projectId);*/
+        $scope.getUserStoriesByProjectID($stateParams.projectId);
+        //$scope.getByProjectID($stateParams.projectId);
       }
 
       // load project and sprintstates for create sprint form
       if ($state.is('us.create')) {
-    	  /*$scope.loadUsStates();*/
     	  $scope.loadUsRelatedData($stateParams.projectId);    
       }
       // load sprint, project and sprintstates for edit sprint form

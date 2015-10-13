@@ -85,7 +85,7 @@ public class UserStoryServiceImp implements UserStoryService {
 	@Override
 	public List<UserStory> getByProject(Project project) {
 		// TODO Auto-generated method stub
-		return userStoryRepository.findByProject(project);
+		return userStoryRepository.findByProjectAndActive(project, (byte) 1);
 	}
 
 }
