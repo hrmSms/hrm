@@ -121,15 +121,12 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
         ctrl.$setValidity('float', true);
         return viewValue.replace(/\,/g, '');
       } else if (FLOAT_REGEXP_3.test(viewValue)) {
-        console.log(viewValue);
         ctrl.$setValidity('float', true);
         return viewValue.substring(0, limit);
       } else if (FLOAT_REGEXP_4.test(viewValue)) {
-        console.log(viewValue);
         ctrl.$setValidity('float', true);
         return viewValue.replace(',', '.');
       } else {
-        console.log("la la 3");
         ctrl.$setValidity('float', false);
         return viewValue.replace(',', '.');
       }
