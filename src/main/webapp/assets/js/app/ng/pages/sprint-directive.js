@@ -92,48 +92,49 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
  * author:Guilherme Ferreira http://gsferreira.com/archive/2014/05/angularjs-smart-float-directive/
  */
 .directive('smartFloat', [ function() {
-  var FLOAT_REGEXP_1 = /^\d{1}(\.\d{3})*(\,\d{1,2})$/; // Numbers like: 1.123,56
-  var FLOAT_REGEXP_2 = /^\d{1}(\,\d{3})*(\.\d{1,2})$/; // Numbers like: 1,123.56
-  var FLOAT_REGEXP_3 = /^\d{1,4}(\.\d{1,2})?$/; // Numbers like: 1123.56
-  var FLOAT_REGEXP_4 = /^\d{1,4}(\,\d{1,2})?$/; // Numbers like: 1123,56
+  var FLOAT_REGEXP_1 = /^\d{1}(\.\d{3})*(\,\d{0,4})$/; // Numbers like: 1.123,56
+  var FLOAT_REGEXP_2 = /^\d{1}(\,\d{3})*(\.\d{0,4})$/; // Numbers like: 1,123.56
+  var FLOAT_REGEXP_3 = /^\d{1,3}(\.\d{0,4})?$/; // Numbers like: 1123.56
+  var FLOAT_REGEXP_4 = /^\d{1,3}(\,\d{0,4})?$/; // Numbers like: 1123,56
 
   var link = function($scope, $element, $attrs, ctrl) {
-
+    var limit = parseInt($attrs.smartFloat);
     $scope.$watch(function() {
       return ctrl.$modelValue;
     }, function(newVal, oldVal) {
-      var limit = parseInt($attrs.smartFloat);
       angular.element($element).on("keyup", function() {
-        if (this.value.length >= limit){
-          this.value=this.value.substring(0, limit) ;
+        if (this.value.length >= limit) {
+          this.value = this.value.substring(0, limit);
         }
       });
     });
 
     var validator = function(viewValue) {
+      viewValue = viewValue.substring(0, limit);
       if (ctrl.$isEmpty(viewValue)) {
         ctrl.$setValidity('float', true);
         return viewValue;
       } else if (FLOAT_REGEXP_1.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(/\./g, '').replace(',', '.').substring(0, 8);
+        return viewValue.replace(/\./g, '').replace(',', '.');
       } else if (FLOAT_REGEXP_2.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(/\,/g, '').substring(0, 8);
+        return viewValue.replace(/\,/g, '');
       } else if (FLOAT_REGEXP_3.test(viewValue)) {
+        console.log(viewValue);
         ctrl.$setValidity('float', true);
-        return viewValue.substring(0, 7);
+        return viewValue.substring(0, limit);
       } else if (FLOAT_REGEXP_4.test(viewValue)) {
+        console.log(viewValue);
         ctrl.$setValidity('float', true);
-        return viewValue.replace(',', '.').substring(0, 7);
+        return viewValue.replace(',', '.');
       } else {
+        console.log("la la 3");
         ctrl.$setValidity('float', false);
-        return viewValue;
+        return viewValue.replace(',', '.');
       }
     };
-
-    ctrl.$parsers.unshift(validator);
-    ctrl.$formatters.unshift(validator);
+    ctrl.$parsers.unshift(validator); 
   }
   return {
     restrict : '',
