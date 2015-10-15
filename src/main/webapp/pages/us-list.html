@@ -20,7 +20,7 @@
 
   </div>
 </div>
-<div ng-show="deleteSuccess" class="col-xs-12 center" id="message">
+<div data-ng-show="deleteSuccess" class="col-xs-12 center" id="message">
   <div class="alert alert-success">{{deleteSuccess}}</div>
 </div>
 <div class="row">
@@ -46,7 +46,7 @@
         <tbody>
           <tr data-ng-repeat="us in userstories" data-on-last-repeat>
             <td>
-              <button class="btn btn-xs btn-info" data-ng-click="goToEditUserStory(us.id)" data-show="tooltip"
+              <button class="btn btn-xs btn-info" data-ng-click="goToEditUserStory(us)" data-show="tooltip"
                 title="Edit selected row">
                 <i class="ace-icon fa fa-pencil bigger-120"></i>
               </button>

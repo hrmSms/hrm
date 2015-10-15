@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import vn.com.tma.hrm.currentuser.CurrentUser;
 import vn.com.tma.hrm.entities.Role;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.repository.UserRepository;

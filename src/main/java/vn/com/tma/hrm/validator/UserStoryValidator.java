@@ -11,7 +11,6 @@ import org.springframework.validation.Validator;
 
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.UserStory;
-import vn.com.tma.hrm.model.UserStoryInputForm;
 import vn.com.tma.hrm.services.SprintService;
 import vn.com.tma.hrm.services.UserStoryService;
 
@@ -26,21 +25,22 @@ public class UserStoryValidator implements Validator{
 
 	    @Override
 	    public boolean supports(Class<?> clazz) {
-	        return clazz.equals(UserStoryInputForm.class);
+	        return clazz.equals(UserStory.class);
 	    }
 
 	    @Override
 	    public void validate(Object obj, Errors errors) {
-	    	UserStoryInputForm usForm = (UserStoryInputForm) obj;
+	    	UserStory userStory = (UserStory) obj;
 	    	 System.out.println("go here to validate");
 	    	// check all fields require
 	    	 ValidationUtils.rejectIfEmptyOrWhitespace(errors, "name", messageSource.getMessage("name.required", null, Locale.US));
-	    	 ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userStoryState", messageSource.getMessage("userStoryState.required", null, Locale.US));
+	    	 ValidationUtils.rejectIfEmptyOrWhitespace(errors, "state", messageSource.getMessage("userStoryState.required", null, Locale.US));
 	    	 
 	    	// validate name
 	         if (!errors.hasFieldErrors("name")) {
-	             if(usService.getByProjectAndName(usForm.getProject(), usForm.getName()).isPresent() ) 
-	                 errors.rejectValue("name", messageSource.getMessage("name.duplicate", new Object[] { usForm.getName() }, Locale.US),"Name is duplicated.");
+	             if(usService.getByProjectAndName(userStory.getProject(), userStory.getName()).isPresent()
+	            		 && userStory.getId() == null) 
+	                 errors.rejectValue("name", messageSource.getMessage("name.duplicate", new Object[] { userStory.getName() }, Locale.US),"Name is duplicated.");
 	             
 	         }
 	    }

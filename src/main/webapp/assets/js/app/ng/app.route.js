@@ -70,6 +70,11 @@ angular.module('hrmApp.route', [])
 	url: '^/us/create?projectId',
     templateUrl: 'pages/us-create.html',
     controller: 'UserStoryCtrl'
+  })
+  .state('us.edit', {
+    url: '^/us/edit?id&projectId',
+    templateUrl: 'pages/us-edit.html',
+    controller: 'UserStoryCtrl'
   });
   
 //Routes for Sprint

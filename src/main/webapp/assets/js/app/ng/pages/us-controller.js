@@ -5,8 +5,8 @@ angular.module('hrmApp.controllers')
 	
 		$scope.userstory = {};
 		 // Get all USStates
-		$scope.loadUsRelatedData = function(projectId) {
-		      $http.get("./userstory/getrelateddata/" + projectId).success(function(data) {
+		var loadUsRelatedData = function(projectId) {
+		      $http.get("./user_story/get_related_data/" + projectId).success(function(data) {
 		        $scope.usStates = data.usStates;
 		        $scope.sprints = data.sprints;
 		        $scope.users = data.users;
@@ -14,34 +14,10 @@ angular.module('hrmApp.controllers')
 		        $scope.parents = data.parents;
 		      });
 		    };
-	    console.log('userstory object: ' + $scope.userstory.usStates);
+
 	 // save and redirect to sprint list
-        $scope.saveAndClose = function() {
-        	var formData = {
-        			"active" : 1,
-    				"name" : $scope.userstory.name,
-    				"userStoryState" : JSON.parse($scope.userstory.usstate),
-    				"planEst" : $scope.userstory.planest,
-    				"todoEst" : $scope.userstory.todo,
-    				"actual" : $scope.userstory.actual,
-    				"description" :$('#description').html(),
-    				"businessValue" : $scope.userstory.businessval,
-    				"point" : $scope.userstory.pointval,
-    				"note" : $('#note').html(),
-    				"project" : $scope.project
-    		};
-        	
-        	if(typeof $scope.userstory.assignee !== "undefined" && $scope.userstory.assignee !== null)
-        		formData["owner"] = JSON.parse($scope.userstory.assignee);
-        	if(typeof $scope.userstory.iteration !== "undefined" && $scope.userstory.iteration !== null)
-        		formData["sprint"] = JSON.parse($scope.userstory.iteration);
-        	if(typeof $scope.userstory.parent != "undefined" && $scope.userstory.parent !== null)
-        		formData["parent"] = JSON.parse($scope.userstory.parent);
-        	if(typeof $scope.userstory.builddate !== "undefined" && $scope.userstory.builddate !== "")
-        		formData["buildDate"] = moment($scope.userstory.builddate,"DD-MM-YYYY hh:mm:ss");
-       	
-        	console.log('formdata: ' + formData);
-        	hrmService.post("./userstory/create", formData).then(function(message) {
+        $scope.createAndClose = function() {
+        	hrmService.post("./user_story/create", new userstoryJsonObj()).then(function(message) {
         	  console.log('success message: ' + message.error);
         	  console.log('success message: ' + message.success);
             if (message.error) {
@@ -55,7 +31,7 @@ angular.module('hrmApp.controllers')
               $scope.success = message.success;
               // show message success dialog
               $scope.showDialog('#success');
-              // redirect to sprint list page after 1 min
+              // redirect to us list page after 1 min
               setTimeout(function() {
             	  $scope.goToUsList();
               }, 1000);
@@ -63,13 +39,84 @@ angular.module('hrmApp.controllers')
           });
         };
         
-        //go to US list
+        $scope.saveAndClose = function() {
+            hrmService.post("./user_story/edit", new userstoryJsonObj()).then(function(message) {
+              if (message.error) {
+                $scope.success = null;
+                $scope.error = message.error;
+              }
+              if (message.success) {
+            	  console.log('edit success: ' + message.success);
+                $scope.error = null;
+                $scope.success = message.success;
+                // show message success dialog
+                $scope.showDialog('#success');
+                // redirect to us list page after 1 min
+                setTimeout(function() {
+              	  $scope.goToUsList();
+                }, 1000);
+              }
+            });
+          };
+        
+        var userstoryJsonObj = function() {
+        	var formData = {
+        			id : $scope.userstory.id,
+        			active : 1,
+    				name : $scope.userstory.name,
+    				state : JSON.parse($scope.userstory.state),
+    				planEst : $scope.userstory.planEst,
+    				todoEst : $scope.userstory.todoEst,
+    				actual : $scope.userstory.actual,
+    				description :$('#description').html(),
+    				businessValue : $scope.userstory.businessValue,
+    				point : $scope.userstory.point,
+    				note : $('#note').html(),
+    				project : $scope.project
+    		};
+        	
+        	if(typeof $scope.userstory.owner !== "undefined" && $scope.userstory.owner !== null)
+        		formData["owner"] = JSON.parse($scope.userstory.owner);
+        	if(typeof $scope.userstory.sprint !== "undefined" && $scope.userstory.sprint !== null)
+        		formData["sprint"] = JSON.parse($scope.userstory.sprint);
+        	if(typeof $scope.userstory.parent != "undefined" && $scope.userstory.parent !== null)
+        		formData["parent"] = JSON.parse($scope.userstory.parent);
+        	if(typeof $scope.userstory.buildDate !== "undefined" && $scope.userstory.buildDate !== "")
+        		formData["buildDate"] = moment($scope.userstory.buildDate,"DD-MM-YYYY hh:mm:ss");
+        	
+        	return formData;
+        }
+        
+          
+        //go to US list page
         $scope.goToUsList = function() {
-        	$state.go('us.list', {
-                projectId : $scope.project.id
+	    	$state.go('us.list', {
+	            projectId : $scope.project.id
+	          });
+        }
+        
+      //go to US edit page
+        $scope.goToEditUserStory = function(userstory) {
+        	if (typeof(Storage) != "undefined") {
+                localStorage["userstory"] = JSON.stringify(userstory);
+            }
+        	$state.go('us.edit', {
+                projectId : $scope.project.id,
+                id : userstory.id
               });
         }
         
+        //pass userstory object value to us-edit page
+        var loadUserStory  = function() {
+        	$scope.userstory = JSON.parse(localStorage["userstory"]);
+        	$scope.userstory.state = JSON.stringify($scope.userstory.state);
+        	$scope.userstory.sprint = JSON.stringify($scope.userstory.sprint);
+        	$scope.userstory.owner = JSON.stringify($scope.userstory.owner);
+        	$scope.userstory.parent = JSON.stringify($scope.userstory.parent);
+        	$scope.userstory.buildDate = $scope.toVNDateFormat($scope.userstory.buildDate);
+        	 $('#description').html($scope.userstory.description);
+        	 $('#note').html($scope.userstory.note);
+        }
      // reset form
         $scope.reset = function(form) {
         	console.log('reset form');
@@ -86,9 +133,9 @@ angular.module('hrmApp.controllers')
 
         }
   
-     // get list sprints by project id
-        $scope.getUserStoriesByProjectID = function(projectId) {
-          hrmService.get("./userstory/getByProjectID/" + projectId).then(function(data) {
+     // get list userstories by project id
+        var getUserStoriesByProjectID = function(projectId) {
+          hrmService.get("./user_story/get_user_stories_by_project_id/" + projectId).then(function(data) {
             $scope.userstories = data.userstories;
             $scope.project = data.project;
           });
@@ -105,17 +152,18 @@ angular.module('hrmApp.controllers')
     $scope.$on("$stateChangeSuccess", function() {
       // load list of sprints in a project
       if ($state.is('us.list')) {
-        $scope.getUserStoriesByProjectID($stateParams.projectId);
+        getUserStoriesByProjectID($stateParams.projectId);
         //$scope.getByProjectID($stateParams.projectId);
       }
 
       // load project and sprintstates for create sprint form
       if ($state.is('us.create')) {
-    	  $scope.loadUsRelatedData($stateParams.projectId);    
+    	  loadUsRelatedData($stateParams.projectId);    
       }
       // load sprint, project and sprintstates for edit sprint form
       if ($state.is('us.edit')) {
-        /*$scope.getBySprintID($stateParams.id);*/
+    	  loadUsRelatedData($stateParams.projectId);    
+    	  loadUserStory();
       }
     });
     

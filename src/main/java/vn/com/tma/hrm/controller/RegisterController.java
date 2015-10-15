@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.VerificationToken;
-import vn.com.tma.hrm.model.OnRegistrationCompleteEvent;
+import vn.com.tma.hrm.model.RegistrationEvent;
 import vn.com.tma.hrm.model.UserRegistrationForm;
 import vn.com.tma.hrm.services.UserService;
 
@@ -75,7 +75,7 @@ public class RegisterController {
 			User registered = userService.registerNewUserAccount(regForm);
 			String appUrl = "http://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath();
 			System.out.println("appUrl: " + appUrl);
-			applicationEventPublisher.publishEvent(new OnRegistrationCompleteEvent(registered, request.getLocale(), appUrl));
+			applicationEventPublisher.publishEvent(new RegistrationEvent(registered, request.getLocale(), appUrl));
 			msg = "Account " + registered.getUsername() + " is created";
 		} catch (DataIntegrityViolationException e) {
 			e.printStackTrace();

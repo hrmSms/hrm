@@ -27,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -36,7 +38,6 @@ import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.entities.UserStoryState;
-import vn.com.tma.hrm.model.UserStoryInputForm;
 import vn.com.tma.hrm.services.ProjectService;
 import vn.com.tma.hrm.services.SprintService;
 import vn.com.tma.hrm.services.UserService;
@@ -47,7 +48,7 @@ import vn.com.tma.hrm.validator.UserStoryValidator;
 
 
 @Controller
-@RequestMapping(value = "/userstory")
+@RequestMapping(value = "/user_story")
 public class UserStoryController {
 
 	private static final Logger logger = LogManager.getLogger(UserStoryController.class);
@@ -78,7 +79,7 @@ public class UserStoryController {
         binder.addValidators(usValidator);
     }
 	
-	@RequestMapping(value="/getrelateddata/{projectId}", method = RequestMethod.GET)
+	@RequestMapping(value="/get_related_data/{projectId}", method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<String> getAllRelatedData(@PathVariable int projectId) {
 		String error = null;
@@ -132,9 +133,9 @@ public class UserStoryController {
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	@ResponseBody
-    public ResponseEntity<String> create(@Valid @RequestBody UserStoryInputForm usForm, BindingResult result) {
+    public ResponseEntity<String> create(@Valid @RequestBody UserStory userStory, BindingResult result) {
 		logger.debug("going to create UserStory");
-		logger.debug("usForm.state: " + usForm.getUserStoryState());
+		logger.debug("usForm.state: " + userStory.getState());
         String successString = null;
         String errorString = null;
         Map<String, String> error = new HashMap<String, String>();
@@ -148,7 +149,7 @@ public class UserStoryController {
                 logger.debug("error message: " + errorString);
                 return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
             } else {
-                UserStory us = userstoryService.create(usForm);
+                UserStory us = userstoryService.create(userStory);
                 String message = messageSource.getMessage("create.success", new Object[] { us.getName() }, Locale.US);
                 successString = ow.writeValueAsString(message);
                 logger.debug("successString: " + successString);
@@ -160,7 +161,33 @@ public class UserStoryController {
         return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
     }
 	
-	@RequestMapping(value = "/getByProjectID/{projectId}", method = RequestMethod.GET)
+	 @RequestMapping(value = "/edit", method = RequestMethod.POST)
+	    public ResponseEntity<String> editSprint(@Valid @RequestBody UserStory updatedUserStory, BindingResult result) throws Exception {
+	        String successString = null;
+	        String errorString = null;
+	        Map<String, String> error = new HashMap<String, String>();
+	        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+	        try {
+	            if (result.hasErrors()) {
+	                for (FieldError errorMessage : result.getFieldErrors()) {
+	                    error.put(errorMessage.getField(), errorMessage.getCode());
+	                }
+	                errorString = ow.writeValueAsString(error);
+	                return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
+	            } else {
+	                userstoryService.update(updatedUserStory);
+	                String message = messageSource.getMessage("update.success", new Object[] { updatedUserStory.getName() }, Locale.US);
+	                successString = ow.writeValueAsString(message);
+	            }
+
+	        } catch (JsonProcessingException e) {
+	            e.printStackTrace();
+	        }
+	        return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
+
+	    }
+
+	@RequestMapping(value = "/get_user_stories_by_project_id/{projectId}", method = RequestMethod.GET)
     @ResponseBody
 	public ResponseEntity<String> getByProjectID(@PathVariable int projectId) {
         String jsonUserStory = null;

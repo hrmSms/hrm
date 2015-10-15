@@ -1,4 +1,4 @@
-package vn.com.tma.hrm.currentuser;
+package vn.com.tma.hrm.security;
 
 import org.springframework.security.core.authority.AuthorityUtils;
 
