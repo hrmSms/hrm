@@ -59,6 +59,22 @@ angular.module('hrmApp.controllers')
             });
           };
         
+          $scope.onDelete = function(userstory) {
+        	  var message = userstory.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
+                if (result) {
+                  hrmService.post("./user_story/delete/" + userstory.id, null).then(function(message) {
+                    $scope.deleteSuccess = message.success;
+                    // show message success dialog
+                    $scope.showDialog('#message');
+                    // reload
+                    console.log('delete on project: ' + $stateParams.projectId);
+                    getUserStoriesByProjectID($stateParams.projectId);
+                  });
+                }
+              });
+          }
+          
         var userstoryJsonObj = function() {
         	var formData = {
         			id : $scope.userstory.id,
