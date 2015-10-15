@@ -62,13 +62,18 @@ angular.module('hrmApp.route', [])
     template: '<ui-view/>'
   })
   .state('us.list', {
-    url: '/us/list',
+    url: '^/us/list?projectId',
     templateUrl: 'pages/us-list.html',
     controller: 'UserStoryCtrl'
   })
   .state('us.create', {
 	url: '^/us/create?projectId',
     templateUrl: 'pages/us-create.html',
+    controller: 'UserStoryCtrl'
+  })
+  .state('us.edit', {
+    url: '^/us/edit?id&projectId',
+    templateUrl: 'pages/us-edit.html',
     controller: 'UserStoryCtrl'
   });
   

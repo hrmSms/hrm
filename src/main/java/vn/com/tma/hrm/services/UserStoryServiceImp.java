@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.UserStory;
-import vn.com.tma.hrm.model.UserStoryInputForm;
 import vn.com.tma.hrm.repository.UserStoryRepository;
 
 @Component
@@ -20,31 +19,37 @@ public class UserStoryServiceImp implements UserStoryService {
 	UserStoryRepository userStoryRepository;
 
 	@Override
-	public UserStory create(UserStoryInputForm usForm) {
+	public UserStory create(UserStory userStory) {
 		// TODO Auto-generated method stub
-		UserStory us = new UserStory();
-		us.setActive(usForm.getActive());
-		us.setActual(usForm.getActual());
-		us.setBusinessValue(usForm.getBusinessValue());
-		us.setDescription(usForm.getDescription());
-		us.setName(usForm.getName());
-		us.setNote(usForm.getNote());
-		us.setOwner(usForm.getOwner());
-		us.setPlanEst(usForm.getPlanEst());
-		us.setPoint(usForm.getPoint());
-		us.setSprint(usForm.getSprint());
-		us.setState(usForm.getUserStoryState());
-		us.setBuildDate(usForm.getBuildDate());
-		us.setTodoEst(usForm.getTodoEst());
-		us.setProject(usForm.getProject());
-		us.setParent(usForm.getParent());
+		UserStory us = userStory;
 		return userStoryRepository.save(us);
 	}
 
 	@Override
+	@Transactional(value="txManager") 
 	public UserStory update(UserStory userStory) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		UserStory updatedUserStory = userStoryRepository.findOne(userStory.getId());
+
+        if (updatedUserStory == null) {
+            throw new Exception();
+        }
+        updatedUserStory.setActive(userStory.getActive());
+        updatedUserStory.setActual(userStory.getActual());
+        updatedUserStory.setDescription(userStory.getDescription());        
+        updatedUserStory.setName(userStory.getName());
+        updatedUserStory.setOwner(userStory.getOwner());
+        updatedUserStory.setPoint(userStory.getPoint());
+        updatedUserStory.setState(userStory.getState());
+        updatedUserStory.setNote(userStory.getNote());
+        updatedUserStory.setPlanEst(userStory.getPlanEst());
+        updatedUserStory.setProject(userStory.getProject());
+        updatedUserStory.setSprint(userStory.getSprint());
+        updatedUserStory.setTodoEst(userStory.getTodoEst());
+        updatedUserStory.setParent(userStory.getParent());
+        updatedUserStory.setBuildDate(userStory.getBuildDate());
+        updatedUserStory.setBusinessValue(userStory.getBusinessValue());
+        return updatedUserStory;
 	}
 
 	@Override
@@ -85,7 +90,7 @@ public class UserStoryServiceImp implements UserStoryService {
 	@Override
 	public List<UserStory> getByProject(Project project) {
 		// TODO Auto-generated method stub
-		return userStoryRepository.findByProject(project);
+		return userStoryRepository.findByProjectAndActive(project, (byte) 1);
 	}
 
 }

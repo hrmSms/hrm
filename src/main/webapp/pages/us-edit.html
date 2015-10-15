@@ -67,7 +67,7 @@ label {
 				<div data-ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
 					<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
 					<select class="form-control" id="state" data-ng-model="userstory.state" required>
-						<option data-ng-repeat="usState in usStates" value={{usState}}>{{usState.name}}</option>
+						<option data-ng-repeat="usState in usStates" value={{usState}} data-ng-selected="userstory.state != null">{{usState.name}}</option>
 					</select>
 				</div>
 				<div data-ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
@@ -126,7 +126,7 @@ label {
 								<div class="form-group col-md-4">
 									<label class="control-label no-padding-right" for="iteration">Iteration</label>
 									<select class="form-control" id="iteration" data-ng-model="userstory.sprint">
-										<option data-ng-repeat="sprint in sprints" value={{sprint}}>{{sprint.name}}</option>
+										<option data-ng-repeat="sprint in sprints" value={{sprint}} data-ng-selected="userstory.sprint != null">{{sprint.name}}</option>
 									</select>
 									<br/>
 									<label class="control-label no-padding-right" for="businessval">Business Value</label>
@@ -236,13 +236,13 @@ label {
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
 			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner">
-				<option data-ng-repeat="user in users" value={{user}}>{{user.username}}</option>
+				<option data-ng-repeat="user in users" value={{user}} data-ng-selected="userstory.owner != null">{{user.username}}</option>
 			</select>
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="parent">Parent</label>
 			<select class="form-control" id="parent" data-ng-model="userstory.parent">
-				<option data-ng-repeat="parent in parents" value={{parent}}>{{parent.name}}</option>
+				<option data-ng-repeat="parent in parents" value={{parent}} data-ng-selected="userstory.parent != null">{{parent.name}}</option>
 			</select>
 		</div>
 		
@@ -256,11 +256,8 @@ label {
 	<div class="clearfix"></div>
 	<div class="form-group col-md-9">
 		<div class="form-actions center clearfix">
-	  <button data-ng-disabled="form.$invalid" type="button" id="createbtn" class="btn btn-success" data-ng-click="createAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
-          </button>
-          <button type="button" class="btn btn-warning" data-ng-click="reset(form)">
-            <i class="ace-icon fa fa-undo bigger-110"></i> Reset
+	  <button data-ng-disabled="form.$invalid" type="button" id="createbtn" class="btn btn-success" data-ng-click="saveAndClose()">
+            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
           </button>
           <button type="button" class="btn btn-purple" data-ng-click="goToUsList()">
             <i class="ace-icon fa fa-times bigger-110"></i> Close

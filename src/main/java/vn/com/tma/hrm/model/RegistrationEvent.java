@@ -6,7 +6,7 @@ import org.springframework.context.ApplicationEvent;
 
 import vn.com.tma.hrm.entities.User;
 
-public class OnRegistrationCompleteEvent extends ApplicationEvent {
+public class RegistrationEvent extends ApplicationEvent {
     /**
 	 * 
 	 */
@@ -39,7 +39,7 @@ public class OnRegistrationCompleteEvent extends ApplicationEvent {
         this.appUrl = appUrl;
     }
 
-    public OnRegistrationCompleteEvent(User registered, Locale locale, String appUrl) {
+    public RegistrationEvent(User registered, Locale locale, String appUrl) {
         super(registered);
         this.user = registered;
         this.locale = locale;

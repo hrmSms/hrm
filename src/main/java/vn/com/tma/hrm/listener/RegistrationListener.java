@@ -13,11 +13,11 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import vn.com.tma.hrm.entities.User;
-import vn.com.tma.hrm.model.OnRegistrationCompleteEvent;
+import vn.com.tma.hrm.model.RegistrationEvent;
 import vn.com.tma.hrm.services.UserService;
 
 @Component
-public class RegistrationListener implements ApplicationListener<OnRegistrationCompleteEvent> {
+public class RegistrationListener implements ApplicationListener<RegistrationEvent> {
 
     @Autowired
     UserService userService;
@@ -33,7 +33,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
 
     @Override
     @Async
-    public void onApplicationEvent(OnRegistrationCompleteEvent event) {
+    public void onApplicationEvent(RegistrationEvent event) {
         System.out.println("Go to Listener");
         User user = event.getUser();
         String token = UUID.randomUUID().toString();
@@ -43,7 +43,7 @@ public class RegistrationListener implements ApplicationListener<OnRegistrationC
     }
 
     
-    private final SimpleMailMessage constructEmailMessage(OnRegistrationCompleteEvent event, User user, String token) {
+    private final SimpleMailMessage constructEmailMessage(RegistrationEvent event, User user, String token) {
         final String recipientAddress = user.getEmail();
         final String subject = "Registration Confirmation";
         final String confirmationUrl = event.getAppUrl() + "/registrationConfirm?token=" + token;

@@ -14,4 +14,5 @@ public interface UserStoryRepository extends JpaRepository<UserStory, Long>{
 	public Optional<UserStory> findByProjectAndName(Project project, String name);
     public List<UserStory> findBySprint(Sprint sprint);
     public List<UserStory> findByProject(Project project);
+    public List<UserStory> findByProjectAndActive(Project project, Byte active);
 }
