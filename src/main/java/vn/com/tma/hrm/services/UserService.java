@@ -1,10 +1,12 @@
 package vn.com.tma.hrm.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import vn.com.tma.hrm.entities.Task;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.VerificationToken;
 import vn.com.tma.hrm.model.UserRegistrationForm;
@@ -28,4 +30,6 @@ public interface UserService {
     void createVerificationTokenForUser(User user, String token);
 
     VerificationToken getVerificationToken(String VerificationToken);
+    
+    public List<User> getAll() ;
 }

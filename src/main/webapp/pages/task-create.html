@@ -30,17 +30,7 @@
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-state">State</label>
 				<select class="form-control" id="t-state" ng-model="task.state">
-					<option value="1" selected="selected">New</option>
-					<option value="2">Defined</option>
-					<option value="3">In-Progress</option>
-					<option value="4">Completed</option>					
-					<option value="5">Assigned</option>
-					<option value="6">In Progress</option>
-					<option value="7">Resolved</option>
-					<option value="8">Approved</option>
-					<option value="9">Closed</option>
-					<option value="10">Rejected</option>
-					<option value="11">Blocked</option>
+					<option ng-repeat="taskState in taskStates" value={{sprintState}}>{{taskState.name}}</option>
 				</select>
 			</div>
 			
@@ -117,19 +107,20 @@
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-owner">Owner</label>
 			<select class="form-control" id="t-owner" ng-model="task.owner">
-				<option value="1">Long Nguyen</option>
+				<option ng-repeat="user in users" value={{sprintState}}>{{user.username}}</option>
+				<!-- <option value="1">Long Nguyen</option>
 				<option value="2">Huy Nguyen</option>
-				<option value="3">Anh Nguyen</option>
+				<option value="3">Anh Nguyen</option> -->
 			</select>
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-user-story">User
 				story</label> <input type="text" class="form-control" id="t-user-story"
-				value="US 1" disabled="disabled">
+				value="{{userStory.name}}" disabled="disabled">
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-project">Project</label>
-			<input type="text" class="form-control" id="t-project" value="HRM"
+			<input type="text" class="form-control" id="t-project" value="{{project.name}}"
 				disabled="disabled">
 		</div>
 	</div>
