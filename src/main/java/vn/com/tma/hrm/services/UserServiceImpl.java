@@ -1,13 +1,16 @@
 package vn.com.tma.hrm.services;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import vn.com.tma.hrm.entities.Role;
+import vn.com.tma.hrm.entities.TaskState;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.VerificationToken;
 import vn.com.tma.hrm.model.UserRegistrationForm;
@@ -69,4 +72,10 @@ public class UserServiceImpl implements UserService {
     public VerificationToken getVerificationToken(String VerificationToken) {
         return verificationTokenRepository.findByToken(VerificationToken);
     }
+    
+    @Override
+	@Transactional(value="txManager") 
+	public List<User> getAll(){
+		return userRepository.findAll();
+	}
 }

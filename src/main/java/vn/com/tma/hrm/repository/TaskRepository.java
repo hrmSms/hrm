@@ -15,6 +15,5 @@ import vn.com.tma.hrm.entities.UserStory;
 @RepositoryRestResource(collectionResourceRel = "tasks", path = "tasks")
 public interface TaskRepository extends JpaRepository<Task, Integer> {
     public List<Task> findByUserStoryId(UserStory userStoryId);
-    //public List<Task> findByName(String name);
-    public List<Task> findByName(@Param("name") String name);	
+    public List<Task> findByName(String name);
 }

@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,6 +80,12 @@ public class UserStoryController {
 	private void initBinder(WebDataBinder binder) {
 		binder.addValidators(usValidator);
 	}
+	
+	@RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)
+    public UserStory getByID(@PathVariable int id) throws MethodArgumentNotValidException{
+        UserStory us = userstoryService.getByID(id);
+        return us;
+    }
 
 	@RequestMapping(value="/get_related_data/{projectId}", method = RequestMethod.GET)
 	@ResponseBody

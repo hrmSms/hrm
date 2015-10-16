@@ -3,11 +3,13 @@ package vn.com.tma.hrm.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,9 @@ public class TaskController {
 	@Autowired
     private UserStoryService usService;
 	
+	@Autowired
+    private MessageSource messageSource;
+	
 	@RequestMapping(value = { "/getall" }, method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<String> getAll() {
@@ -59,31 +64,6 @@ public class TaskController {
             return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
         }
         return new ResponseEntity<String>("{ \"tasks\" : " + jsonTasks + " } ", HttpStatus.ACCEPTED);
-    }
-	
-	public ResponseEntity<String> create(@Valid @RequestBody Task newTask, BindingResult result) {
-
-        String successString = null;
-        String errorString = null;
-        Map<String, String> error = new HashMap<String, String>();
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        try {
-            if (result.hasErrors()) {
-                for (FieldError errorMessage : result.getFieldErrors()) {
-                    error.put(errorMessage.getField(), errorMessage.getCode());
-                }
-                errorString = ow.writeValueAsString(error);
-                return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
-            } else {
-            	taskService.create(newTask);
-                String message = newTask.getName() + " was successfully created.";
-                successString = ow.writeValueAsString(message);
-            }
-
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
     }
 
 	public ResponseEntity<String> getByID(@PathVariable int id) {
@@ -118,6 +98,32 @@ public class TaskController {
         }
 
         return tasks;
+    }
+	
+	@RequestMapping(value = "/create", method = RequestMethod.POST)
+    public ResponseEntity<String> create(@Valid @RequestBody Task newTask, BindingResult result) {
+
+        String successString = null;
+        String errorString = null;
+        Map<String, String> error = new HashMap<String, String>();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            if (result.hasErrors()) {
+                for (FieldError errorMessage : result.getFieldErrors()) {
+                    error.put(errorMessage.getField(), errorMessage.getCode());
+                }
+                errorString = ow.writeValueAsString(error);
+                return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
+            } else {
+                taskService.create(newTask);
+                String message = messageSource.getMessage("create.success", new Object[] { newTask.getName() }, Locale.US);
+                successString = ow.writeValueAsString(message);
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
     }
 	
 	@RequestMapping(method = RequestMethod.GET)

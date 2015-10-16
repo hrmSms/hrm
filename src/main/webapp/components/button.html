@@ -1,0 +1,3 @@
+<button type="button" class="btn width-100px" ng-disabled="ngDisabled" ng-class="{'btn-success':isYes, 'btn-warning':isNo, 'btn-danger':isClose}">
+  <i class="ace-icon fa bigger-110" ng-class="{'fa-check':isYes, 'fa-undo':type=='reset', 'fa-times':isNo&&type!='reset', 'fa-times':isClose}"></i> {{label}}
+</button>
