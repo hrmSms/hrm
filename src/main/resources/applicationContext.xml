@@ -6,6 +6,7 @@
   xmlns:context="http://www.springframework.org/schema/context"
   xmlns:jpa="http://www.springframework.org/schema/data/jpa"
   xmlns:tx="http://www.springframework.org/schema/tx"
+  xmlns:task="http://www.springframework.org/schema/task"
   xsi:schemaLocation="
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -16,8 +17,14 @@
         http://www.springframework.org/schema/data/jpa
         http://www.springframework.org/schema/data/jpa/spring-jpa.xsd
         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+        http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/task 
+		http://www.springframework.org/schema/task/spring-task-4.0.xsd">
 
+  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="locations" value="classpath:application.properties" />
+  </bean>
+  
   <context:annotation-config/>
   <context:component-scan base-package="vn.com.tma.hrm"></context:component-scan>
   <mvc:annotation-driven />
@@ -32,21 +39,20 @@
   <!-- handle default url "/" -->
   <mvc:default-servlet-handler/>
   <!-- mapping default url "/" to "home" -->
-  <mvc:view-controller path="/" view-name="home"/>
+  <!-- <mvc:view-controller path="/" view-name="home"/> -->
+  <!-- <mvc:view-controller path="/login" view-name="login"/> -->
   
   <!-- static resources mapping -->
-  <mvc:resources mapping="/libs/**" location="/libs/"></mvc:resources>
   <mvc:resources mapping="/assets/**" location="/assets/"></mvc:resources>
-  <mvc:resources mapping="/app/**" location="/app/"></mvc:resources>
+  <mvc:resources mapping="/components/**" location="/components/"></mvc:resources>
+  <mvc:resources mapping="/pages/**" location="/pages/"></mvc:resources>
+  <mvc:resources mapping="/shared/**" location="/shared/"></mvc:resources>
 
   <!-- JPA configurations -->
   <jpa:repositories base-package="vn.com.tma.hrm.repository" 
                     entity-manager-factory-ref="entityManagerFactoryBean"
                     transaction-manager-ref="txManager"/>
 
-  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-    <property name="locations" value="classpath:application.properties" />
-  </bean>
   <bean id="hrmDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
     <property name="driverClassName" value="${db.driver}" />
     <property name="url" value="${db.url}" />
@@ -79,5 +85,34 @@
   <bean id="baseUri" class="org.springframework.data.rest.webmvc.BaseUri">
     <constructor-arg value="/api" />
   </bean>
+
+	<bean id="myUserDetailsService" class="vn.com.tma.hrm.security.MyUserDetailsService" />
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">			
+		 <property name="host"><value>${spring.mail.host}</value></property>
+        <property name="port"><value>${spring.mail.properties.mail.smtp.socketFactory.port}</value></property>
+        <property name="username"><value>${spring.mail.username}</value></property>
+        <property name="password"><value>${spring.mail.password}</value></property>
+        <property name="javaMailProperties">
+            <props>
+            	<prop key="mail.smtp.ssl.enable">${spring.mail.properties.mail.smtp.ssl.enable}</prop>
+                <prop key="mail.smtp.auth">${spring.mail.properties.mail.smtp.auth}</prop>
+                <prop key="mail.smtp.socketFactory.class">${spring.mail.properties.mail.smtp.socketFactory.class}</prop>
+                <prop key="mail.smtp.socketFactory.fallback">${spring.mail.properties.mail.smtp.socketFactory.fallback}</prop>
+            </props>
+        </property>
+	</bean>
+
+	<bean id="messageSource"
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename">
+            <value>${message.source.basename}</value>
+        </property>
+    </bean>
+    
+
+    <task:annotation-driven executor="executorService" />
+    <task:executor id="executorService" pool-size="1" />
+	
   <!-- <bean class="org.springframework.data.rest.webmvc.config.RepositoryRestMvcConfiguration"/> -->
 </beans>
