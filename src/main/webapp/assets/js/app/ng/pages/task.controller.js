@@ -16,8 +16,8 @@
 		
 		// Get UserStory by usId
 		$scope.getUserStoryById = function(usId) {
-			hrmService.get("./user_story/getByID/" + usId, null).then(function(item) {
-				$scope.userStory = item;
+			hrmService.get("./user_story/getByID/" + usId).then(function(item) {
+				$scope.userStory = item.userStory;
 			});
 		};
 		

@@ -37,6 +37,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
+import vn.com.tma.hrm.entities.TaskState;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.entities.UserStoryState;
@@ -82,9 +83,23 @@ public class UserStoryController {
 	}
 	
 	@RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)
-    public UserStory getByID(@PathVariable int id) throws MethodArgumentNotValidException{
-        UserStory us = userstoryService.getByID(id);
-        return us;
+	@ResponseBody
+    public ResponseEntity<String> getByID(@PathVariable int id) throws MethodArgumentNotValidException{
+		UserStory us = userstoryService.getByID(id);
+        String jsonUserStory = null;
+        String error = null;
+        try {
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            jsonUserStory = ow.writeValueAsString(us);
+        } catch (JsonProcessingException e) {
+            error = e.toString();
+        } catch (Exception e) {
+            error = e.toString();
+        }
+        if (error != null) {
+            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("{ \"userStory\" : " + jsonUserStory + " } ", HttpStatus.ACCEPTED);        
     }
 
 	@RequestMapping(value="/get_related_data/{projectId}", method = RequestMethod.GET)
