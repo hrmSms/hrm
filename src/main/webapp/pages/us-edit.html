@@ -263,13 +263,17 @@ label {
 	</div>
 	<div class="clearfix"></div>
 	<div class="form-group col-md-9">
-		<div class="form-actions center clearfix">
-	  <button data-ng-disabled="form.$invalid" type="button" id="createbtn" class="btn btn-success" data-ng-click="saveAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
-          </button>
-          <button type="button" class="btn btn-purple" data-ng-click="goToUsList()">
-            <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button>
+		<div class="form-actions center clearfix"><!-- 
+			<button data-ng-disabled="form.$invalid" type="button" id="createbtn"
+				class="btn btn-success" data-ng-click="saveAndClose()">
+				<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
+			</button>
+			<button type="button" class="btn btn-purple"
+				data-ng-click="goToUsList()">
+				<i class="ace-icon fa fa-times bigger-110"></i> Close
+			</button> -->
+			<hrm-button type="create" data-ng-disabled="!form.$valid" data-ng-click="saveAndClose()"></hrm-button>
+			<hrm-button type="close" data-ng-click="goToUsList()"></hrm-button>
 		</div>
 	</div>
 </form>

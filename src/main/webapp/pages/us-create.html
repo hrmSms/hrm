@@ -261,19 +261,14 @@ label {
 			</select>
 		</div> -->
 	</div>
-	<div class="clearfix"></div>
+	<div class="clearfix">
 	<div class="form-group col-md-9">
-		<div class="form-actions center clearfix">
-	  <button data-ng-disabled="form.$invalid" type="button" id="createbtn" class="btn btn-success" data-ng-click="createAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
-          </button>
-          <button type="button" class="btn btn-warning" data-ng-click="reset(form)">
-            <i class="ace-icon fa fa-undo bigger-110"></i> Reset
-          </button>
-          <button type="button" class="btn btn-purple" data-ng-click="goToUsList()">
-            <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button>
-		</div>
+		 <div class="form-actions center clearfix">
+			<hrm-button type="create" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
+         	<hrm-button type="reset" ng-click="reset(form)"></hrm-button>
+          	<hrm-button type="close" ng-click="goToUsList()"></hrm-button>
+          </div>
+          </div>
 	</div>
 </form>
 <!-- inline scripts related to this page -->
