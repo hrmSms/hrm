@@ -156,6 +156,10 @@
         </div>
 
         <div class="center clearfix">
+          <hrm-button type="create" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
+          <hrm-button type="reset" ng-click="reset(form)"></hrm-button>
+          <hrm-button type="close" ng-click="goToSprintList()"></hrm-button>
+          <!-- 
           <button ng-disabled="!form.$valid" type="button" class="btn btn-success width-100px"
             ng-click="createAndClose()">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
@@ -165,7 +169,7 @@
           </button>
           <button type="button" class="btn btn-danger width-100px" ng-click="goToSprintList()">
             <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button>
+          </button> -->
         </div>
 
       </form>

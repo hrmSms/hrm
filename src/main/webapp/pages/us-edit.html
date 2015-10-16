@@ -66,9 +66,11 @@ label {
 			<div class="form-group col-md-3">
 				<div data-ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
 					<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
-					<select class="form-control" id="state" data-ng-model="userstory.state" required>
-						<option data-ng-repeat="usState in usStates" value={{usState}} data-ng-selected="userstory.state != null">{{usState.name}}</option>
-					</select>
+					<!-- <select class="form-control" id="state" data-ng-model="userstory.state" required>
+						<option data-ng-repeat="usState in usStates" value={{usState}} ng-selected="userstory.state.id==usState.id">{{usState.name}}</option>
+					</select> -->
+					<select class="form-control" id="state" data-ng-model="userstory.state" required
+							data-ng-options="usState.name for usState in usStates track by usState.id"></select>
 				</div>
 				<div data-ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
 					<div data-ng-show="form.state.$error.required && !error.userStoryState"
@@ -125,9 +127,11 @@ label {
 							<div class="row">
 								<div class="form-group col-md-4">
 									<label class="control-label no-padding-right" for="iteration">Iteration</label>
-									<select class="form-control" id="iteration" data-ng-model="userstory.sprint">
-										<option data-ng-repeat="sprint in sprints" value={{sprint}} data-ng-selected="userstory.sprint != null">{{sprint.name}}</option>
-									</select>
+									<!-- <select class="form-control" id="iteration" data-ng-model="userstory.sprint">
+										<option data-ng-repeat="sp in sprints" value={{sp}} data-ng-selected="userstory.sprint.id == sp.id">{{sp.name}}</option>
+									</select> -->
+									<select class="form-control" id="iteration" data-ng-model="userstory.sprint" 
+											data-ng-options="sp.name for sp in sprints track by sp.id"></select>
 									<br/>
 									<label class="control-label no-padding-right" for="businessval">Business Value</label>
 									<div data-ng-class="{ 'has-error': form.businessval.$touched && form.businessval.$invalid }">
@@ -235,15 +239,19 @@ label {
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
-			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner">
-				<option data-ng-repeat="user in users" value={{user}} data-ng-selected="userstory.owner != null">{{user.username}}</option>
-			</select>
+			<!-- <select class="form-control" id="t-assignee" data-ng-model="userstory.owner">
+				<option data-ng-repeat="user in users" value={{user}} data-ng-selected="userstory.owner.id == user.id">{{user.username}}</option>
+			</select> -->
+			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner" 
+					data-ng-options="user.username for user in users track by user.id"></select>
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="parent">Parent</label>
-			<select class="form-control" id="parent" data-ng-model="userstory.parent">
-				<option data-ng-repeat="parent in parents" value={{parent}} data-ng-selected="userstory.parent != null">{{parent.name}}</option>
-			</select>
+			<!-- <select class="form-control" id="parent" data-ng-model="userstory.parent">
+				<option data-ng-repeat="pr in parents" value={{pr}} data-ng-selected="userstory.parent.id == pr.id">{{pr.name}}</option>
+			</select> -->
+			<select class="form-control" id="parent" data-ng-model="userstory.parent" 
+					data-ng-options="pr.name for pr in parents track by pr.id"></select>
 		</div>
 		
 		<!-- <div class="form-group">
@@ -255,13 +263,17 @@ label {
 	</div>
 	<div class="clearfix"></div>
 	<div class="form-group col-md-9">
-		<div class="form-actions center clearfix">
-	  <button data-ng-disabled="form.$invalid" type="button" id="createbtn" class="btn btn-success" data-ng-click="saveAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
-          </button>
-          <button type="button" class="btn btn-purple" data-ng-click="goToUsList()">
-            <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button>
+		<div class="form-actions center clearfix"><!-- 
+			<button data-ng-disabled="form.$invalid" type="button" id="createbtn"
+				class="btn btn-success" data-ng-click="saveAndClose()">
+				<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
+			</button>
+			<button type="button" class="btn btn-purple"
+				data-ng-click="goToUsList()">
+				<i class="ace-icon fa fa-times bigger-110"></i> Close
+			</button> -->
+			<hrm-button type="create" data-ng-disabled="!form.$valid" data-ng-click="saveAndClose()"></hrm-button>
+			<hrm-button type="close" data-ng-click="goToUsList()"></hrm-button>
 		</div>
 	</div>
 </form>
