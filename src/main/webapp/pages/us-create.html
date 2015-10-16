@@ -66,9 +66,11 @@ label {
 			<div class="form-group col-md-3">
 				<div data-ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
 					<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
-					<select class="form-control" id="state" data-ng-model="userstory.state" required>
+					<!-- <select class="form-control" id="state" data-ng-model="userstory.state" required>
 						<option data-ng-repeat="usState in usStates" value={{usState}}>{{usState.name}}</option>
-					</select>
+					</select> -->
+					<select class="form-control" id="state" data-ng-model="userstory.state" required
+							data-ng-options="usState.name for usState in usStates track by usState.id"></select>
 				</div>
 				<div data-ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
 					<div data-ng-show="form.state.$error.required && !error.userStoryState"
@@ -125,9 +127,11 @@ label {
 							<div class="row">
 								<div class="form-group col-md-4">
 									<label class="control-label no-padding-right" for="iteration">Iteration</label>
-									<select class="form-control" id="iteration" data-ng-model="userstory.sprint">
+									<!-- <select class="form-control" id="iteration" data-ng-model="userstory.sprint">
 										<option data-ng-repeat="sprint in sprints" value={{sprint}}>{{sprint.name}}</option>
-									</select>
+									</select> -->
+									<select class="form-control" id="iteration" data-ng-model="userstory.sprint" 
+											data-ng-options="sp.name for sp in sprints track by sp.id"></select>
 									<br/>
 									<label class="control-label no-padding-right" for="businessval">Business Value</label>
 									<div data-ng-class="{ 'has-error': form.businessval.$touched && form.businessval.$invalid }">
@@ -235,15 +239,19 @@ label {
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
-			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner">
+			<!-- <select class="form-control" id="t-assignee" data-ng-model="userstory.owner">
 				<option data-ng-repeat="user in users" value={{user}}>{{user.username}}</option>
-			</select>
+			</select> -->
+			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner" 
+					data-ng-options="user.username for user in users track by user.id"></select>
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="parent">Parent</label>
-			<select class="form-control" id="parent" data-ng-model="userstory.parent">
+			<!-- <select class="form-control" id="parent" data-ng-model="userstory.parent">
 				<option data-ng-repeat="parent in parents" value={{parent}}>{{parent.name}}</option>
-			</select>
+			</select> -->
+			<select class="form-control" id="parent" data-ng-model="userstory.parent" 
+					data-ng-options="pr.name for pr in parents track by pr.id"></select>
 		</div>
 		
 		<!-- <div class="form-group">
