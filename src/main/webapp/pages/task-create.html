@@ -25,8 +25,9 @@
 			<div class="form-group col-md-4">
 				<label class="control-label no-padding-right" for="t-state">Name</label> 
 				<input type="text" class="form-control" id="t-task-name" required
-					ng-model="ngName">
+					ng-model="task.name">
 			</div>
+			
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-state">State</label>
 				<select class="form-control" id="t-state" ng-model="task.state">
@@ -35,25 +36,23 @@
 			</div>
 			
 			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-est">Estimation</label> <input type="number" class="form-control" id="t-est"
-					ng-model="task.taskEst" placeholder="hour(s)" value="">
+				<label class="control-label no-padding-right" for="t-est">Estimation</label> 
+				<input type="number" class="form-control" id="t-est" ng-model="task.taskEst" placeholder="hour(s)" value="">
 			</div>
 			
 			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-to-do">To
-					Do </label> <input type="number" class="form-control" id="t-to-do" ng-model="task.todo"
-					placeholder="hour(s)"  disabled="disabled">
+				<label class="control-label no-padding-right" for="t-to-do">To Do </label> 
+				<input type="number" class="form-control" id="t-to-do" ng-model="task.toDo" placeholder="hour(s)"  disabled="disabled">
 			</div>
+			
 			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-time-spent">Time
-					spent</label> <input type="number" class="form-control" id="t-time-spent" ng-model="task.timespent"
-					placeholder="hour(s)"  disabled="disabled">
+				<label class="control-label no-padding-right" for="t-time-spent">Time spent</label> 
+				<input type="number" class="form-control" id="t-time-spent" ng-model="task.spentTime" placeholder="hour(s)"  disabled="disabled">
 			</div>
 		</div>
 		<div class="row">
 			<div class="form-group">
-				<label class="col-md-1 control-label no-padding-right" for="t-desc">
-					Description </label>
+				<label class="col-md-1 control-label no-padding-right" for="t-desc"> Description </label>
 				<div class="col-md-12">
 					<div class="wysiwyg-editor" id="desc" ng-model="task.description"></div>
 				</div>
@@ -68,8 +67,7 @@
 						<tr>
 							<th>Name</th>
 							<th>Description</th>
-							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-								When</th>
+							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>When</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,8 +92,7 @@
 		</div>
 		<div class="row">
 			<div class="form-group">
-				<label class="col-md-1 control-label no-padding-right" for="note">
-					Note </label>
+				<label class="col-md-1 control-label no-padding-right" for="note"> Note </label>
 				<div class="col-md-12">
 					<div class="wysiwyg-editor" id="note" ng-model="task.note"></div>
 				</div>
@@ -107,29 +104,23 @@
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-owner">Owner</label>
 			<select class="form-control" id="t-owner" ng-model="task.owner">
-				<option ng-repeat="user in users" value={{sprintState}}>{{user.username}}</option>
-				<!-- <option value="1">Long Nguyen</option>
-				<option value="2">Huy Nguyen</option>
-				<option value="3">Anh Nguyen</option> -->
+				<option ng-repeat="user in users" value={{sprintState}}>{{user.username}}</option>				
 			</select>
 		</div>
 		<div class="form-group">
-			<label class="control-label no-padding-right" for="t-user-story">User
-				story</label> <input type="text" class="form-control" id="t-user-story"
-				value="{{userStory.name}}" disabled="disabled">
+			<label class="control-label no-padding-right" for="t-user-story">User story</label> 
+			<input type="text" class="form-control" id="t-user-story" value="{{userStory.name}}" disabled="disabled">
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-project">Project</label>
-			<input type="text" class="form-control" id="t-project" value="{{project.name}}"
-				disabled="disabled">
+			<input type="text" class="form-control" id="t-project" value="{{project.name}}" disabled="disabled">
 		</div>
 	</div>
 
 	<div class="clearfix"></div>
 	<div class="form-actions center clearfix">
 	
-		<button type="button" class="btn btn-success"
-			ng-click="addItem(true, true, false)">
+		<button type="button" class="btn btn-success" ng-click="createAndClose()">
 			<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
 		</button>
 		
@@ -146,8 +137,7 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [ null, 'assets/js/bootstrap-wysiwyg.min.js',
-			'assets/js/bootbox.min.js', null ]; 
+	var scripts = [ null, 'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js', null ]; 
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {		
 		initAll();
 	});
@@ -155,34 +145,19 @@
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var initAll = function() {
-		//note texterea
-		$('#note').css({
+	var initAll = function() {		
+		$('#note').css({	//note texterea
 		      'height' : '150px'
 	    }).ace_wysiwyg();
 
 		var toolbar = $('#note').prev().get(0);
-		$(toolbar).addClass('wysiwyg-style2'); 
+		$(toolbar).addClass('wysiwyg-style2'); 		
 		
-		//	Description texterea
-		$('#desc').css({
+		$('#desc').css({	//	Description texterea
 		      'height' : '150px'
 	    }).ace_wysiwyg();
 
 		var description = $('#desc').prev().get(0);
 		$(description).addClass('wysiwyg-style2');
 	};
-
-	/* var scripts = [ null, './assets/js/jquery.autosize.min.js',
-			'./assets/js/jquery.inputlimiter.1.3.1.min.js', null ];
-	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-		//inline scripts related to this page
-		$('textarea[class*=autosize]').autosize({
-			append : "\n"
-		});
-		$('textarea.limited').inputlimiter({
-			remText : '%n character%s remaining...',
-			limitText : 'max allowed : %n.'
-		});
-	}); */
 </script>
