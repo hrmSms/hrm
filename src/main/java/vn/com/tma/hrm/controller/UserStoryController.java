@@ -1,6 +1,5 @@
 package vn.com.tma.hrm.controller;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,7 +35,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
-import vn.com.tma.hrm.entities.TaskState;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.entities.UserStoryState;
@@ -46,7 +43,6 @@ import vn.com.tma.hrm.services.SprintService;
 import vn.com.tma.hrm.services.UserService;
 import vn.com.tma.hrm.services.UserStoryService;
 import vn.com.tma.hrm.services.UserStoryStateService;
-import vn.com.tma.hrm.validator.SprintValidator;
 import vn.com.tma.hrm.validator.UserStoryValidator;
 
 

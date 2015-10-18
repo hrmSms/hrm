@@ -30,6 +30,11 @@ angular.module('hrmApp.route', [])
 	    templateUrl: 'pages/task-list.html',
 	    controller: 'TaskController'
 	})
+	.state('task.edit', {
+		url : '^/task/edit?id&usId',
+		templateUrl : 'pages/task-edit.html',
+		controller : 'TaskController'
+	})
 	.state('task.create', {
 	    url: '^/task/create?usId',
 	    templateUrl: 'pages/task-create.html',

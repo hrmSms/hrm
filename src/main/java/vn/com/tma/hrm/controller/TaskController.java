@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +67,7 @@ public class TaskController {
         return new ResponseEntity<String>("{ \"tasks\" : " + jsonTasks + " } ", HttpStatus.ACCEPTED);
     }
 
-	public ResponseEntity<String> getByID(@PathVariable int id) {
+	/*public ResponseEntity<String> getByID(@PathVariable int id) {
         Task task = taskService.getByID(id);
         String jsonTask = null;
         String error = null;
@@ -82,7 +83,7 @@ public class TaskController {
             return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
         }
         return new ResponseEntity<String>("{ \"task\" : " + jsonTask + " } ", HttpStatus.ACCEPTED);
-    }
+    }*/
 
 	@RequestMapping(value = "/getByUserStoryID/{usId}", method = RequestMethod.GET)
     @ResponseBody
@@ -124,6 +125,27 @@ public class TaskController {
             e.printStackTrace();
         }
         return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
+    }
+	
+	@RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    public ResponseEntity<String> deleteTask(@PathVariable int id) throws Exception {
+        String message = null;
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            Task task = taskService.delete(id);
+            message = messageSource.getMessage("delete.success", new Object[] { task.getName() }, Locale.US);
+            message = ow.writeValueAsString(message);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("{ \"success\" : " + message + "} ", HttpStatus.OK);
+    }
+	
+	@RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)
+	@ResponseBody
+    public Task getByID(@PathVariable int id){
+		Task task = taskService.getByID(id);
+        return task;
     }
 	
 	@RequestMapping(method = RequestMethod.GET)

@@ -76,14 +76,16 @@
 						<td>{{item.startDate | date:'mediumDate'}}</td>
 						<td>{{item.endDate | date:'mediumDate'}}</td>
 						<td>
-							<div class="hidden-sm hidden-xs action-buttons">
-								<a class="red" href="#/task/list" ng-click="deleteItem(item)">
-									<i class="ace-icon fa fa-trash-o bigger-120"></i>
-								</a> <a class="red" href="#"> <i
-									class="ace-icon fa fa-pencil bigger-120"></i>
-								</a>
+							<button class="btn btn-xs btn-info"
+								ng-click="goToEditTask(item.id)" show="tooltip"
+								title="Edit selected row">
+								<i class="ace-icon fa fa-pencil bigger-120"></i>
+							</button>
 
-							</div>
+							<button class="btn btn-xs btn-danger" ng-click="onDelete(item)"
+								title="Delete selected row">
+								<i class="ace-icon fa fa-trash-o bigger-120"></i>
+							</button>
 						</td>
 
 					</tr>

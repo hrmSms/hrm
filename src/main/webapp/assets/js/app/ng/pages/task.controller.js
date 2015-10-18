@@ -8,6 +8,8 @@
 		$scope.project = null;
 		$scope.success = null;
 		$scope.error = null;
+		$scope.editTask = null;
+		$scope.task = {};
 		
         //	########################### task.create functions
 		$scope.getInfo = function() {        	
@@ -26,18 +28,15 @@
         };
         
         var getTask = function() {
-        	name = $scope.task.name;
-        	taskEst = $scope.task.name;
-        	toDo = $scope.task.toDo;
-        	spentTime = $scope.task.spentTime;
-        	/*startDate = task.
-        	endDate = task.
-        	this.startDate = moment($scope.sprint.startDate, "DD-MM-YYYY hh:mm:ss");*/
-        	owner = JSON.parse($scope.task.owner);
-        	description = $('#description').html();
-        	note = $('#note').html();
-        	userStoryId = $scope.userStory;
-        	taskStateId = JSON.parse($scope.task.state);
+        	this.name = $scope.task.name;
+        	this.taskEst = $scope.task.taskEst;
+        	this.toDo = 0;
+        	this.spentTime = 0;
+        	this.owner = JSON.parse($scope.task.owner);
+        	this.description = $('#desc').html();
+        	this.note = $('#note').html();
+        	this.userStoryId = {'id':$scope.userStory.id}; 
+        	this.taskStateId = JSON.parse($scope.task.state);
         }        
 
         $scope.createAndClose = function() {
@@ -50,13 +49,28 @@
 				if (message.success) {
 					$scope.error = null;
 					$scope.success = message.success;
-					$scope.showDialog('#success');
+					//$scope.showDialog('#success');
 					setTimeout(function() {
 						$scope.goToTaskList();
 					}, 1000);
 				}
 			});
         };
+        
+     // reset form
+        $scope.reset = function(form) {
+          /*if (form) {
+            form.$setUntouched();
+            form.$setPristine();
+            // directive check float number
+            form.$setValidity('float', true);
+          }*/
+          $scope.task = {};
+          // clear description and note div on UIs
+          $('#desc').html('');
+          $('#note').html('');
+
+        }
         
         // ########################### task.list functions
         $scope.getTasksByUSID = function(usId) { 
@@ -65,6 +79,34 @@
         	});        	
         }
         
+        // delete sprint by id
+        $scope.onDelete = function(task) {
+        	hrmService.post("./task/delete/" + task.id, null).then(function(message) {
+                $scope.deleteSuccess = message.success;
+                $scope.getTasksByUSID(task.userStoryId.id);
+        	});
+        	
+        	
+        	
+        	
+        	/*var message = task.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+          bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
+        	  if (result) {
+              hrmService.post("./task/delete/" + task.id, null).then(function(message) {
+                $scope.deleteSuccess = message.success;
+                $scope.getTasksByUSID(task.userStoryId.id);
+              });
+            }
+          });*/
+        };
+        
+        // 	########################### task.edit functions
+        $scope.getTasksById = function(taskId) { 
+        	hrmService.get("./task/getByID/" + taskId).then(function(item) {		
+				$scope.editTask = item;
+				loadTask($scope.editTask);
+        	});        	
+        }
         //	########################### Utilities
 	    $scope.goToTaskList = function() {
 			$state.go('task.list', {
@@ -72,6 +114,26 @@
 			});
 		};
 		
+		// redirect Edit Task Page
+        $scope.goToEditTask = function(taskId) {
+          $state.go('task.edit', {
+            id : taskId,
+            usId : $stateParams.usId
+          });
+        };
+        
+        // Load edit Task
+        var loadTask = function(task) {
+        	$scope.task.name = task.name;
+        	$scope.task.taskEst = task.taskEst;
+        	$scope.task.toDo = task.toDo;
+        	$scope.task.spentTime = task.spentTime;
+        	$scope.task.owner = angular.toJson(task.owner);;
+        	$('#desc').html(task.description);
+        	$('#note').html(task.note);
+        	$scope.task.state = angular.toJson(task.taskStateId);
+          }
+        
         // ########################### State cases
 		$scope.$on("$stateChangeSuccess", function() {
 			if ($state.is('task.list')) {	
@@ -79,6 +141,10 @@
 			}
 			if ($state.is('task.create')) {	
 				$scope.getInfo();
+			}
+			if ($state.is('task.edit')) {	
+				$scope.getInfo();
+				$scope.getTasksById($stateParams.id);
 			}
 		});
 	};
