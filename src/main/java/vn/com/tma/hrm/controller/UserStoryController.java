@@ -99,7 +99,6 @@ public class UserStoryController {
     }
 
 	@RequestMapping(value="/get_related_data/{projectId}", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseEntity<String> getAllRelatedData(@PathVariable int projectId) {
 		String error = null;
 		String jsonUsStates = null;
@@ -151,7 +150,6 @@ public class UserStoryController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseEntity<String> create(@Valid @RequestBody UserStory userStory, BindingResult result) {
 		logger.debug("going to create UserStory");
 		logger.debug("usForm.state: " + userStory.getState());
@@ -207,7 +205,6 @@ public class UserStoryController {
 	}
 
 	@RequestMapping(value = "/get_user_stories_by_project_id/{projectId}", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseEntity<String> getByProjectID(@PathVariable int projectId) {
 		String jsonUserStory = null;
 		String jsonProject = null;
