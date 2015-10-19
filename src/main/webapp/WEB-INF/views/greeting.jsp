@@ -5,7 +5,8 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+<title>Welcome - HRM</title>
 </head>
 <body>
 <c:if test="${not empty registrationForm}">

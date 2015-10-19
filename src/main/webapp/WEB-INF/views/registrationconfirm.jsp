@@ -5,7 +5,8 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
-		<title>Login Page - Ace Admin</title>
+		<title>Register - HRM</title>
+        <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
 
 		<meta name="description" content="User login page" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
@@ -44,7 +45,7 @@
 						<div class="login-container">
                     <div class="center">
                         <h1>
-                            <i class="ace-icon fa fa-leaf green"></i>
+                            <img src="./assets/images/logo.png">
                             <span class="red">HRM</span>
                             <span class="white" id="id-text2">Application</span>
                         </h1>
