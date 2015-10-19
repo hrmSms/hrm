@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.Task;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.repository.TaskRepository;
@@ -69,17 +70,7 @@ public class TaskServiceImp implements TaskService{
 	public List<Task> getAll(){
 		return taskRepository.findAll();
 	}
-	
-	/*@Override
-        @Transactional(value="txManager") 
-	public Boolean getByProjectAndName(Project project, String name) {
-	    Task duplicatedTask = taskRepository.findByProjectAndName(project, name);
-	    if(duplicatedTask!=null){
-	        return false;
-	    }
-	    return true;
-	}
-	*/
+		 
 	@Override
         @Transactional(value="txManager") 
 	public List<Task> getByUserStory(UserStory us) {

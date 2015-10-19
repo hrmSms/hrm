@@ -101,6 +101,32 @@ public class TaskController {
         return tasks;
     }
 	
+	@RequestMapping(value = "/edit", method = RequestMethod.POST)
+    public ResponseEntity<String> editTask(@Valid @RequestBody Task updateTask, BindingResult result) throws Exception {
+        String successString = null;
+        String errorString = null;
+        Map<String, String> error = new HashMap<String, String>();
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        try {
+            if (result.hasErrors()) {
+                for (FieldError errorMessage : result.getFieldErrors()) {
+                    error.put(errorMessage.getField(), errorMessage.getCode());
+                }
+                errorString = ow.writeValueAsString(error);
+                return new ResponseEntity<String>("{ \"error\" : " + errorString + " } ", HttpStatus.OK);
+            } else {
+                taskService.update(updateTask);
+                String message = messageSource.getMessage("update.success", new Object[] { updateTask.getName() }, Locale.US);
+                successString = ow.writeValueAsString(message);
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
+
+    }
+	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
     public ResponseEntity<String> create(@Valid @RequestBody Task newTask, BindingResult result) {
 
