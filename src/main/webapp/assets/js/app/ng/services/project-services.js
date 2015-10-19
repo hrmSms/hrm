@@ -25,7 +25,8 @@
         	//console.log(item);
         	//console.log(item.resources);
         	var urlBase = 'api';
-        	$http.get(urlBase + '/projects/search/findByName?name='+item.name).
+        	urlBase += '/projects/search/findByName?name=';
+        	$http.get(urlBase + item.name).
             success(function (data) {
                 if (data._embedded != undefined) {
                     console.log(data._embedded.projects[0].name);

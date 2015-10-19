@@ -4,9 +4,9 @@ angular.module('hrmApp.controllers')
                               function($scope, $http, $state, $stateParams, hrmService) {
 	
 		$scope.userstory = {};
-		 // Get all USStates
+		 // Get all related data
 		var loadUsRelatedData = function(projectId) {
-		      $http.get("./user_story/get_related_data/" + projectId).success(function(data) {
+			hrmService.get("./user_story/get_related_data/" + projectId).then(function(data) {
 		        $scope.usStates = data.usStates;
 		        $scope.sprints = data.sprints;
 		        $scope.users = data.users;
@@ -15,9 +15,9 @@ angular.module('hrmApp.controllers')
 		      });
 		    };
 
-	 // save and redirect to sprint list
+	 // save and redirect to us list
         $scope.createAndClose = function() {
-        	hrmService.post("./user_story/create", new userstoryJsonObj()).then(function(message) {
+        	hrmService.post("./user_story/create", new userstoryObj()).then(function(message) {
         	  console.log('success message: ' + message.error);
         	  console.log('success message: ' + message.success);
             if (message.error) {
@@ -40,7 +40,7 @@ angular.module('hrmApp.controllers')
         };
         
         $scope.saveAndClose = function() {
-            hrmService.post("./user_story/edit", new userstoryJsonObj()).then(function(message) {
+            hrmService.post("./user_story/edit", new userstoryObj()).then(function(message) {
               if (message.error) {
                 $scope.success = null;
                 $scope.error = message.error;
@@ -75,7 +75,7 @@ angular.module('hrmApp.controllers')
               });
           }
           
-        var userstoryJsonObj = function() {
+        var userstoryObj = function() {
         	var formData = {
         			id : $scope.userstory.id,
         			active : 1,
@@ -99,7 +99,7 @@ angular.module('hrmApp.controllers')
         		formData["parent"] = $scope.userstory.parent;
         	if(typeof $scope.userstory.buildDate !== "undefined" && $scope.userstory.buildDate !== "")
         		formData["buildDate"] = moment($scope.userstory.buildDate,"DD-MM-YYYY hh:mm:ss");
-        	console.log('formData: ' + formData.state.name);
+        	
         	return formData;
         }
           
@@ -112,7 +112,6 @@ angular.module('hrmApp.controllers')
         
       //go to US edit page
         $scope.goToEditUserStory = function(userstory) {
-        	console.log('userstory before saving to localstorage: ' + userstory);
         	if (typeof(Storage) != "undefined") {
                 localStorage["userstory"] = JSON.stringify(userstory);
             }
