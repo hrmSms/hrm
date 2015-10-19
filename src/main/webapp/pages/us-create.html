@@ -133,7 +133,7 @@ label {
 									<div data-ng-class="{ 'has-error': form.businessval.$touched && form.businessval.$invalid }">
 										<input type="text" class="form-control" id="businessval" name="businessval" data-ng-model="userstory.businessValue" data-smart-float="6">
 									</div>
-									<div data-ng-show="form.businessval.$error.float" class="alert alert-danger">Invalid number</div>
+									<div data-ng-show="form.businessval.$error.float" class="alert alert-danger">Please enter number between 0 to 999</div>
 								</div>
 								<div class="form-group col-md-4">
 									<label class="control-label no-padding-right" for="builddate">Build Date</label>
@@ -145,7 +145,7 @@ label {
 											class="fa fa-clock-o bigger-110"></i>
 										</span>
 									</div>
-									<div data-ng-show="form.velocity.$error.float" class="alert alert-danger">Invalid number</div>
+									<div data-ng-show="form.velocity.$error.float" class="alert alert-danger">Please enter number between 0 to 999</div>
 									<br/>
 									<label class="control-label no-padding-right" for="pointval">Point Value</label>
 									<div data-ng-class="{ 'has-error': form.pointval.$touched && form.pointval.$invalid }">
