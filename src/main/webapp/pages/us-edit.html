@@ -26,10 +26,12 @@
 
 label {
     font-weight: bold;
+    text-transform: uppercase;
 }
 
 .widget-title {
 	font-weight: bold;
+	text-transform: uppercase;
 }
 
 .wysiwyg-editor {
@@ -66,9 +68,6 @@ label {
 			<div class="form-group col-md-3">
 				<div data-ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
 					<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
-					<!-- <select class="form-control" id="state" data-ng-model="userstory.state" required>
-						<option data-ng-repeat="usState in usStates" value={{usState}} ng-selected="userstory.state.id==usState.id">{{usState.name}}</option>
-					</select> -->
 					<select class="form-control" id="state" data-ng-model="userstory.state" required
 							data-ng-options="usState.name for usState in usStates track by usState.id"></select>
 				</div>
@@ -80,14 +79,14 @@ label {
 				
 			</div>
 			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="planest">PlanEST</label> 
+				<label class="control-label no-padding-right" for="planest">Estimation</label> 
 				<div data-ng-class="{ 'has-error': form.planest.$touched && form.planest.$invalid }">
 					<input type="text" class="form-control" id="planest" name="planest" placeholder="0.00 (hours)" data-ng-model="userstory.planEst" data-smart-float="6" placeholder="0.00" >
 				</div>
 				<div data-ng-show="form.planest.$error.float" class="alert alert-danger">Please enter float number between 0 to 999</div>
 			</div>
 			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-todo">ToDo</label> 
+				<label class="control-label no-padding-right" for="t-todo">To Do</label> 
 				<div data-ng-class="{ 'has-error': form.todo.$touched && form.todo.$invalid }">
 					<input type="text" id="t-todo" name="todo" class="form-control" placeholder="0.00 (hours)" data-ng-model="userstory.todoEst" data-smart-float="6">
 				</div>
@@ -127,9 +126,6 @@ label {
 							<div class="row">
 								<div class="form-group col-md-4">
 									<label class="control-label no-padding-right" for="iteration">Iteration</label>
-									<!-- <select class="form-control" id="iteration" data-ng-model="userstory.sprint">
-										<option data-ng-repeat="sp in sprints" value={{sp}} data-ng-selected="userstory.sprint.id == sp.id">{{sp.name}}</option>
-									</select> -->
 									<select class="form-control" id="iteration" data-ng-model="userstory.sprint" 
 											data-ng-options="sp.name for sp in sprints track by sp.id"></select>
 									<br/>
@@ -239,27 +235,14 @@ label {
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
-			<!-- <select class="form-control" id="t-assignee" data-ng-model="userstory.owner">
-				<option data-ng-repeat="user in users" value={{user}} data-ng-selected="userstory.owner.id == user.id">{{user.username}}</option>
-			</select> -->
 			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner" 
 					data-ng-options="user.username for user in users track by user.id"></select>
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="parent">Parent</label>
-			<!-- <select class="form-control" id="parent" data-ng-model="userstory.parent">
-				<option data-ng-repeat="pr in parents" value={{pr}} data-ng-selected="userstory.parent.id == pr.id">{{pr.name}}</option>
-			</select> -->
 			<select class="form-control" id="parent" data-ng-model="userstory.parent" 
 					data-ng-options="pr.name for pr in parents track by pr.id"></select>
 		</div>
-		
-		<!-- <div class="form-group">
-			<label class="control-label no-padding-right" for="t-project">Project</label>
-			<select class="form-control" id="t-project" data-ng-model="project">
-				<option data-ng-repeat="project in projects" value={{project}}>{{project.name}}</option>
-			</select>
-		</div> -->
 	</div>
 	<div class="clearfix"></div>
 	<div class="form-group col-md-9">
@@ -272,7 +255,7 @@ label {
 				data-ng-click="goToUsList()">
 				<i class="ace-icon fa fa-times bigger-110"></i> Close
 			</button> -->
-			<hrm-button type="create" data-ng-disabled="!form.$valid" data-ng-click="saveAndClose()"></hrm-button>
+			<hrm-button type="save" data-ng-disabled="!form.$valid" data-ng-click="saveAndClose()"></hrm-button>
 			<hrm-button type="close" data-ng-click="goToUsList()"></hrm-button>
 		</div>
 	</div>

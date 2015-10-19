@@ -1,15 +1,14 @@
 <!-- page specific plugin styles -->
 <!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
 
-<!-- page's inner styles -->
-<style>
-</style>
-
+<!-- page specific plugin styles -->
 <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
 <link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
 
-<!-- ajax layout which only needs content area -->
-<div class="col-xs-12 page-header">
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+  <div class="row">
+  <div class="col-xs-12 page-header">
 	<div class="pull-left">
 		<div>
 			<h1 class="blue">
@@ -17,16 +16,11 @@
 			</h1>
 		</div>
 		<div class="padding-left-50px">
-			<h4>Create a task</h4>
+			<h4>Edit a task</h4>
 		</div>
 	</div>
 
 </div>
-<div ng-show="success" class="col-xs-12 center" id="success">
-	<div class="alert alert-success">{{success}}</div>
-</div>
-<!-- /.page-header -->
-
 <!-- PAGE CONTENT BEGINS -->
 <form name="form">
 	<div class="col-md-8 border-right">
@@ -170,3 +164,4 @@
 		$(description).addClass('wysiwyg-style2');
 	};
 </script>
+

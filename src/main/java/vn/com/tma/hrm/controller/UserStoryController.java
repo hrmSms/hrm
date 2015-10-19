@@ -1,6 +1,5 @@
 package vn.com.tma.hrm.controller;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +13,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -45,7 +43,6 @@ import vn.com.tma.hrm.services.SprintService;
 import vn.com.tma.hrm.services.UserService;
 import vn.com.tma.hrm.services.UserStoryService;
 import vn.com.tma.hrm.services.UserStoryStateService;
-import vn.com.tma.hrm.validator.SprintValidator;
 import vn.com.tma.hrm.validator.UserStoryValidator;
 
 
@@ -82,13 +79,26 @@ public class UserStoryController {
 	}
 	
 	@RequestMapping(value = "/getByID/{id}", method = RequestMethod.GET)
-    public UserStory getByID(@PathVariable int id) throws MethodArgumentNotValidException{
-        UserStory us = userstoryService.getByID(id);
-        return us;
+	@ResponseBody
+    public ResponseEntity<String> getByID(@PathVariable int id) throws MethodArgumentNotValidException{
+		UserStory us = userstoryService.getByID(id);
+        String jsonUserStory = null;
+        String error = null;
+        try {
+            ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+            jsonUserStory = ow.writeValueAsString(us);
+        } catch (JsonProcessingException e) {
+            error = e.toString();
+        } catch (Exception e) {
+            error = e.toString();
+        }
+        if (error != null) {
+            return new ResponseEntity<String>("{ \"error\" : \"" + error + " \"} ", HttpStatus.OK);
+        }
+        return new ResponseEntity<String>("{ \"userStory\" : " + jsonUserStory + " } ", HttpStatus.ACCEPTED);        
     }
 
 	@RequestMapping(value="/get_related_data/{projectId}", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseEntity<String> getAllRelatedData(@PathVariable int projectId) {
 		String error = null;
 		String jsonUsStates = null;
@@ -140,7 +150,6 @@ public class UserStoryController {
 	}
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	@ResponseBody
 	public ResponseEntity<String> create(@Valid @RequestBody UserStory userStory, BindingResult result) {
 		logger.debug("going to create UserStory");
 		logger.debug("usForm.state: " + userStory.getState());
@@ -196,7 +205,6 @@ public class UserStoryController {
 	}
 
 	@RequestMapping(value = "/get_user_stories_by_project_id/{projectId}", method = RequestMethod.GET)
-	@ResponseBody
 	public ResponseEntity<String> getByProjectID(@PathVariable int projectId) {
 		String jsonUserStory = null;
 		String jsonProject = null;

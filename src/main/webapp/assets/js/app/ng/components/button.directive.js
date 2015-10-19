@@ -1,5 +1,5 @@
 /**
- * 
+ * Button directive.
  */
 'use strict';
 angular.module('hrmApp.directives')

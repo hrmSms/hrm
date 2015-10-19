@@ -34,12 +34,12 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public CurrentUser loadUserByUsername(String email) throws UsernameNotFoundException {
-        System.out.println("load user from here");
+        //System.out.println("load user from here");
         logger.debug("Authenticating user with email={}");
         User user = userService.getUserByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("User with email was not found", email)));
-        System.out.println("email: " + user.getEmail());
-        System.out.println("loadin user: " + user);
+        //System.out.println("email: " + user.getEmail());
+        //System.out.println("loadin user: " + user);
         return new CurrentUser(user);
     }
  
