@@ -5,6 +5,7 @@
 		$scope.users = null;
 		$scope.tasks = null;
 		$scope.userStory = null;
+		$scope.userStoryId = null;
 		$scope.project = null;
 		$scope.success = null;
 		$scope.error = null;
@@ -55,7 +56,7 @@
 				if (message.success) {
 					$scope.error = null;
 					$scope.success = message.success;
-					$scope.showDialog('#success');
+					//$scope.showDialog('#success');
 					setTimeout(function() {
 						$scope.goToTaskList();
 					}, 1000);
@@ -82,7 +83,10 @@
         $scope.getTasksByUSID = function(usId) { 
         	hrmService.get("./task/getByUserStoryID/" + usId).then(function(item) {		// Get task by usId
 				$scope.tasks = item;
-        	});        	
+        	});      
+        	hrmService.get("./user_story/getByID/" + $stateParams.usId).then(function(item) {	// Get UserStory by usId 
+				$scope.userStory = item.userStory;
+			});
         }
         
         // delete sprint by id
@@ -126,7 +130,7 @@
 					$scope.error = null;
 					$scope.success = message.success;
 					// show message success dialog
-					$scope.showDialog('#success');
+					//$scope.showDialog('#success');
 					// redirect to sprint list page after 1 min
 					setTimeout(function() {
 						$scope.goToTaskList();
