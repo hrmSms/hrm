@@ -45,7 +45,7 @@
 			
 			<div class="form-group col-md-2">
 				<label class="control-label no-padding-right" for="t-to-do">To Do </label> 
-				<input type="number" class="form-control" id="t-to-do" ng-model="task.toDo" placeholder="hour(s)"  disabled="disabled">
+				<input type="number" class="form-control" id="t-to-do" ng-model="task.toDo" placeholder="hour(s)" >
 			</div>
 			
 			<div class="form-group col-md-2">
@@ -122,25 +122,20 @@
 
 	<div class="clearfix"></div>
 	<div class="form-actions center clearfix">
-	
-		<button type="button" class="btn btn-success" ng-click="createAndClose()">
-			<i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
-		</button>
-		
-		<button type="button" class="btn btn-warning" ng-click="reset(form)">
-			<i class="ace-icon fa fa-undo bigger-110"></i> Reset
-		</button>
-		
-		<button type="button" class="btn" ng-click="goToTaskList()">
-			<i class="ace-icon fa fa-times bigger-110"></i> Close
-		</button>
+		<button type="button" class="btn btn-success width-100px"
+            ng-click="saveAndClose()">
+            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
+          </button>
+          <button type="button" class="btn btn-purple width-100px" ng-click="goToTaskList()">
+            <i class="ace-icon fa fa-times bigger-110"></i> Close
+          </button>
 	</div>
 </form>
 <!-- PAGE CONTENT ENDS -->
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-	var scripts = [ null, 'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js', null ]; 
+	var scripts = [ null, 'assets/js/bootstrap-wysiwyg.min.js', 'assets/js/bootbox.min.js', 'assets/js/app/ng/shared/jquery.bpopup.min.js', null ]; 
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {		
 		initAll();
 	});

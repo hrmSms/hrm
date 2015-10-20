@@ -55,7 +55,7 @@
                 <i class="ace-icon fa fa-trash-o bigger-120"></i>
               </button>
             </td>
-            <td data-ng-bind="us.name"></td>
+            <td><a ui-sref="task.list({ usId: us.id})">{{us.name}}</a></td>
             <td data-ng-bind="us.state.name"></td>
             <td data-ng-bind="us.sprint.name"></td>
             <td data-ng-bind="us.project.name"></td>

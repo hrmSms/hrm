@@ -5,6 +5,7 @@
 		$scope.users = null;
 		$scope.tasks = null;
 		$scope.userStory = null;
+		$scope.userStoryId = null;
 		$scope.project = null;
 		$scope.success = null;
 		$scope.error = null;
@@ -37,6 +38,12 @@
         	this.note = $('#note').html();
         	this.userStoryId = {'id':$scope.userStory.id}; 
         	this.taskStateId = JSON.parse($scope.task.state);
+        	
+        	if ($stateParams.id != null) {
+        		this.id = $stateParams.id;
+        		this.toDo = $scope.task.toDo;
+            	this.spentTime = $scope.task.spentTime;
+        	}
         }        
 
         $scope.createAndClose = function() {
@@ -76,7 +83,10 @@
         $scope.getTasksByUSID = function(usId) { 
         	hrmService.get("./task/getByUserStoryID/" + usId).then(function(item) {		// Get task by usId
 				$scope.tasks = item;
-        	});        	
+        	});      
+        	hrmService.get("./user_story/getByID/" + $stateParams.usId).then(function(item) {	// Get UserStory by usId 
+				$scope.userStory = item.userStory;
+			});
         }
         
         // delete sprint by id
@@ -107,7 +117,29 @@
 				loadTask($scope.editTask);
         	});        	
         }
-        //	########################### Utilities
+        
+
+	    $scope.saveAndClose = function() {
+		hrmService.post("./task/edit", new getTask()).then(
+			function(message) {
+				if (message.error) {
+					$scope.success = null;
+					$scope.error = message.error;
+				}
+				if (message.success) {
+					$scope.error = null;
+					$scope.success = message.success;
+					// show message success dialog
+					//$scope.showDialog('#success');
+					// redirect to sprint list page after 1 min
+					setTimeout(function() {
+						$scope.goToTaskList();
+					}, 1000);
+				}
+			});
+		};
+        
+        // ########################### Utilities
 	    $scope.goToTaskList = function() {
 			$state.go('task.list', {
 				usId : $scope.userStory.id
