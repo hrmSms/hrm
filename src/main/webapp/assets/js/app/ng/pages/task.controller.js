@@ -83,6 +83,9 @@
         $scope.getTasksByUSID = function(usId) { 
         	hrmService.get("./task/getByUserStoryID/" + usId).then(function(item) {		// Get task by usId
 				$scope.tasks = item;
+				for (var i=0;i<$scope.tasks.length;i++) {
+					$scope.tasks[i].description = $scope.tasks[i].description.replace(/<[^>]*>/g, ''); 
+				}
         	});      
         	hrmService.get("./user_story/getByID/" + $stateParams.usId).then(function(item) {	// Get UserStory by usId 
 				$scope.userStory = item.userStory;
@@ -153,6 +156,12 @@
             usId : $stateParams.usId
           });
         };
+        
+        /*angular.filter('htmlToPlaintext', function() {
+            return function(text) {
+              return  text ? String(text).replace(/<[^>]+>/gm, '') : '';
+            };
+        });*/
         
         // Load edit Task
         var loadTask = function(task) {
