@@ -1,0 +1,27 @@
+<!-- page specific plugin styles -->
+<!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
+
+<!-- page's inner styles -->
+<style></style>
+
+<!-- ajax layout which only needs content area -->
+<div class="page-header">
+  <h1>
+    Sample page <small> <i class="ace-icon fa fa-angle-double-right"></i> This is the sample page, other pages
+      should be based on this page
+    </small>
+  </h1>
+</div>
+<!-- /.page-header -->
+
+<!-- PAGE CONTENT BEGINS -->
+
+<!-- PAGE CONTENT ENDS -->
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+	var scripts = [null, null]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+	  //inline scripts related to this page
+	});
+</script>

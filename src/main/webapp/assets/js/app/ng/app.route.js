@@ -8,7 +8,7 @@ angular.module('hrmApp.route', [])
 }])
 .config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider){
   // Redirect to '/' in case of unmatched url
-  $urlRouterProvider.otherwise('/');
+  $urlRouterProvider.otherwise('/not-found');
   
   // Setup the states
   $stateProvider
@@ -16,6 +16,23 @@ angular.module('hrmApp.route', [])
       url: '/blank',
       templateUrl: 'pages/blank.html',
       controller: ''
+    })
+    .state('home', {
+      url: '/',
+      templateUrl: 'pages/dashboard.html',
+      controller: 'DashboardPageCtrl'
+    })
+    .state('403', {
+      url: '/forbidden',
+      templateUrl: 'pages/403.html'
+    })
+    .state('404', {
+      url: '/not-found',
+      templateUrl: 'pages/404.html'
+    })
+    .state('500', {
+      url: '/error',
+      templateUrl: 'pages/500.html'
     });			
 					
 	// Routes for tasks
