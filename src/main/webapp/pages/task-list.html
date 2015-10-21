@@ -6,15 +6,15 @@
 	<div class="col-sm-12">
 		<!-- PAGE CONTENT BEGINS -->
 		<div class="pull-left margin-top-10px">
-			<a ui-sref="sprint.create({ projectId: project.id })">
+			<a ui-sref="task.create({ usId: userStory.id })">
 				<button class="btn btn-info" type="button">
 					<i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
 				</button>
 			</a>
 		</div>
-		<div class="pull-right" ng-show="project.name">
+		<div class="pull-right" ng-show="userStory.name">
 			<h2 class="blue">
-				User story: <a ui-sref="task.list({ usId: userStory.id })">{{userStory.name}}</a>
+				User story: <a href="">{{userStory.name}}</a>
 			</h2>
 		</div>
 
@@ -51,7 +51,7 @@
 								<i class="ace-icon fa fa-pencil bigger-120"></i>
 							</button>
 
-							<button class="btn btn-xs btn-danger" ng-click="onDelete(sprint)"
+							<button class="btn btn-xs btn-danger" ng-click="onDelete(task)"
 								title="Delete selected row">
 								<i class="ace-icon fa fa-trash-o bigger-120"></i>
 							</button>
