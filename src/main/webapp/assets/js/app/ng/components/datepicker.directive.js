@@ -1,5 +1,5 @@
 /**
- * Datepicker directive.
+ * hrm-datepicker directive.
  * http://bootstrap-datepicker.readthedocs.org/en/latest/index.html
  */
 'use strict';

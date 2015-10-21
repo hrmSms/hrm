@@ -1,9 +1,9 @@
 /**
- * Button directive.
+ * hrm-button directive.
  */
 'use strict';
 angular.module('hrmApp.directives')
-.directive('hrmButton', function() {
+.directive('hrmButton', [function() {
   return {
     restrict : 'AECM',
     templateUrl : 'components/button.html',
@@ -29,4 +29,4 @@ angular.module('hrmApp.directives')
         
     },
   };
-});
+}]);

@@ -28,6 +28,7 @@
 
 <!-- custom CSS -->
 <link rel="stylesheet" href="./assets/css/custom.css" />
+<link rel="stylesheet" href="./assets/css/animate.css"/>
 
 <!-- ace styles -->
 <link rel="stylesheet" href="./assets/css/ace.min.css" class="ace-main-stylesheet" id="main-ace-style" />
@@ -56,6 +57,12 @@
   <div id="navbar" class="navbar navbar-default navbar-collapse h-navbar" hrm-page-header></div>
   <!-- /.header -->
 
+  <!-- loading-bar -->
+  <div class="loading-bar-container">
+    <div class="loading-bar page-loading-overlay" hrm-loading-bar></div>
+  </div>
+  <!-- /.loading-bar -->
+
   <div class="main-container" id="main-container">
     <div class="main-content">
       <div class="main-content-inner">
@@ -63,7 +70,7 @@
           <div class="row">
             <div class="col-xs-12 page-content-area" data-ajax-content="true">
               <!-- ajax content goes here -->
-              <div ui-view></div>
+              <div ui-view class="fade-in-up"></div>
             </div>
           </div>
           <!-- /.page-content-area -->
@@ -151,6 +158,7 @@
   <script src="./assets/js/app/ng/shared/hrm-service.js"></script>
 
   <!-- components -->
+  <script src="./assets/js/app/ng/components/loadingBar.directive.js"></script>
   <script src="./assets/js/app/ng/components/button.directive.js"></script>
   <script src="./assets/js/app/ng/components/datepicker.directive.js"></script>
 

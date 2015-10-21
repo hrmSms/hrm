@@ -28,13 +28,11 @@
         $rootScope.previousUrl = oldUrl;
       });
       $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-        //event.preventDefault();
-        // transitionTo() promise will be rejected with
-        // a 'transition prevented' error
+        $rootScope.$broadcast('pageContentLoading', {event: event});
       });
       $rootScope.$on("$stateChangeSuccess", function(event, toState, toParams, fromState, fromParams) {
         event.targetScope.$watch("$viewContentLoaded", function() {
-            //if (ace.load_ajax_styles) ace.load_ajax_styles();
+          $rootScope.$broadcast('pageContentLoaded', {event: event});
         });
       });
       $rootScope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams){
