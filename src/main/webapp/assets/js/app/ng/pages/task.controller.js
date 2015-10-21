@@ -33,7 +33,12 @@
         	this.taskEst = $scope.task.taskEst;
         	this.toDo = 0;
         	this.spentTime = 0;
-        	this.owner = JSON.parse($scope.task.owner);
+        	if ($scope.task.owner != undefined) {
+        		this.owner = JSON.parse($scope.task.owner);
+        	} else {
+        		this.owner = null;
+        	}
+        	
         	this.description = $('#desc').html();
         	this.note = $('#note').html();
         	this.userStoryId = {'id':$scope.userStory.id}; 

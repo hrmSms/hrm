@@ -3,135 +3,150 @@
 
 <!-- page specific plugin styles -->
 <link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
-<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet"
+	href="assets/css/bootstrap-datetimepicker.min.css" />
 
 <!-- /section:basics/navbar.layout -->
 <div class="main-container" id="main-container">
-  <div class="row">
-  <div class="col-xs-12 page-header">
-	<div class="pull-left">
-		<div>
-			<h1 class="blue">
-				User story: <a ui-sref="task.list({ usId: userStory.id })">{{userStory.name}}</a>
-			</h1>
+	<div class="row">
+		<div class="col-xs-12 page-header">
+			<div class="pull-left">
+				<div>
+					<h1 class="blue">
+						User story: <a ui-sref="task.list({ usId: userStory.id })">{{userStory.name}}</a>
+					</h1>
+				</div>
+				<div class="padding-left-50px">
+					<h4>Edit a task</h4>
+				</div>
+			</div>
 		</div>
-		<div class="padding-left-50px">
-			<h4>Edit a task</h4>
+		<div ng-show="success" class="col-xs-12 center" id="success">
+			<div class="alert alert-success">{{success}}</div>
+		</div>
+		
+		
+		<div class="col-xs-12">
+			<form name="form" class="form-horizontal" novalidate>				
+				<!-- Name -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="name">
+						Name <i class="red">*</i>
+					</label>
+					<div class="col-sm-8 col-xs-10">
+						<div ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
+							<input type="text" id="name" name="name" class="form-control"
+								ng-model="task.name" required />
+						</div>
+						<div ng-show="form.$submitted || form.name.$touched">
+							<div ng-show="form.name.$error.required && !error.name"
+								class="alert alert-danger">Name is required</div>
+							<div ng-show="error.name" class="alert alert-danger">{{error.name}}</div>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Description -->
+				<div class="form-group ">
+					<label class="col-sm-2 control-label no-padding-right"
+						for="desc"> Description </label>
+					<div class="col-sm-8 col-sx-10">
+						<div class="wysiwyg-editor" id="desc"></div>
+					</div>
+				</div>
+				
+				<!-- State, Estimate -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="state"> State <i class="red">*</i> </label>
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
+							<select class="form-control" id="state" name="state" ng-model="task.state" required>
+								<option ng-repeat="taskState in taskStates" value={{taskState}}>{{taskState.name}}</option>
+							</select>
+						</div>
+						<div ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
+							<div ng-show="form.state.$error.required && !error.taskState" class="alert alert-danger">Please choose a Task State</div>
+							<div ng-show="error.taskState" class="alert alert-danger">{{error.taskState}}</div>
+						</div>
+					</div>
+
+					<label class="col-sm-2 control-label no-padding-right" for="estimate"> Estimate</label>
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': form.estimate.$touched && form.estimate.$invalid }">
+							<input type="text" id="estimate" name="estimate"
+								class="col-sm-9" ng-model="task.taskEst" smart-float="6"
+								placeholder="0" /> 
+							<label class="col-sm-3 no-padding-right"> (Hours)</label>
+						</div>
+						<div ng-show="form.estimate.$error.float" 
+								class="col-sm-9 alert alert-danger"> 
+								Please enter float number between 0 to 999
+						</div>
+					</div>
+				</div>
+
+				<!-- Owner, Todo -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="state"> Owner </label>
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': form.owner.$touched && form.owner.$invalid }">
+							<select class="form-control" id="owner" name="owner" ng-model="task.owner">
+								<option ng-repeat="user in users" value={{user}}>{{user.username}}</option>
+							</select>
+						</div>
+					</div>
+
+					<label class="col-sm-2 control-label no-padding-right" for="toDo"> To do</label>
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': form.toDo.$touched && form.toDo.$invalid }">
+							<input type="text" id="toDo" name="toDo"
+								class="col-sm-9" ng-model="task.toDo" smart-float="6"
+								placeholder="0" /> 
+							<label class="col-sm-3 no-padding-right"> (Hours)</label>
+						</div>
+						<div ng-show="form.toDo.$error.float" 
+								class="col-sm-9 alert alert-danger"> 
+								Please enter float number between 0 to 999
+						</div>
+					</div>
+				</div>
+				
+				<!-- Null, Time Spent -->
+				<div class="form-group">					
+					<div class="col-sm-5"></div>
+
+					<label class="col-sm-2 control-label no-padding-right" for="timeSpent"> Time spent</label>
+					<div class="col-sm-3">
+						<div ng-class="{ 'has-error': form.timeSpent.$touched && form.timeSpent.$invalid }">
+							<input type="text" id="timeSpent" name="timeSpent" disabled="disabled"
+								class="col-sm-9" ng-model="task.spentTime" smart-float="6"
+								placeholder="0" /> <label class="col-sm-3 no-padding-right">
+								(Hours)</label>
+						</div>
+						<div ng-show="form.timeSpent.$error.float" 
+								class="col-sm-9 alert alert-danger"> 
+								Please enter float number between 0 to 999
+						</div>
+					</div>
+				</div>
+									
+				<!-- Note -->
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-right" for="note"> Note </label>
+					<div class="col-sm-8 col-sx-10">
+						<div class="wysiwyg-editor" id="note" placeholder="note"></div>
+					</div>
+				</div>
+
+				<!-- Buttons -->
+				<div class="center clearfix">
+					<hrm-button type="update" ng-disabled="!form.$valid" ng-click="saveAndClose()"></hrm-button>
+					<hrm-button type="close" ng-click="goToTaskList()"></hrm-button>
+				</div>		
+			</form>
 		</div>
 	</div>
-
 </div>
-<!-- PAGE CONTENT BEGINS -->
-<form name="form">
-	<div class="col-md-8 border-right">
-		<div class="row">
-			<div class="form-group col-md-4">
-				<label class="control-label no-padding-right" for="t-state">Name</label> 
-				<input type="text" class="form-control" id="t-task-name" required
-					ng-model="task.name">
-			</div>
-			
-			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-state">State</label>
-				<select class="form-control" id="t-state" ng-model="task.state">
-					<option ng-repeat="taskState in taskStates" value={{taskState}}>{{taskState.name}}</option>
-				</select>
-			</div>
-			
-			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-est">Estimation</label> 
-				<input type="number" class="form-control" id="t-est" ng-model="task.taskEst" placeholder="hour(s)" value="">
-			</div>
-			
-			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-to-do">To Do </label> 
-				<input type="number" class="form-control" id="t-to-do" ng-model="task.toDo" placeholder="hour(s)" >
-			</div>
-			
-			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="t-time-spent">Time spent</label> 
-				<input type="number" class="form-control" id="t-time-spent" ng-model="task.spentTime" placeholder="hour(s)"  disabled="disabled">
-			</div>
-		</div>
-		<div class="row">
-			<div class="form-group">
-				<label class="col-md-1 control-label no-padding-right" for="t-desc"> Description </label>
-				<div class="col-md-12">
-					<div class="wysiwyg-editor" id="desc" ng-model="task.description"></div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="form-group col-md-12">
-				<label class="control-label no-padding-right" for="t-attachment">Attachment</label>
-				<table id="t-attachment"
-					class="table table-striped table-bordered table-hover">
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Description</th>
-							<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>When</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Document.doc</td>
-							<td>The first attachment</td>
-							<td>9/8/2015</td>
-						</tr>
-						<tr>
-							<td>Reporting.xls</td>
-							<td>The excel file</td>
-							<td>9/7/2015</td>
-						</tr>
-						<tr>
-							<td>Analytic.pdf</td>
-							<td>Another .pdf file</td>
-							<td>9/10/2015</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="row">
-			<div class="form-group">
-				<label class="col-md-1 control-label no-padding-right" for="note"> Note </label>
-				<div class="col-md-12">
-					<div class="wysiwyg-editor" id="note" ng-model="task.note"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="space-12"></div>
-	<div class="col-md-4">
-		<div class="form-group">
-			<label class="control-label no-padding-right" for="t-owner">Owner</label>
-			<select class="form-control" id="t-owner" ng-model="task.owner">
-				<option ng-repeat="user in users" value={{user}}>{{user.username}}</option>				
-			</select>
-		</div>
-		<div class="form-group">
-			<label class="control-label no-padding-right" for="t-user-story">User story</label> 
-			<input type="text" class="form-control" id="t-user-story" value="{{userStory.name}}" disabled="disabled">
-		</div>
-		<div class="form-group">
-			<label class="control-label no-padding-right" for="t-project">Project</label>
-			<input type="text" class="form-control" id="t-project" value="{{project.name}}" disabled="disabled">
-		</div>
-	</div>
-
-	<div class="clearfix"></div>
-	<div class="form-actions center clearfix">
-		<button type="button" class="btn btn-success width-100px"
-            ng-click="saveAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
-          </button>
-          <button type="button" class="btn btn-purple width-100px" ng-click="goToTaskList()">
-            <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button>
-	</div>
-</form>
-<!-- PAGE CONTENT ENDS -->
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
@@ -139,10 +154,7 @@
 	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {		
 		initAll();
 	});
-</script>
-
-<!-- page specific plugin scripts -->
-<script type="text/javascript">
+	
 	var initAll = function() {		
 		$('#note').css({	//note texterea
 		      'height' : '150px'
@@ -159,4 +171,3 @@
 		$(description).addClass('wysiwyg-style2');
 	};
 </script>
-
