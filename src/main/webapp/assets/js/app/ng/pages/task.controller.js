@@ -33,7 +33,12 @@
         	this.taskEst = $scope.task.taskEst;
         	this.toDo = 0;
         	this.spentTime = 0;
-        	this.owner = JSON.parse($scope.task.owner);
+        	if ($scope.task.owner != undefined) {
+        		this.owner = JSON.parse($scope.task.owner);
+        	} else {
+        		this.owner = null;
+        	}
+        	
         	this.description = $('#desc').html();
         	this.note = $('#note').html();
         	this.userStoryId = {'id':$scope.userStory.id}; 
@@ -83,6 +88,10 @@
         $scope.getTasksByUSID = function(usId) { 
         	hrmService.get("./task/getByUserStoryID/" + usId).then(function(item) {		// Get task by usId
 				$scope.tasks = item;
+				for (var i=0;i<$scope.tasks.length;i++) {
+					$scope.tasks[i].name = $scope.tasks[i].name.replace(/<[^>]*>/g, '');
+					$scope.tasks[i].description = $scope.tasks[i].description.replace(/<[^>]*>/g, ''); 
+				}
         	});      
         	hrmService.get("./user_story/getByID/" + $stateParams.usId).then(function(item) {	// Get UserStory by usId 
 				$scope.userStory = item.userStory;
@@ -91,23 +100,16 @@
         
         // delete sprint by id
         $scope.onDelete = function(task) {
-        	hrmService.post("./task/delete/" + task.id, null).then(function(message) {
-                $scope.deleteSuccess = message.success;
-                $scope.getTasksByUSID(task.userStoryId.id);
-        	});
-        	
-        	
-        	
-        	
-        	/*var message = task.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
-        	  if (result) {
-              hrmService.post("./task/delete/" + task.id, null).then(function(message) {
-                $scope.deleteSuccess = message.success;
-                $scope.getTasksByUSID(task.userStoryId.id);
-              });
-            }
-          });*/
+        	var message = task.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+			bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
+				if (result) {
+					hrmService.post("./task/delete/" + task.id, null).then(function(message) {
+						//$scope.deleteSuccess = message.success;
+						//$scope.showDialog('#message');
+						$scope.getTasksByUSID(task.userStoryId.id);					
+					});
+				}
+			});
         };
         
         // 	########################### task.edit functions
@@ -153,6 +155,12 @@
             usId : $stateParams.usId
           });
         };
+        
+        /*angular.filter('htmlToPlaintext', function() {
+            return function(text) {
+              return  text ? String(text).replace(/<[^>]+>/gm, '') : '';
+            };
+        });*/
         
         // Load edit Task
         var loadTask = function(task) {

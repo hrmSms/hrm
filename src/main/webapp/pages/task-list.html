@@ -1,110 +1,110 @@
-<!-- page specific plugin styles -->
-<!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
 
 <!-- page's inner styles -->
-<style>
-.border-top {
-	border-top: 1px solid #E3E3E3;
-	border-top-color: rgba(0, 0, 0, 0.11);
-}
+<style></style>
 
-.border-right {
-	border-right: 1px solid #E3E3E3;
-	border-right-color: rgba(0, 0, 0, 0.11);
-}
-
-.border-bottom {
-	border-bottom: 1px solid #E3E3E3;
-	border-bottom-color: rgba(0, 0, 0, 0.11);
-}
-
-.border-left {
-	border-left: 1px solid #E3E3E3;
-	border-left-color: rgba(0, 0, 0, 0.11);
-}
-</style>
-
-<!-- ajax layout which only needs content area -->
 <div class="row">
-  <div class="col-sm-12">
-    <!-- PAGE CONTENT BEGINS -->
-    <div class="pull-left margin-top-10px">
-      <a ui-sref="task.create({ usId: userStory.id })">
-        <button class="btn btn-info" type="button">
-          <i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
-        </button>
-      </a>
-    </div>
-    <div class="pull-right" ng-show="userStory.name">
-      <h2 class="blue">
-        User Story: <a href="">{{userStory.name}}</a>
-      </h2>
-    </div>
+	<div class="col-sm-12">
+		<!-- PAGE CONTENT BEGINS -->
+		<div class="pull-left margin-top-10px">
+			<a ui-sref="task.create({ usId: userStory.id })">
+				<button class="btn btn-info" type="button">
+					<i class="ace-icon fa fa-plus wrenching bigger-110"></i> Add new
+				</button>
+			</a>
+		</div>
+		<div class="pull-right" ng-show="userStory.name">
+			<h2 class="blue">
+				User story: <a href="">{{userStory.name}}</a>
+			</h2>
+		</div>
 
-  </div>
+	</div>
 </div>
-
-<!-- /.page-header -->
-
-<!-- PAGE CONTENT BEGINS -->
-
+<div ng-show="deleteSuccess" class="col-xs-12 center" id="message">
+	<div class="alert alert-success">{{deleteSuccess}}</div>
+</div>
 <div class="row">
 	<div class="col-xs-12">
-		<!-- <div ng-show="message">
-			<h3 class="lighter red">{{message}}</h3>
-		</div> -->
-
+		<!-- <div class="dataTables_borderWrap"> -->
 		<div class="widget-header">
 			<h4 class="widget-title">Task List</h4>
 		</div>
-		<!-- <div class="dataTables_borderWrap"> -->
 		<div>
-			<table class="table table-striped table-bordered table-hover">
+			<table id="sample-table-2"
+				class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>
-						<th class="center"><label class="position-relative">
-								<input type="checkbox" class="ace" /> <span class="lbl"></span>
-						</label></th>
+						<th width="90px"></th>
 						<th>Name</th>
 						<th>Description</th>
-
-						<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-							Start Date</th>
-						<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-							End Date</th>
-						<th>Operations</th>
+						<th>State</th>
+						<th>Owner</th>
 					</tr>
 				</thead>
+
 				<tbody>
-
-					<tr ng-repeat="item in tasks">
-						<td class="center"><label class="position-relative">
-								<input type="checkbox" class="ace" ng-model="item.checked"
-								ng-change="updateItem(item)" /> <span class="lbl"></span>
-						</label></td>
-
-						<td><a href="#">{{item.name}}</a></td>
-						<td>{{item.description}}</td>
-						<!-- <td ng-bind="toVNDateFormat(item.startDate)"></td> -->
-						<td>{{item.startDate | date:'mediumDate'}}</td>
-						<td>{{item.endDate | date:'mediumDate'}}</td>
+					<tr ng-repeat="task in tasks" on-last-repeat>
 						<td>
 							<button class="btn btn-xs btn-info"
-								ng-click="goToEditTask(item.id)" show="tooltip"
+								ng-click="goToEditTask(task.id)" show="tooltip"
 								title="Edit selected row">
 								<i class="ace-icon fa fa-pencil bigger-120"></i>
 							</button>
 
-							<button class="btn btn-xs btn-danger" ng-click="onDelete(item)"
+							<button class="btn btn-xs btn-danger" ng-click="onDelete(task)"
 								title="Delete selected row">
 								<i class="ace-icon fa fa-trash-o bigger-120"></i>
 							</button>
-						</td>
 
+						</td>
+						<td ng-bind="task.name"></td>
+						<td ng-bind="task.description"></td>
+						<td ng-bind="task.taskStateId.name"></td>
+						<td ng-bind="task.owner.username"></td>
 					</tr>
 				</tbody>
 			</table>
 		</div>
 	</div>
 </div>
-<!-- PAGE CONTENT ENDS -->
+
+
+<!-- page specific plugin scripts -->
+<script type="text/javascript">
+  var scripts = [ null, './assets/js/bootbox.min.js', './assets/js/app/ng/shared/jquery.bpopup.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+    //inline scripts related to this page
+
+  });
+</script>
+
+<script type="text/javascript">
+  var initTable = function() {
+    var table = $('#sample-table-2').dataTable({
+      "bPaginate" : false,
+      "bInfo" : true,
+      "bRetrieve" : true,
+      //"bProcessing": true,
+      //"bJQueryUI": true,
+      "bDestroy" : true,
+      "bAutoWidth" : true,
+      "aoColumns" : [ {
+        "bSortable" : false
+      }, null, null, null, null, null, null, null ],
+      "aaSorting" : [],
+      //"aaData": data,
+      "dom" : "<'row'<'col-sm-6 toolbar'l><'col-sm-6'f>>" + "t" + "<'row'<'col-sm-6'i><'col-sm-6'p>>",
+    });
+    $("div.toolbar").html("<h4 class='blue'>Sprint List</h4>");
+
+    /* $(document).on('click', 'th input:checkbox', function() {
+      var that = this;
+      $(this).closest('table').find('tr > td:first-child input:checkbox').each(function() {
+        this.checked = that.checked;
+        $(this).closest('tr').toggleClass('selected');
+      });
+
+    }); */
+
+  }
+</script>
