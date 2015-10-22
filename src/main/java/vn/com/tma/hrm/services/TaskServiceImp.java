@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.Task;
 import vn.com.tma.hrm.entities.UserStory;
@@ -64,6 +65,12 @@ public class TaskServiceImp implements TaskService{
 	public Task getByID(int id){
 		return taskRepository.findOne(id);
 	}
+	
+	@Override
+    @Transactional(value = "txManager")
+    public Task getByUserStoryAndName(UserStory us, String name) {
+        return taskRepository.findByUserStoryIdAndName(us, name);
+    }
 	
 	@Override
 	@Transactional(value="txManager") 

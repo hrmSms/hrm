@@ -61,7 +61,7 @@
 				if (message.success) {
 					$scope.error = null;
 					$scope.success = message.success;
-					//$scope.showDialog('#success');
+					$scope.showDialog('#success');
 					setTimeout(function() {
 						$scope.goToTaskList();
 					}, 1000);
@@ -104,8 +104,8 @@
 			bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
 				if (result) {
 					hrmService.post("./task/delete/" + task.id, null).then(function(message) {
-						//$scope.deleteSuccess = message.success;
-						//$scope.showDialog('#message');
+						$scope.deleteSuccess = message.success;
+						$scope.showDialog('#message');
 						$scope.getTasksByUSID(task.userStoryId.id);					
 					});
 				}
@@ -132,7 +132,7 @@
 					$scope.error = null;
 					$scope.success = message.success;
 					// show message success dialog
-					//$scope.showDialog('#success');
+					$scope.showDialog('#success');
 					// redirect to sprint list page after 1 min
 					setTimeout(function() {
 						$scope.goToTaskList();
@@ -174,6 +174,18 @@
         	$scope.task.state = angular.toJson(task.taskStateId);
           }
         
+
+        $scope.showDialog = function(id) {
+		$(id).bPopup({
+			opacity : 0.6,
+			autoClose : 2000,
+			positionStyle : 'fixed',
+			modalClose : true,
+			modal : false,
+			position : [ 0, 0 ]
+		});
+	}
+        
         // ########################### State cases
 		$scope.$on("$stateChangeSuccess", function() {
 			if ($state.is('task.list')) {	
@@ -187,6 +199,8 @@
 				$scope.getTasksById($stateParams.id);
 			}
 		});
+		
+		
 	};
 
 	//TaskController.$inject = ['$scope', '$state', '$stateParams', 'hrmService', 'TaskService'];

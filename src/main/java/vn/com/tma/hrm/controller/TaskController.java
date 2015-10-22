@@ -17,6 +17,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,6 +35,8 @@ import vn.com.tma.hrm.entities.Task;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.services.TaskService;
 import vn.com.tma.hrm.services.UserStoryService;
+import vn.com.tma.hrm.validator.SprintValidator;
+import vn.com.tma.hrm.validator.TaskValidator;
 
 @Controller
 @RequestMapping("/task")
@@ -43,6 +47,9 @@ public class TaskController {
 
 	@Autowired
     private UserStoryService usService;
+	
+	@Autowired
+    private TaskValidator taskValidator;
 	
 	@Autowired
     private MessageSource messageSource;
@@ -125,6 +132,11 @@ public class TaskController {
         }
         return new ResponseEntity<String>("{ \"success\" : " + successString + "} ", HttpStatus.CREATED);
 
+    }
+	
+	@InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.addValidators(taskValidator);
     }
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
