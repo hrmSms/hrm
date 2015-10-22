@@ -33,6 +33,7 @@
         	this.taskEst = $scope.task.taskEst;
         	this.toDo = 0;
         	this.spentTime = 0;
+        	this.taskEst = 0;
         	if ($scope.task.owner != undefined) {
         		this.owner = JSON.parse($scope.task.owner);
         	} else {
@@ -44,10 +45,11 @@
         	this.userStoryId = {'id':$scope.userStory.id}; 
         	this.taskStateId = JSON.parse($scope.task.state);
         	
-        	if ($stateParams.id != null) {
+        	if ($stateParams.id != null) {	// edit task
         		this.id = $stateParams.id;
         		this.toDo = $scope.task.toDo;
             	this.spentTime = $scope.task.spentTime;
+            	this.taskEst = $scope.task.taskEst;
         	}
         }        
 
@@ -89,8 +91,8 @@
         	hrmService.get("./task/getByUserStoryID/" + usId).then(function(item) {		// Get task by usId
 				$scope.tasks = item;
 				for (var i=0;i<$scope.tasks.length;i++) {
-					$scope.tasks[i].name = $scope.tasks[i].name.replace(/<[^>]*>/g, '');
-					$scope.tasks[i].description = $scope.tasks[i].description.replace(/<[^>]*>/g, ''); 
+					$scope.tasks[i].name = $scope.tasks[i].name;
+					$scope.tasks[i].description = $scope.tasks[i].description;
 				}
         	});      
         	hrmService.get("./user_story/getByID/" + $stateParams.usId).then(function(item) {	// Get UserStory by usId 
