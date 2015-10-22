@@ -36,8 +36,10 @@
 					<tr>
 						<th width="90px"></th>
 						<th>Name</th>
-						<th>Description</th>
 						<th>State</th>
+						<th>Estimate</th>
+						<th>To do</th>
+						<th>Time spent</th>
 						<th>Owner</th>
 					</tr>
 				</thead>
@@ -57,9 +59,11 @@
 							</button>
 
 						</td>
-						<td ng-bind="task.name"></td>
-						<td ng-bind="task.description"></td>
+						<td ng-bind="task.name"></td>						
 						<td ng-bind="task.taskStateId.name"></td>
+						<td ng-bind="task.taskEst"></td>
+						<td ng-bind="task.toDo"></td>
+						<td ng-bind="task.spentTime"></td>
 						<td ng-bind="task.owner.username"></td>
 					</tr>
 				</tbody>
