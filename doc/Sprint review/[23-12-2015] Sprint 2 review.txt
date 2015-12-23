@@ -1,0 +1,28 @@
+As the meeting today, we have 2 notes:
+
+1.	Add 2 new requirements to our projects:
+	-	One project have one or many releases
+	-	The project supports multi-language
+
+2.	For developer team, please update the following the changes for your tasks:
+	a.	Project: 
+		- “Create project” and “project list” shouldn’t be in the same page 
+		- A project has a unique alias 
+		
+	b. Sprint
+		- Sprint name following the format: “Sprint (number)” (number starts at 1 and +1 for the next sprint, restart 1 at the other project)
+	
+	b.	User Story:
+		- When a user delete a US, show notification to user if this US have one or many tasks.
+		- If user delete a US, it will delete all tasks in a US
+		- Add “id” following the format : “(project’s alias)_US_(number)” (number starts at 1 and +1 for the next US)
+		- Show “id” instead of “name”
+
+	c. Task:
+		- Owner shows full name
+		- Unlock time spent field
+		- if status is not “New”, user cannot change the status to “New”.
+		- Add id following the format : “(project’s alias)_task_(number)” (number starts at 1 and +1 for the next task)
+		- Show “id” instead of “name”
+
+
