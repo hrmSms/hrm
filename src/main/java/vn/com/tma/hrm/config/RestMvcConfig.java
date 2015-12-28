@@ -13,7 +13,6 @@ public class RestMvcConfig extends RepositoryRestMvcConfiguration {
     public RepositoryRestConfiguration config() {
         RepositoryRestConfiguration config = super.config();
         config.setBasePath("/api");
-        config.exposeIdsFor(Project.class);
         return config;
     }
 }
