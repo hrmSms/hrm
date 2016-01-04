@@ -2,7 +2,7 @@
   var HATEOAS_URL = './api/projects';
   var ProjectFactory = function($http, SpringDataRestAdapter) {
     function Project(item) {
-      console.log('Line 5: ' +item);
+      //console.log('Line 5: ' +item);
       if (item._resources) {
     	  item.resources = item._resources("self", {}, {
           update: {
@@ -54,7 +54,7 @@
     	Project.resources = data._resources("self");
         callback && callback(_.map(data._embeddedItems, function(project) {
           
-          console.log('Line 46: ' +project);
+          
           return new Project(project);
         }));
       });

@@ -1,226 +1,204 @@
-<style>
-  	<link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
-	<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />  
-</style>
+<!-- page specific plugin styles -->
+<!-- <link rel="stylesheet" href="../../assets/css/jquery-ui.custom.css" /> -->
 
+<!-- page specific plugin styles -->
+<link rel="stylesheet" href="assets/css/jquery-ui.custom.min.css" />
+<link rel="stylesheet" href="assets/css/bootstrap-datetimepicker.min.css" />
 
+<!-- /section:basics/navbar.layout -->
+<div class="main-container" id="main-container">
+  <div class="row">
+    <div class="col-xs-12 page-header">
+      <div class="pull-left">        
+        <div class="padding-left-50px">
+          <h4>Create project</h4>
+        </div>
+      </div>
 
-<!-- ajax layout which only needs content area -->
-<div class="page-header">
-  <h1>
-    Project Details 
-    <small> 
-    	<i class="ace-icon fa fa-angle-double-right"></i> Create a project
-    </small>
-  </h1>
+    </div>
+    <div ng-show="success" class="col-xs-12 center" id="success">
+      <div class="alert alert-success">{{success}}</div>
+    </div>
+    <div class="col-xs-12">
+
+      <form name="form" class="form-horizontal" novalidate>
+        
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="name"> Name <i class="red">*</i></label>
+          <div class="col-sm-8 col-xs-10">
+            <div ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
+              <input type="text" id="name" name="name" class="form-control" ng-model="p.name" required name-validator/>
+            </div>
+            <div ng-show="form.$submitted || form.name.$touched" class="validation-error">
+              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">Name is required</div>
+              <div ng-show="error.name" class="alert alert-danger">{{error.name}}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group ">
+          <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
+          <div class="col-sm-8 col-sx-10">
+            <div class="wysiwyg-editor" id="description" ></div>
+          </div>
+        </div>
+		
+		<div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="name"> Client </label>
+          <div class="col-sm-8 col-xs-10">
+            <div ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
+              <input type="text" id="client" name="client" class="form-control" ng-model="p.clientId" />
+            </div>            
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-sm-2 control-label no-padding-right" for="startDate">Start Date <i class="red">*</i></label>
+          <div class="col-sm-3 col-xs-8">
+            <div class="input-group" ng-class="{ 'has-error': form.startDate.$touched && form.startDate.$invalid }">
+              <input id="startDate" name="startDate" type="text" class="form-control" ng-model="p.startDate"
+                lower-than="{{p.endDate}}" show-error="{{form.endDate.$error.higherThan}}" required /> <span
+                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+              </span>
+            </div>
+            <div ng-show="form.$submitted || form.startDate.$dirty">
+              <div ng-show="!error.startDate">
+                <div ng-show="form.startDate.$error.required" class="alert alert-danger">Start Date isn't null</div>
+                <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be
+                  less than End Date</div>
+              </div>
+              <div ng-show="error.startDate" class="alert alert-danger">{{error.startDate}}</div>
+            </div>
+          </div>
+          <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date <i class="red">*</i></label>
+          <div class="col-sm-3  col-xs-8">
+            <div class="input-group" ng-class="{ 'has-error': form.endDate.$touched && form.endDate.$invalid }">
+              <input id="endDate" name="endDate" type="text" class="form-control" ng-model="p.endDate"
+                higher-than="{{p.startDate}}" show-error="{{form.startDate.$error.lowerThan}}" required /> <span
+                class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
+              </span>
+            </div>
+            <div ng-show="form.$submitted || form.endDate.$dirty">
+              <div ng-show="!error.endDate">
+                <div ng-show="form.endDate.$error.required" class="alert alert-danger">End Date isn't null</div>
+                <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be
+                  greater than Start Date</div>
+              </div>
+            </div>
+            <div ng-show="error.endDate" class="alert alert-danger">{{error.endDate}}</div>
+          </div>
+        </div>
+        
+
+        <div class="center clearfix">
+          <hrm-button type="create" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
+          <hrm-button type="reset" ng-click="reset(form)"></hrm-button>
+          <hrm-button type="close" ng-click="goToProjectList()"></hrm-button>
+          
+        </div>
+
+      </form>
+    </div>
+  </div>
 </div>
-<!-- /.page-header -->
+<!-- /.main-container -->
 
-<!-- PAGE CONTENT BEGINS -->
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+  jQuery(function($) {
+    // init theme
+    //ace.init.start();
+  });
+  var initAll = function() {
+    //datetimepicker plugin
+    $('#startDate').datetimepicker({
+      format : 'DD-MM-YYYY'
+    }).next().on(ace.click_event, function(e) {
+      $(this).prev().focus();
+      //$(this).data("DateTimePicker").minDate(date());
+    });
 
-	<!-- <form class="form-horizontal" role="form" ng-submit="addProject(newProject, description, startDate, endDate, clientId)"> -->
-	<form class="form-horizontal" role="form" ng-submit="addProject(p)">
-		<div class="col-xs-12">
-		<div class="input-group">
-			<label class="col-sm-2 control-label no-padding-right" for="name"
-				required> Name </label>
-			<div class="col-sm-10">
-				<input type="text" id="name" placeholder="Enter project name..."
-					class="col-xs-10 col-sm-8" ng-model="p.name" />
-			</div>
-			<hr/>
-			
-			<label class="col-sm-2 control-label no-padding-right" for="desc"
-				required> Description </label>
-			<div class="col-sm-10">
-				<input type="text" id="description" 
-					class="col-xs-10 col-sm-8" ng-model="p.description" />
-			</div>			
-			
-			<label class="col-sm-2 control-label no-padding-right" for="client"
-				required> Client </label>
-			<div class="col-sm-10">
-				<input type="text" id="client" 
-					class="col-xs-10 col-sm-8" ng-model="p.clientId" />
-			</div>
-			<hr/>
-				<label class="col-sm-2 control-label no-padding-right"
-					for="startDate">Start Date</label>
-				<div class="col-sm-3 col-xs-8">
-					<div class="input-group">
-						<input id="startDate" type="text" class="form-control"
-							ng-model="p.startDate" /> <span class="input-group-addon">
-							<i class="fa fa-clock-o bigger-110"></i>
-						</span>
-					</div>
-				</div>
-				<label class="col-sm-2 control-label no-padding-right"
-					for="startDate">End Date</label>
-				<div class="col-sm-3 col-xs-8">
-					<div class="input-group">
-						<input id="endDate" type="text" class="form-control"
-							ng-model="p.endDate" /> <span class="input-group-addon">
-							<i class="fa fa-clock-o bigger-110"></i>
-						</span>
-					</div>
-				</div>
-			</div>
-					<spanclass="input-group-btn">
-					<div class="hidden-sm hidden-xs btn-group">
-						<button class="btn btn-xs btn-success" type="submit"
-							ng-disabled="!p.name">
-							<i class="ace-icon fa fa-check bigger-120"></i>
-						</button>
-					</div>
-					</span>
-				</div>
-			</div>
-	
-	<hr />
-	<div class="row">
-		<div class="col-xs-12">
-			<table id="sample-table-1"
-				class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th class="center"><label class="position-relative">
-								<input type="checkbox" class="ace" /> <span class="lbl"></span>
-						</label></th>
-						<th>Name</th>
-						<th>Description</th>
+    $('#endDate').datetimepicker({
+      format : 'DD-MM-YYYY'
+    }).next().on(ace.click_event, function(e) {
+      $(this).prev().focus();
+    });
 
-						<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-							Start Date</th>
-						<th><i class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i>
-							End Date</th>
-						<th class="hidden-480">Client</th>
-						<th>Operations</th>
-					</tr>
-				</thead>
-				<tbody>
+    //description texterea
+    $('#description').css({
+      'height' : '150px'
+    }).ace_wysiwyg();
 
-					<tr ng-repeat="item in projects">
-						<td class="center"><label class="position-relative">
-								<input type="checkbox" class="ace" ng-model="item.checked"
-								ng-change="updateProject(item)" /> <span class="lbl"></span>
-						</label></td>
+    var toolbar = $('#description').prev().get(0);
+    $(toolbar).addClass('wysiwyg-style2');
 
-						<td><a ui-sref="sprint.list({ projectId: item.id})">{{item.name}}</a></td>
-						<td>{{item.description}}</td>						
-						<td>{{item.startDate| date:'shortDate'}}</td>
-						<td>{{item.endDate | date:'shortDate'}}</td>						
-						<td>{{item.clientId}}</td>
-						<td>
-							<div class="hidden-sm hidden-xs action-buttons"
-								ng-click="deleteProject(item)">
-								<a class="red" href="#"> <i
-									class="ace-icon fa fa-trash-o bigger-130"></i>
-								</a>
-							</div>
-						</td>
+    //note texterea
+    $('#note').css({
+      'height' : '150px'
+    }).ace_wysiwyg();
 
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+    var toolbar = $('#note').prev().get(0);
+    $(toolbar).addClass('wysiwyg-style2');
 
-</form>
+    //RESIZE IMAGE
 
-<!-- PAGE CONTENT ENDS -->
+    //Add Image Resize Functionality to Chrome and Safari
+    //webkit browsers don't have image resize functionality when content is editable
+    //so let's add something using jQuery UI resizable
+    //another option would be opening a dialog for user to enter dimensions.
+    if (typeof jQuery.ui !== 'undefined' && ace.vars['webkit']) {
+
+      var lastResizableImg = null;
+      function destroyResizable() {
+        if (lastResizableImg == null)
+          return;
+        lastResizableImg.resizable("destroy");
+        lastResizableImg.removeData('resizable');
+        lastResizableImg = null;
+      }
+
+      var enableImageResize = function() {
+        $('.wysiwyg-editor').on('mousedown', function(e) {
+          var target = $(e.target);
+          if (e.target instanceof HTMLImageElement) {
+            if (!target.data('resizable')) {
+              target.resizable({
+                aspectRatio : e.target.width / e.target.height,
+              });
+              target.data('resizable', true);
+
+              if (lastResizableImg != null) {
+                //disable previous resizable image
+                lastResizableImg.resizable("destroy");
+                lastResizableImg.removeData('resizable');
+              }
+              lastResizableImg = target;
+            }
+          }
+        }).on('click', function(e) {
+          if (lastResizableImg != null && !(e.target instanceof HTMLImageElement)) {
+            destroyResizable();
+          }
+        }).on('keydown', function() {
+          destroyResizable();
+        });
+      }
+
+      enableImageResize();
+
+      
+    }
+
+  };
+</script>
 
 <!-- page specific plugin scripts -->
 <script type="text/javascript">
-			var initAll = function() {
-				//datetimepicker plugin
-				$('#startDate').datetimepicker().next().on(ace.click_event, function(){
-					$(this).prev().focus();
-					
-				});
-				
-				$('#endDate').datetimepicker().next().on(ace.click_event, function(){
-					$(this).prev().focus();
-				});
-
-				//description texterea
-				$('#description').ace_wysiwyg();
-
-				var toolbar = $('#description').prev().get(0);
-				$(toolbar).addClass('wysiwyg-style2');
-
-			
-
-				//RESIZE IMAGE
-				
-				//Add Image Resize Functionality to Chrome and Safari
-				//webkit browsers don't have image resize functionality when content is editable
-				//so let's add something using jQuery UI resizable
-				//another option would be opening a dialog for user to enter dimensions.
-				if ( typeof jQuery.ui !== 'undefined' && ace.vars['webkit'] ) {
-					
-					var lastResizableImg = null;
-					function destroyResizable() {
-						if(lastResizableImg == null) return;
-						lastResizableImg.resizable( "destroy" );
-						lastResizableImg.removeData('resizable');
-						lastResizableImg = null;
-					}
-
-					var enableImageResize = function() {
-						$('.wysiwyg-editor')
-						.on('mousedown', function(e) {
-							var target = $(e.target);
-							if( e.target instanceof HTMLImageElement ) {
-								if( !target.data('resizable') ) {
-									target.resizable({
-										aspectRatio: e.target.width / e.target.height,
-									});
-									target.data('resizable', true);
-									
-									if( lastResizableImg != null ) {
-										//disable previous resizable image
-										lastResizableImg.resizable( "destroy" );
-										lastResizableImg.removeData('resizable');
-									}
-									lastResizableImg = target;
-								}
-							}
-						})
-						.on('click', function(e) {
-							if( lastResizableImg != null && !(e.target instanceof HTMLImageElement) ) {
-								destroyResizable();
-							}
-						})
-						.on('keydown', function() {
-							destroyResizable();
-						});
-				    }
-
-					enableImageResize();
-
-					
-				}
-			
-			};
-		</script>
-
-<script type="text/javascript">
-	var scripts = [null, 
-	               './assets/js/jquery.autosize.min.js', 
-	               './assets/js/jquery.inputlimiter.1.3.1.min.js',
-	               'assets/js/date-time/moment.min.js',
-	               'assets/js/date-time/bootstrap-datetimepicker.min.js',
-	               'assets/js/bootstrap-wysiwyg.min.js',
-	               'assets/js/bootbox.min.js', 
-	               null];
-	$('.page-content-area').ace_ajax('loadScripts', scripts, function() {
-	  //inline scripts related to this page
-	  $('textarea[class*=autosize]').autosize({append: "\n"});
-  	  $('textarea.limited').inputlimiter({
-  		remText: '%n character%s remaining...',
-  		limitText: 'max allowed : %n.'
-  	  });
-	  initAll();
-	});
-
+  var scripts = [ null, './assets/js/date-time/bootstrap-datetimepicker.min.js',
+      './assets/js/bootstrap-wysiwyg.min.js', './assets/js/bootbox.min.js',
+      './assets/js/app/ng/shared/jquery.bpopup.min.js', './assets/js/bootbox.min.js', null ]; //[null, './assets/js/jquery-ui.custom.js', './assets/js/bootbox.js', null]
+  $('.page-content-area').ace_ajax('loadScripts', scripts, function() {
+    //inline scripts related to this page
+    initAll();
+  });
 </script>
