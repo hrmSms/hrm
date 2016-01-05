@@ -48,21 +48,13 @@
 		};
 		
 
-        // call when change page
-//        $scope.$on("$stateChangeSuccess", function() {
-//
-//          // load list of sprints in a project
-//          if ($state.is('project.list')) {
-//        	  Project.query();
-//          }
-//          
-//        });
+
 		
 		 // save and redirect to project list
         $scope.createAndClose = function() {
         	$scope.addProject($scope.p);
-        	
-                  // redirect to sprint list page after 1 min
+        	$scope.goToProjectList();
+//                 redirect to sprint list page after 1 min
 //                  setTimeout(function() {
 //                    $scope.goToProjectList();
  //                 }, 1000);
@@ -104,33 +96,47 @@
             });
           }
 	};
-
+	
 	// AppController.$inject = ['$scope', 'Project'];
 	angular.module("hrmApp.controllers")
 		.controller("AppController",[ '$scope', '$state', '$stateParams', 'Project', AppController ])
-		.directive(nameValidator, function($q, $timeout) {
-			return {
+		//.service('projectService', ['$q', '$http', ProjectService])
+		//.directive('uniqueProjectname', ['ProjectService', UniqueProjectnameDirective])
+		
+		.directive('projectnameValidator', function($q, $timeout, $http) {
+            return {
                 require: 'ngModel',
                 link: function(scope, element, attrs, ngModel) {
-                    ngModel.$asyncValidators.username = function(modelValue, viewValue) {
+                    ngModel.$asyncValidators.projectname = function(modelValue, viewValue) {
                         if (!viewValue) {
                             return $q.when(true);
                         }
                         var deferred = $q.defer();
+                        
+                        var urlBase = 'api';
+        	        	urlBase += '/projects/search/findByName?name=';        	        	
+        	        	var isUnique = false;
+        	        	$http.get(urlBase + viewValue)
+        	            .success(function (data) {
+        	                if (data._embedded != undefined) {
+        	                	console.log('Line 165:' + data._embedded.projects[0].name);
+        	                    isUnique = true;
+        	                }        	                
+        	            });
+        	        	
+        	        	
                         $timeout(function() {
-                            // Faking actual server-side validity check with $http.
-                            // Let's pretend our service is so popular all short username are already taken
-                            if (viewValue && viewValue.length < 5) {
+                            if (viewValue && isUnique) {
                                 deferred.reject();
                             }
 
                             deferred.resolve();
-                        }, 2000);
+                        }, 500);
                         return deferred.promise;
                     };
                 }
             };
-			
-		}
-		);
+		})
+		;
+	
 }(angular));
