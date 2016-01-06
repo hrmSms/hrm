@@ -68,7 +68,7 @@ angular.module('hrmApp.route', [])
     .state('project.list', {
       url: '/project/list',
       templateUrl: 'pages/project-list.html',
-      controller: ''
+      controller: 'AppController'
     })
     .state('project.create', {
       url: '/project/create',
