@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
+import vn.com.tma.hrm.entities.UserStory;
 
 @Projection(name = "projectProjection", types = { Project.class })
 public interface ProjectProjection {
@@ -24,7 +25,11 @@ public interface ProjectProjection {
     
     public Date getStartDate();
     
-    @JsonIgnore
     public List<Sprint> getSprints();
+    
+    public List<UserStory> getUserStories();
+/*    
+    @JsonIgnore
+    public List<Sprint> getSprints();*/
     
 }

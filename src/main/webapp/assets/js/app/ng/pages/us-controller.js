@@ -11,8 +11,8 @@ angular.module('hrmApp.controllers')
 			console.log('projectid ' + projectId);
 			hrmService.get("./user_story/get_related_data/" + projectId).then(function(data) {
 		        $scope.usStates = data.usStates;
-		        $scope.sprints = data.sprints;
-		        $scope.users = data.users;
+		        //$scope.sprints = data.sprints;
+		        //$scope.users = data.users;
 		        $scope.project = data.project;
 		        $scope.parents = data.parents;
 		      });
@@ -23,10 +23,22 @@ angular.module('hrmApp.controllers')
     		 console.log('$scope.usStates' + $scope.usStates);
     	});
 		
-		$http.get('./api/sprints?projection=userStoryProjection')
+		$http.get('./api/sprints')
     	.success(function (response) {
-    		 $scope.usStates = response._embedded.userStoryStates;
-    		 console.log('$scope.usStates' + $scope.usStates);
+    		 $scope.sprints = response._embedded.sprints;
+    		 console.log('$scope.sprints' + $scope.sprints);
+    	});
+		
+		$http.get('./api/users?projection=userProjection')
+    	.success(function (response) {
+    		 $scope.users = response._embedded.users;
+    		 console.log('$scope.users' + $scope.users);
+    	});
+		
+		$http.get('./api/projects/search/findById?projectId=' + projectId + '&projection=projectProjection')
+    	.success(function (response) {
+    		 $scope.project = response;
+    		 console.log('$scope.project' + $scope.project);
     	});
     };
 
@@ -159,11 +171,11 @@ angular.module('hrmApp.controllers')
   
      // get list userstories by project id
         var getUserStoriesByProjectID = function(projectId) {
-        	var httpPromise = $http.get('./api/userStories/search/findByProjectId?projectId=' + projectId + '&projection=userStoryProjection')
+        	var httpPromise = $http.get('./api/projects/search/findById?projectId=' + projectId + '&projection=projectProjection')
         	.success(function (response) {
         		//$scope.response = angular.toJson(response, true);
         		$scope.userstories = response._embedded.userStories;
-        		$scope.project = response._embedded.userStories[0]._embedded.project;
+        		$scope.project = response;
         		$scope.isAdmin = true;
         		console.log('userstories ' + $scope.userstories);
         	});
