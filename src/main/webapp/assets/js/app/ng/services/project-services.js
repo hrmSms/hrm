@@ -2,7 +2,7 @@
   var HATEOAS_URL = './api/projects';
   var ProjectFactory = function($http, SpringDataRestAdapter) {
     function Project(item) {
-      console.log('Line 5: ' +item);
+      //console.log('Line 5: ' +item);
       if (item._resources) {
     	  item.resources = item._resources("self", {}, {
           update: {
@@ -24,23 +24,23 @@
         item.save = function(callback) {
         	//console.log(item);
         	//console.log(item.resources);
-        	var urlBase = 'api';
+        	/*var urlBase = 'api';
         	urlBase += '/projects/search/findByName?name=';
         	$http.get(urlBase + item.name).
             success(function (data) {
                 if (data._embedded != undefined) {
                     console.log(data._embedded.projects[0].name);
                     alert('Existed project '+item.name + '. Please enter other name!');
-                } else {
+                } else {*/
                 	Project.resources.save(item, function(project, headers) {
                         var deferred = $http.get(headers().location);
                         return SpringDataRestAdapter.process(deferred).then(function(newProject) {
                           callback && callback(new Project(newProject));
                         });
                       });
-                }
+                //}
                 
-            });
+            //});
         };
       }
 
@@ -54,7 +54,7 @@
     	Project.resources = data._resources("self");
         callback && callback(_.map(data._embeddedItems, function(project) {
           
-          console.log('Line 46: ' +project);
+          
           return new Project(project);
         }));
       });

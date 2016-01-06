@@ -31,11 +31,14 @@ public class ProjectEventHandler {
 
 
 	        //agent.setName(NEW_NAME + agent.getName());
-	        agent.setClientId(1);
-	        agent.setProjectOwner(1);
+	    	log.info("[Before Create] Setting Agent name to " + agent.getName());
+	    	//log.info("[Before Create] Project " + agent);
+	    	log.info("[Before Create] getClientId " + agent.getClientId());
+	       // agent.setClientId(1);
+	        //agent.setProjectOwner(1);
 	        
-	        log.info("[Before Create] Setting Agent name to " + agent.getName());
-	        log.info("[Before Create] getClientId " + agent.getClientId());
+	      
+	       // log.info("[After Create] getClientId " + agent.getClientId());
 
 	    }
 
