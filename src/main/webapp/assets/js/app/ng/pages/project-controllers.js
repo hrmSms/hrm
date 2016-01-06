@@ -7,7 +7,7 @@
 
 			for (var i = 0; i < $scope.projects.length; i++) {
 				var proj = $scope.projects[i];
-				console.log('Loading project ' + proj.name);
+//				console.log('Loading project ' + proj.name);
 
 			}
 		});
@@ -20,9 +20,14 @@
 			//p.startDate = d.toISOString();
 			p.startDate = moment(p.startDate, "DD-MM-YYYY hh:mm:ss");
 			p.endDate = moment(p.endDate, "DD-MM-YYYY hh:mm:ss");
-
+			console.log('Project client id' + p.clientId);
+			if (p.clientId == null ) {
+				p.clientId = 1;
+			}
+				
 			p.clientId = new Number(p.clientId);
-			console.log('Project ' + p.clientId);
+			
+			
 			new Project({
 				description : desc,
 				name : p.name,
