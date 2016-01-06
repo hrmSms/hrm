@@ -28,12 +28,12 @@
   	        <div class="col-sm-8 col-xs-10">
 				<input type="text" ng-model="p.name" name="projectname"	class="form-control" required projectname-validator/>
   					<div ng-if="form.projectname.$dirty" >
-						<div ng-messages="form.projectname.$error"	 class="infobox-red">
-							<div ng-message="required">Project name required</div>
-							<div ng-message="projectname">Please input another name</div>
+						<div ng-messages="form.projectname.$error"	 >
+							<div ng-message="required" class="alert alert-danger" >Project name required</div>
+							<div ng-message="projectname" class="alert alert-danger">The project name already existed. Please input another name</div>
 						</div>
-						<div ng-messages="form.projectname.$pending" class="infobox-orange">
-							<div ng-message="projectname">Checking project name is unique...</div>
+						<div ng-messages="form.projectname.$pending" >
+							<div ng-message="projectname" class="alert alert-info">Checking project name is unique...</div>
 						</div>
 					</div>
           	</div>
