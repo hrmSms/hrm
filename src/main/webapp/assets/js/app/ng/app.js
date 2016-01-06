@@ -6,7 +6,8 @@
     angular.module('hrmApp.constants', []);
     angular.module('hrmApp.modules', [ 'ngAnimate', 
                                        'ngCookies', 
-                                       'ngResource', 
+                                       'ngResource',
+                                       'ngMessages',
                                        'ui.router', 
                                        'spring-data-rest', 
                                        'oc.lazyLoad' ]);
