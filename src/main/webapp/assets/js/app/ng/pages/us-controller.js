@@ -1,11 +1,14 @@
 // CRUD function
 angular.module('hrmApp.controllers')
-.controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService',
-                              function($scope, $http, $state, $stateParams, hrmService) {
+.controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService', '$resource', 'SpringDataRestAdapter',
+                              function($scope, $http, $state, $stateParams, hrmService, $resource, SpringDataRestAdapter) {
 	
-		$scope.userstory = {};
+	
+	
+	$scope.userstory = {};
 		 // Get all related data
 		var loadUsRelatedData = function(projectId) {
+			console.log('projectid ' + projectId);
 			hrmService.get("./user_story/get_related_data/" + projectId).then(function(data) {
 		        $scope.usStates = data.usStates;
 		        $scope.sprints = data.sprints;
@@ -13,13 +16,23 @@ angular.module('hrmApp.controllers')
 		        $scope.project = data.project;
 		        $scope.parents = data.parents;
 		      });
-		    };
+			
+		$http.get('./api/userStoryStates?projection=userStoryProjection')
+    	.success(function (response) {
+    		 $scope.usStates = response._embedded.userStoryStates;
+    		 console.log('$scope.usStates' + $scope.usStates);
+    	});
+		
+		$http.get('./api/sprints?projection=userStoryProjection')
+    	.success(function (response) {
+    		 $scope.usStates = response._embedded.userStoryStates;
+    		 console.log('$scope.usStates' + $scope.usStates);
+    	});
+    };
 
 	 // save and redirect to us list
         $scope.createAndClose = function() {
         	hrmService.post("./user_story/create", new userstoryObj()).then(function(message) {
-        	  console.log('success message: ' + message.error);
-        	  console.log('success message: ' + message.success);
             if (message.error) {
             	console.log('go to error');
               $scope.success = null;
@@ -146,11 +159,14 @@ angular.module('hrmApp.controllers')
   
      // get list userstories by project id
         var getUserStoriesByProjectID = function(projectId) {
-          hrmService.get("./user_story/get_user_stories_by_project_id/" + projectId).then(function(data) {
-            $scope.userstories = data.userstories;
-            $scope.project = data.project;
-            console.log('$scope.userstories in list view: ' + $scope.userstories);
-          });
+        	var httpPromise = $http.get('./api/userStories/search/findByProjectId?projectId=' + projectId + '&projection=userStoryProjection')
+        	.success(function (response) {
+        		//$scope.response = angular.toJson(response, true);
+        		$scope.userstories = response._embedded.userStories;
+        		$scope.project = response._embedded.userStories[0]._embedded.project;
+        		$scope.isAdmin = true;
+        		console.log('userstories ' + $scope.userstories);
+        	});
         };
      
         // convert date to VietNam (UK) date format

@@ -48,7 +48,7 @@ public class UserStory implements Serializable{
 	@OneToOne(targetEntity = UserStory.class, fetch = FetchType.EAGER)
 	private UserStory parent;
 	
-	@OneToOne(targetEntity = Sprint.class)
+	@OneToOne(targetEntity = Sprint.class, fetch = FetchType.EAGER)
 	private Sprint sprint;
 	
 	@ManyToOne(targetEntity = Project.class, fetch = FetchType.EAGER)
