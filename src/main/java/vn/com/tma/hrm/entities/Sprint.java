@@ -64,19 +64,19 @@ public class Sprint implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "StateID")
-    @JsonDeserialize(as=SprintState.class)
+    @JsonDeserialize(as = SprintState.class)
     private SprintState sprintstate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ProjectID")
-    @JsonDeserialize(as=Project.class)
+    @JsonDeserialize(as = Project.class)
     private Project project;
 
- // bi-directional many-to-one association to User Story
+    // bi-directional many-to-one association to User Story
     @JsonIgnore
     @OneToMany(mappedBy = "sprint", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserStory> userStories;
-    
+
     public Sprint() {
     }
 
@@ -192,12 +192,12 @@ public class Sprint implements Serializable {
         this.project = project;
     }
 
-	public List<UserStory> getUserStories() {
-		return userStories;
-	}
+    public List<UserStory> getUserStories() {
+        return userStories;
+    }
 
-	public void setUserStories(List<UserStory> userStories) {
-		this.userStories = userStories;
-	}
+    public void setUserStories(List<UserStory> userStories) {
+        this.userStories = userStories;
+    }
 
 }
