@@ -5,7 +5,7 @@ angular.module('hrmApp.controllers')
 	
 	$scope.userstory = {};
 		 // Get all related data
-	var loadUsRelatedData = function(projectId) {
+	var loadUsRelatedData = function(projectId, action) {
 		
 		$http.get('./api/userStoryStates', {
 			params: {
@@ -48,6 +48,8 @@ angular.module('hrmApp.controllers')
 		}).success(function (response) {
 			$scope.project = response;
 		});
+		
+		$scope.action = action;
     };
 
  // save and redirect to us list
@@ -135,6 +137,7 @@ angular.module('hrmApp.controllers')
         }
     	$state.go('us.edit', {
             projectId : $scope.project.id,
+            action : 1
           });
     }
     
@@ -191,11 +194,11 @@ angular.module('hrmApp.controllers')
 
       // load project and sprintstates for create sprint form
       if ($state.is('us.create')) {
-    	  loadUsRelatedData($stateParams.projectId);    
+    	  loadUsRelatedData($stateParams.projectId, $stateParams.action);    
       }
       // load sprint, project and sprintstates for edit sprint form
       if ($state.is('us.edit')) {
-    	  loadUsRelatedData($stateParams.projectId);    
+    	  loadUsRelatedData($stateParams.projectId, $stateParams.action);    
     	  loadUserStory();
       }
     });
