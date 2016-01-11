@@ -89,13 +89,13 @@ angular.module('hrmApp.route', [])
     controller: 'UserStoryCtrl'
   })
   .state('us.create', {
-	url: '^/us/create?projectId',
+	url: '^/us/create?projectId&action',
     templateUrl: 'pages/us-create.html',
     controller: 'UserStoryCtrl'
   })
   .state('us.edit', {
-    url: '^/us/edit?id&projectId',
-    templateUrl: 'pages/us-edit.html',
+    url: '^/us/edit?id&projectId&action',
+    templateUrl: 'pages/us-create.html',
     controller: 'UserStoryCtrl'
   });
   
