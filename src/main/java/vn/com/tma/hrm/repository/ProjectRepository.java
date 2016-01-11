@@ -12,5 +12,6 @@ import vn.com.tma.hrm.projection.ProjectProjection;
 
 @RepositoryRestResource(excerptProjection=ProjectProjection.class, collectionResourceRel = "projects", path = "projects")
 public interface ProjectRepository extends PagingAndSortingRepository<Project, Integer> {
-	List<Project> findByName(@Param("name") String name);	
+	List<Project> findByName(@Param("name") String name);
+	Project findById(@Param("projectId") int projectId);
 }

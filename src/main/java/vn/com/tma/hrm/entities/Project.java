@@ -40,10 +40,12 @@ public class Project implements Serializable {
     private Date startDate;
 
     // bi-directional many-to-one association to Sprint
+    @JsonIgnore
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<Sprint> sprints;
     
  // bi-directional many-to-one association to User Story
+    @JsonIgnore
     @OneToMany(mappedBy = "project", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<UserStory> userStories;
 
@@ -114,7 +116,6 @@ public class Project implements Serializable {
         this.startDate = startDate;
     }
 
-    @JsonIgnore
     public List<Sprint> getSprints() {
         return this.sprints;
     }
@@ -136,5 +137,13 @@ public class Project implements Serializable {
 
         return sprint;
     }
+
+	public List<UserStory> getUserStories() {
+		return userStories;
+	}
+
+	public void setUserStories(List<UserStory> userStories) {
+		this.userStories = userStories;
+	}
 
 }

@@ -1,6 +1,10 @@
 
 <!-- page's inner styles -->
-<style></style>
+<style>
+	.actioncol {
+		text-align: center;
+	}
+</style>
 
 <div class="row">
   <div class="col-sm-12 page-header" >
@@ -45,15 +49,15 @@
 
         <tbody>
           <tr data-ng-repeat="us in userstories" data-on-last-repeat>
-            <td>
+            <td class="actioncol">
               <button class="btn btn-xs btn-info" data-ng-click="goToEditUserStory(us)" data-show="tooltip"
                 title="Edit selected row">
                 <i class="ace-icon fa fa-pencil bigger-120"></i>
               </button>
-
-              <button class="btn btn-xs btn-danger" data-ng-click="onDelete(us)" title="Delete selected row">
-                <i class="ace-icon fa fa-trash-o bigger-120"></i>
-              </button>
+				<button class="btn btn-xs btn-danger" data-ng-click="onDelete(us)" 
+					title="Delete selected row" data-ng-if="isAdmin">
+               		<i class="ace-icon fa fa-trash-o bigger-120"></i>
+           		</button>	
             </td>
             <td><a ui-sref="task.list({ usId: us.id})">{{us.name}}</a></td>
             <td data-ng-bind="us.state.name"></td>
