@@ -3,6 +3,7 @@ package vn.com.tma.hrm.entities;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -26,6 +27,7 @@ public class Sprint implements Serializable {
     private Integer id;
 
     @Column(name = "active", nullable = false)
+    @NotNull
     private Byte active;
 
     @Column(name = "actuals", nullable = true)
@@ -37,9 +39,11 @@ public class Sprint implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "endDate", nullable = false)
+    @NotNull
     private Date endDate;
 
     @Column(name = "name", nullable = false)
+    @NotNull
     private String name;
 
     @Lob
@@ -54,6 +58,7 @@ public class Sprint implements Serializable {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "startDate", nullable = false)
+    @NotNull
     private Date startDate;
 
     @Column(name = "taskEstimate", nullable = true)
@@ -65,11 +70,13 @@ public class Sprint implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "StateID")
     @JsonDeserialize(as = SprintState.class)
+    @NotNull
     private SprintState sprintstate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ProjectID")
     @JsonDeserialize(as = Project.class)
+    @NotNull
     private Project project;
 
     // bi-directional many-to-one association to User Story
