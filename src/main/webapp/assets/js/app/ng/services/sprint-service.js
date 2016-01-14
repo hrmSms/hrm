@@ -5,19 +5,18 @@ angular.module("hrmApp.services").factory('sprintService',
     [ '$http', '$resource', '$q', '$log', 'ApiConfigs', function($http, $resource, $q, $log, ApiConfigs) {
       var HATEOAS_URL = './api/sprints';
       var Sprint = $resource(ApiConfigs.Url.SPRINT + '/:id', {
-        id : '@id'
+        id : '@id', projection: sprintProjection
       }, {
         'get':    {method:'GET'},
         'create' : {method:'POST'},
         'update' : {method : 'PUT'}
       });
-      Sprint.url = function(link) {
-        return link;
-      }
+ 
       Sprint.getActiveSprintsByProjectId = function(projectId) {
-        return $resource(ApiConfigs.Url.PROJECT + '/:id', {
-          id : projectId
+        var sprints = $resource(ApiConfigs.Url.PROJECT + '/:id', {
+          id : '@id'
         });
+        return sprints.get({id:projectId});
       };
       return Sprint;
     } ]);

@@ -3,6 +3,7 @@ package vn.com.tma.hrm.entities;
 import java.io.Serializable;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,6 +30,7 @@ public class SprintState implements Serializable {
     private String description;
 
     @Column(name = "name", nullable = false)
+    @NotNull
     private String name;
 
     @OneToMany(mappedBy = "sprintstate", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
