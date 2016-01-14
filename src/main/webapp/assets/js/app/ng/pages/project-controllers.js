@@ -1,26 +1,60 @@
 (function(angular) {
 	//var AppController = function($scope, Project) {
 	var AppController = function($scope, $state, $stateParams, Project) {
-		$scope.projects = {};
-		Project.query(function(response) {
-			$scope.projects = response ? response : [];
-
-			for (var i = 0; i < $scope.projects.length; i++) {
-				var proj = $scope.projects[i];
-//				console.log('Loading project ' + proj.name);
-
-			}
-		});
-
-		$scope.addProject = function(p) {
+		
+		if ($state.is('project.edit')) {
+			var projectId = $stateParams.id;
+			console.log("project.edit state "+projectId);
 			
+			var action = $stateParams.action;
+			console.log('project.edit state '+action);
+			$scope.projects = {};
+			$scope.action = action;
+					Project.queryById(function(response) {
+						$scope.projects = response ? response : [];				
+//						console.log('Loading project ' + $scope.projects.name);							
+						loadProject($scope.projects);
+			});
+			
+		} 
+		else 
+		{
+			$scope.projects = {};
+			
+			var action = $stateParams.action;
+			$scope.action = action;
+			
+			Project.query(function(response) {
+
+				$scope.projects = response ? response : [];
+		
+				for (var i = 0; i < $scope.projects.length; i++) {
+					var proj = $scope.projects[i];
+		//			console.log('Loading project ' + proj.name);
+				}
+		})};
+		
+		var loadProject = function(p) {
+            $scope.p = p;
+            $('#description').html(p.description);
+            $scope.p.endDate = $scope.toVNDateFormat(p.endDate);	            
+            $scope.p.startDate = $scope.toVNDateFormat(p.startDate);
+            
+          }
+		
+		// convert date to VietNam (UK) date format
+        $scope.toVNDateFormat = function(date) {
+          return moment(date).format("DD-MM-YYYY");
+        }
+		
+		$scope.addProject = function(p) {
 			
 			 var desc = $('#description').html();
 	            
 			//p.startDate = d.toISOString();
 			p.startDate = moment(p.startDate, "DD-MM-YYYY hh:mm:ss");
 			p.endDate = moment(p.endDate, "DD-MM-YYYY hh:mm:ss");
-			console.log('Project client id' + p.clientId);
+			//console.log('Project client id' + p.clientId);
 			if (p.clientId == null ) {
 				p.clientId = 1;
 			}
@@ -42,8 +76,16 @@
 			$scope.newProject = "";
 		};
 
-		$scope.updateProject = function(project) {
-			project.save();
+		$scope.updateProject = function(proj) {
+			var projectId = proj.id;
+			console.log('Update proj '+projectId);
+			
+			$state.go('project.edit', {
+	              id : projectId,
+	              action : 1
+	            });
+			
+			//project.save();
 		};
 
 		$scope.deleteProject = function(project) {
@@ -52,31 +94,55 @@
 			});
 		};
 		
-
-
-		
+		var buildProject = function(project, id, p) {
+			
+			var desc = $('#description').html();
+			p.startDate = moment(p.startDate, "DD-MM-YYYY hh:mm:ss");
+			p.endDate = moment(p.endDate, "DD-MM-YYYY hh:mm:ss");
+			console.log('Project client id' + p.clientId);
+			if (p.clientId == null ) {
+				p.clientId = 1;
+			}
+				
+			p.clientId = new Number(p.clientId);
+			
+			//console.log('Project id '+id);
+			project = new Project({
+				id: id,
+				description : desc,
+				name : p.name,
+				startDate : p.startDate,
+				endDate : p.endDate,
+				projectOwner : 1,
+				clientId : p.clientId,
+				active : 1
+			})
+			
+			return project;
+		}
 		 // save and redirect to project list
         $scope.createAndClose = function() {
-        	$scope.addProject($scope.p);
+        	console.log('createAndClose '+ $scope.action);
+        	
+        	
+        	
+        	if ($scope.action == 0) {
+        		$scope.addProject($scope.p);
+        	}
+        	else {
+        		
+            	var project = buildProject(project, $stateParams.id, $scope.p); 
+            	
+            	project.save();
+        		
+        	}
         	$scope.goToProjectList();
-//                 redirect to sprint list page after 1 min
-//                  setTimeout(function() {
-//                    $scope.goToProjectList();
- //                 }, 1000);
-              
-              
-
         };
 
 		// redirect project List
 		$scope.goToProjectList = function() {
 			$state.go('project.list', {
-			//projectId : $scope.project.id
-			},  {reload: true});
-			
-			
-			
-//			$state.go($state.current, {}, {reload: true});
+			},  {reload: true});			
 		};
 
 		// reset form

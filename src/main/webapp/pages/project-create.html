@@ -50,7 +50,7 @@
           <label class="col-sm-2 control-label no-padding-right" for="name"> Client </label>
           <div class="col-sm-8 col-xs-10">
             <div ng-class="{ 'has-error': form.name.$touched && form.name.$invalid }">
-              <input type="text" id="client" name="client" class="form-control" ng-model="p.clientId" />
+              <input type="number" min="1" id="client" name="client" class="form-control" ng-model="p.clientId" />
             </div>            
           </div>
         </div>
@@ -91,13 +91,11 @@
             <div ng-show="error.endDate" class="alert alert-danger">{{error.endDate}}</div>
           </div>
         </div>
-        
 
         <div class="center clearfix">
-          <hrm-button type="create" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
-          <hrm-button type="reset" ng-click="reset(form)"></hrm-button>
-          <hrm-button type="close" ng-click="goToProjectList()"></hrm-button>
-          
+          <hrm-button type="save" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
+          <hrm-button type="reset" ng-click="reset(form)" data-ng-if="action == 0"></hrm-button>
+          <hrm-button type="close" ng-click="goToProjectList()"></hrm-button>          
         </div>
 
       </form>

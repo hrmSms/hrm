@@ -58,24 +58,28 @@ angular.module('hrmApp.route', [])
 	    controller: 'TaskController'
 	});
   
-//Routes for Project
-  $stateProvider
-    .state('project', {
-      abstract: true,
-      // Note: abstract still needs a ui-view for its children to populate
-      template: '<ui-view/>'
-    })
-    .state('project.list', {
-      url: '/project/list',
-      templateUrl: 'pages/project-list.html',
-      controller: 'AppController'
-    })
-    .state('project.create', {
-      url: '/project/create',
-      templateUrl: 'pages/project-create.html',
-      controller: 'AppController'
-    });
-  
+	//Routes for Project
+	  $stateProvider
+	    .state('project', {
+	      abstract: true,
+	      // Note: abstract still needs a ui-view for its children to populate
+	      template: '<ui-view/>'
+	    })
+	    .state('project.list', {
+	      url: '/project/list',
+	      templateUrl: 'pages/project-list.html',
+	      controller: 'AppController'
+	    })
+	    .state('project.edit', {
+	      url: '/project/edit?id&action',
+	      templateUrl: 'pages/project-create.html',
+	      controller: 'AppController'
+	    })
+	    .state('project.create', {
+	      url: '/project/create?action',
+	      templateUrl: 'pages/project-create.html',
+	      controller: 'AppController'
+	    });  
 // Routes for User Story
   $stateProvider
   .state('us', {
