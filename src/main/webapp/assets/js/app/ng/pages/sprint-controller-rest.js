@@ -4,12 +4,10 @@
 angular.module('hrmApp.controllers').controller('SprintListCtrl',
     [ '$scope', '$stateParams', 'sprintService', function($scope, $stateParams, sprintService) {
       
-      
       // get list of sprints
       $scope.getSprintsByProjectId = function(projectId) {
-        sprintService.getActiveSprintsByProjectId(projectId).$promise.then(function(data) {
+        sprintService.getSprintsByProjectId({id:projectId}).$promise.then(function(data) {
           //success
-          
           // get the project
           $scope.project = data;
           // get list of sprints
@@ -29,14 +27,17 @@ angular.module('hrmApp.controllers').controller('SprintListCtrl',
         })
       };
       
+      $scope.getSprintsByProjectId($stateParams.projectId);
+      
       // Unactive sprint
       $scope.unActive = function(sprint) {
+        sprint.active=0;
         sprintService.update({
           id : sprint.id
         }, sprint).$promise.then(function() {
           //success
-          var index = $scope.students.indexOf(student);
-          $scope.students.splice(index, 1);
+          var index = $scope.sprints.indexOf(sprint);
+          $scope.sprints.splice(index, 1);
         }, function(errorResponse){
           //error
           
