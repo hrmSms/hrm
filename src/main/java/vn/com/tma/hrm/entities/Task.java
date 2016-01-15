@@ -14,10 +14,15 @@ import java.io.Serializable;
 import java.util.*;
 
 @Entity
-@Table(name = "Task")
+@Table(name = "task")
 public class Task implements Serializable{
     
-    @Id
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(unique = true, nullable = false)
     private Integer id;
@@ -52,12 +57,17 @@ public class Task implements Serializable{
     
     @ManyToOne(fetch = FetchType.EAGER) 
 	@JoinColumn(name = "userStoryId")
-    private UserStory userStoryId;
+    private UserStory userStory;
         
     @ManyToOne(fetch = FetchType.EAGER) 
 	@JoinColumn(name = "taskStateId")
     private TaskState taskStateId;
     
+    
+	public Task() {
+		super();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -139,12 +149,12 @@ public class Task implements Serializable{
 		this.note = note;
 	}
 
-	public UserStory getUserStoryId() {
-		return userStoryId;
+	public UserStory getUserStory() {
+		return userStory;
 	}
 
-	public void setUserStoryId(UserStory userStoryId) {
-		this.userStoryId = userStoryId;
+	public void setUserStory(UserStory userStory) {
+		this.userStory = userStory;
 	}
 
 	public TaskState getTaskStateId() {

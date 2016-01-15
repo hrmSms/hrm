@@ -73,7 +73,8 @@
 				<div data-ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
 					<label class="control-label no-padding-right" for="state">State<i class="red">*</i></label>
 					<select class="form-control" id="state" data-ng-model="userstory.state" required
-							data-ng-options="usState.name for usState in usStates track by usState.id"></select>
+							data-ng-options="usState.name for usState in usStates track by usState.id">
+					</select>
 				</div>
 				<div data-ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
 					<div data-ng-show="form.state.$error.required && !error.userStoryState"
@@ -83,7 +84,7 @@
 				
 			</div>
 			<div class="form-group col-md-2">
-				<label class="control-label no-padding-right" for="planest">Plan Est</label> 
+				<label class="control-label no-padding-right" for="planest">Plan Estimation</label> 
 				<div data-ng-class="{ 'has-error': form.planest.$touched && form.planest.$invalid }">
 					<input type="text" class="form-control" id="planest" name="planest" placeholder="0.00 (hours)" data-ng-model="userstory.planEst" data-smart-float="6" placeholder="0.00" >
 				</div>
@@ -131,7 +132,9 @@
 								<div class="form-group col-md-4">
 									<label class="control-label no-padding-right" for="iteration">Iteration</label>
 									<select class="form-control" id="iteration" data-ng-model="userstory.sprint" 
-											data-ng-options="sp.name for sp in sprints track by sp.id"></select>
+											data-ng-options="sp.name for sp in sprints track by sp.id">
+										<option value="">Unscheduled</option>		
+									</select>
 									<br/>
 									<label class="control-label no-padding-right" for="businessval">Business Value</label>
 									<div data-ng-class="{ 'has-error': form.businessval.$touched && form.businessval.$invalid }">
@@ -166,45 +169,7 @@
 			</div>
 		</div>
 		<br />
-		<!-- <div class="row">
-			<div class="form-group col-md-12">
-				<div class="widget-box">
-					<div class="widget-header widget-header-flat">
-						<h4 class="widget-title">Attachment</h4>
-					</div>
-					<div class="widget-body">
-						<table id="t-attachment"
-							class="table table-striped table-bordered table-hover">
-							<thead>
-								<tr>
-									<th>Name</th>
-									<th>Description</th>
-									<th><i
-										class="ace-icon fa fa-clock-o bigger-110 hidden-480"></i> When</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Document.doc</td>
-									<td>The first attachment</td>
-									<td>9/8/2015</td>
-								</tr>
-								<tr>
-									<td>Reporting.xls</td>
-									<td>The excel file</td>
-									<td>9/7/2015</td>
-								</tr>
-								<tr>
-									<td>Analytic.pdf</td>
-									<td>Another .pdf file</td>
-									<td>9/10/2015</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>	
-			</div>
-		</div> -->
+
 		<div class="row">
 			<div class="form-group col-md-12">
 				<div class="widget-box">
@@ -240,23 +205,27 @@
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="t-assignee">Owner</label>
 			<select class="form-control" id="t-assignee" data-ng-model="userstory.owner" 
-					data-ng-options="user.username for user in users track by user.id"></select>
+					data-ng-options="user.username for user in users track by user.id">
+				<option value="">-- No Owner--</option>		
+			</select>
 		</div>
 		<div class="form-group">
 			<label class="control-label no-padding-right" for="parent">Parent</label>
 			<select class="form-control" id="parent" data-ng-model="userstory.parent" 
-					data-ng-options="pr.name for pr in parents track by pr.id"></select>
+					data-ng-options="pr.name for pr in parents track by pr.id">
+				<option value="">-- No Parent--</option>
+			</select>
 		</div>
 	</div>
 	<div class="clearfix">
 		<div class="form-group col-md-9">
 			 <div class="form-actions center clearfix" data-ng-if="action == 0">
-				<hrm-button type="create" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
+				<hrm-button type="create" ng-disabled="!form.$valid" ng-click="saveAndClose(action)"></hrm-button>
 	        	<hrm-button type="reset" ng-click="reset(form)"></hrm-button>
 	         	<hrm-button type="close" ng-click="goToUsList()"></hrm-button>
 	         </div>
 	         <div class="form-actions center clearfix" data-ng-if="action == 1">
-				<hrm-button type="save" data-ng-disabled="!form.$valid" data-ng-click="saveAndClose()"></hrm-button>
+				<hrm-button type="save" data-ng-disabled="!form.$valid" data-ng-click="saveAndClose(action)"></hrm-button>
 				<hrm-button type="close" data-ng-click="goToUsList()"></hrm-button>
 	         </div>
 	     </div>

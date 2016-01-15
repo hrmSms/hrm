@@ -1,6 +1,7 @@
 package vn.com.tma.hrm.projection;
 
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.rest.core.config.Projection;
 
@@ -11,6 +12,7 @@ import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.User;
 import vn.com.tma.hrm.entities.UserStory;
 import vn.com.tma.hrm.entities.UserStoryState;
+import vn.com.tma.hrm.entities.Task;
 
 @Projection(name="userStoryProjection", types={UserStory.class})
 public interface UserStoryProjection {
@@ -45,4 +47,6 @@ public interface UserStoryProjection {
 	public Date getBuildDate();
 	
 	public UserStory getParent();
+	
+	public List<Task> getTasks();
 }

@@ -42,7 +42,7 @@
         	
         	this.description = $('#desc').html();
         	this.note = $('#note').html();
-        	this.userStoryId = {'id':$scope.userStory.id}; 
+        	this.userStory = $scope.userStory; 
         	this.taskStateId = JSON.parse($scope.task.state);
         	
         	if ($stateParams.id != null) {	// edit task
@@ -108,7 +108,7 @@
 					hrmService.post("./task/delete/" + task.id, null).then(function(message) {
 						$scope.deleteSuccess = message.success;
 						$scope.showDialog('#message');
-						$scope.getTasksByUSID(task.userStoryId.id);					
+						$scope.getTasksByUSID(task.userStory.id);					
 					});
 				}
 			});

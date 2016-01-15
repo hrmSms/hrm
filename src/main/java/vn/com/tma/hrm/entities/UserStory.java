@@ -86,16 +86,16 @@ public class UserStory implements Serializable{
 	@Column(name = "point", nullable = true, updatable = true)
 	private Long point;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userStoryId")	
-    private List<Task> Tasks;    
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "userStory")	
+    private List<Task> tasks;    
     
 	@JsonIgnore
     public List<Task> getTasks() {
-		return Tasks;
+		return tasks;
 	}
 
 	public void setTasks(List<Task> tasks) {
-		this.Tasks = tasks;
+		this.tasks = tasks;
 	}
 
 	public Long getId() {

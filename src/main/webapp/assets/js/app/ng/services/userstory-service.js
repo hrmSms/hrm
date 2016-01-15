@@ -10,4 +10,8 @@ angular.module("hrmApp.services")
 		});
 		
 		return UserStory;
+	}])
+	.factory("Task", ['$resource', function($resource) {
+		var Task = $resource('./api/tasks/:id', {id : '@id'});
+		return Task;
 	}]);
