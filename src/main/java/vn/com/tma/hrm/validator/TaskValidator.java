@@ -31,7 +31,7 @@ public class TaskValidator implements Validator {
         
         // validate name
         if (!errors.hasFieldErrors("name")) {
-            Task duplicate = taskService.getByUserStoryAndName(newTask.getUserStoryId(), newTask.getName());
+            Task duplicate = taskService.getByUserStoryAndName(newTask.getUserStory(), newTask.getName());
             if (duplicate!=null && (newTask.getId()==null || duplicate.getId().intValue() != newTask.getId().intValue())) {
                 errors.rejectValue("name", messageSource.getMessage("name.duplicate", new Object[] { newTask.getName() }, Locale.US),"Name is duplicated.");
             }

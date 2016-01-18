@@ -20,8 +20,11 @@ public interface UserStoryRepository extends JpaRepository<UserStory, Long>{
     public List<UserStory> findByProject(Project project);
     public List<UserStory> findByProjectAndActive(Project project, Byte active);
     
-    @Query("select us from UserStory us where us.project.id = :projectId")
+    //@Query("select us from UserStory us where us.project.id = :projectId")
     public List<UserStory> findByProjectId(@Param("projectId") int projectId);
     
     public UserStory findByName(@Param("name") String name);
+    
+    @Query("select us from UserStory us where us.parent.id = :parentId")
+    public List<UserStory> findByParentId(@Param("parentId") Long parentId);
 }

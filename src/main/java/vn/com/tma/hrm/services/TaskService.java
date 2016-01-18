@@ -15,7 +15,7 @@ public interface TaskService {
 	public Task delete(int id) throws Exception;
 	public Task getByID(int id);
 	public List<Task> getAll() ;
-	public Task getByUserStoryAndName(UserStory us, String name) ;
 	public List<Task> getByUserStory(UserStory us) ;
 	public List<Task> getByName(String name) ;
+	public Task getByUserStoryAndName(UserStory us, String name) ;
 }

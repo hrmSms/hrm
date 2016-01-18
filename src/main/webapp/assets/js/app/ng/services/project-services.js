@@ -24,7 +24,6 @@
         item.save = function(callback) {
         	//console.log(item);
         	//console.log(item.resources);
-
         	Project.resources.save(item, function(project, headers) {
                 var deferred = $http.get(headers().location);
                 return SpringDataRestAdapter.process(deferred).then(function(newProject) {

@@ -1,7 +1,7 @@
 // CRUD function
 angular.module('hrmApp.controllers')
-.controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService', '$resource', 'SpringDataRestAdapter', 'UserStory', 
-                              function($scope, $http, $state, $stateParams, hrmService, $resource, SpringDataRestAdapter, UserStory) {
+.controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService', '$resource', 'SpringDataRestAdapter', 'UserStory', 'Task', 
+                              function($scope, $http, $state, $stateParams, hrmService, $resource, SpringDataRestAdapter, UserStory, Task) {
 	
 	$scope.userstory = {};
 		 // Get all related data
@@ -49,55 +49,102 @@ angular.module('hrmApp.controllers')
 			$scope.project = response;
 		});
 		
+		$http.get('./api/projects', {
+			params: {
+				projection : 'projectProjection'	
+			}
+		}).success(function (response) {
+			console.log('response project: ' + response);
+		});
+		
 		$scope.action = action;
     };
 
- // save and redirect to us list
-    $scope.createAndClose = function() {
+ // save and redirect to us list        
+    $scope.saveAndClose = function(action) {
     	var newUserStory = new UserStory();
-    	newUserStory = buildUserstoryObj(newUserStory, $scope);   	
-    	newUserStory.$save(function() {
-    		$scope.success = 'UserStory was created successfully';
-    		$scope.showDialog('#success');
-            // redirect to us list page after 1 sec
-            setTimeout(function() {
-            	$scope.goToUsList();
-            }, 1000);
-    	})
-    };
-        
-    $scope.saveAndClose = function() {
-    	var newUserStory = new UserStory();
-    	newUserStory = buildUserstoryObj(newUserStory, $scope);   	
-    	newUserStory.$update(function() {
-    		$scope.success = 'UserStory was updated successfully';
-       	 	$scope.showDialog('#success');
-            // redirect to us list page after 1 min
-            setTimeout(function() {
-           	$scope.goToUsList();
-            }, 1000);
-    	});
+    	newUserStory = buildUserstoryObj(newUserStory);
+    	if (action == 0) {
+    		newUserStory.$save(function() {
+        		$scope.success = 'UserStory was created successfully';
+        		popUpDialog();
+        	});
+    	}
+    	else if (action == 1 ) {
+    		newUserStory.$update(function() {
+        		$scope.success = 'UserStory was updated successfully';
+        		popUpDialog();
+    		});
+    	}
+      };
+      
+      var popUpDialog = function() {
+    	  $scope.showDialog('#success');
+          // redirect to us list page after 1 sec
+          setTimeout(function() {
+          	$scope.goToUsList();
+          }, 1000);
       };
         
-      $scope.onDelete = function(userstory) {
-    	  var message = userstory.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-          bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
+  $scope.onDelete = function(userstory) {
+	  var usName = userstory.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	  var message = '';
+	  var tasks = userstory.tasks;
+	  var childUserStories = [];
+
+	  if (tasks.length > 0) {
+		  message = 'This user story contains ' + tasks.length + ' task(s). ';
+	  }
+	  
+	  $http.get('./api/userStories/search/findByParentId', {
+  			params: {
+  				parentId : userstory.id,
+  				projection : 'userStoryProjection'	
+  			}
+  		}).success(function (response) {
+  			if (response._embedded != null && response._embedded != 'undefined') {
+  				childUserStories = response._embedded.userStories;
+  				message = message + 'This user story is the parent of ' + childUserStories.length + ' user story(s). '
+  			}
+  			
+  			bootbox.confirm(message + "Are you sure to delete '" + usName + "' ?", function(result) {
             if (result) {
-            	var deletedUserStory = new UserStory();
+        		//delete all related tasks
+            	if (tasks.length > 0) {
+            		var deletedTasks = userstory._embedded.tasks;
+            		deletedTasks.forEach( function(task) {
+                		var deletedTask = new Task();
+                		deletedTask.id = task.id;
+                		deletedTask.$delete();
+                	});
+            	}
+            	
+            	//delete all related child user stories
+            	if (childUserStories.length > 0) {
+            		var deleltedChildUserStory = new UserStory();
+            		childUserStories.forEach(function(us) {
+            			deleltedChildUserStory.id = us.id;
+            			deleltedChildUserStory.$delete();
+            		})
+            	}
+            	
+            	//delete user story
+        		var deletedUserStory = new UserStory();
             	deletedUserStory.id = userstory.id;
             	deletedUserStory.$delete(function() {
             		 $scope.deleteSuccess = 'UserStory was deleted';
                      // show message success dialog
                      $scope.showDialog('#message');
                      // reload
-                     console.log('delete on project: ' + $stateParams.projectId);
                      getUserStoriesByProjectID($stateParams.projectId);
             	});
             }
+        	
           });
-      }
+  		});   	  
+  }
           
-    var buildUserstoryObj = function(newUserStory, $scope) {
+    var buildUserstoryObj = function(newUserStory) {
     	newUserStory.id = $scope.userstory.id;
     	newUserStory.active = 1;
     	newUserStory.name = $scope.userstory.name;
@@ -110,12 +157,22 @@ angular.module('hrmApp.controllers')
     	newUserStory.point = $scope.userstory.point;
     	newUserStory.note = $('#note').html();
     	newUserStory.project = $scope.project._links.self.href;
+    	
     	if(typeof $scope.userstory.owner !== "undefined" && $scope.userstory.owner !== null)
     		newUserStory.owner = $scope.userstory.owner._links.self.href;
+    	else
+    		newUserStory.owner = null;
+    	
     	if(typeof $scope.userstory.sprint !== "undefined" && $scope.userstory.sprint !== null)
     		newUserStory.sprint = $scope.userstory.sprint._links.self.href;
+    	else
+    		newUserStory.sprint = null;
+    	
     	if(typeof $scope.userstory.parent != "undefined" && $scope.userstory.parent !== null)
     		newUserStory.parent = $scope.userstory.parent._links.self.href;
+    	else
+    		newUserStory.parent = null;
+    	
     	if(typeof $scope.userstory.buildDate !== "undefined" && $scope.userstory.buildDate !== "")
     		newUserStory.buildDate = moment($scope.userstory.buildDate,"DD-MM-YYYY hh:mm:ss");
     	
@@ -134,6 +191,7 @@ angular.module('hrmApp.controllers')
     $scope.goToEditUserStory = function(userstory) {
     	if (typeof(Storage) != "undefined") {
             localStorage["userstory"] = JSON.stringify(userstory);
+            console.log('localStorage["userstory"] ' + localStorage["userstory"]);
         }
     	$state.go('us.edit', {
             projectId : $scope.project.id,
@@ -170,11 +228,17 @@ angular.module('hrmApp.controllers')
   
      // get list userstories by project id
     var getUserStoriesByProjectID = function(projectId) {       	
-    	var us = UserStory.get({projectId : projectId}, function() {
-			$scope.userstories = us._embedded.userStories;
+		
+		$http.get('./api/userStories/search/findByProjectId', {
+			params: {
+				projectId : projectId,
+				projection : 'userStoryProjection'	
+			}
+		}).success(function (response) {
+			$scope.userstories = response._embedded.userStories;
 			$scope.project = $scope.userstories[0]._embedded.project;
 			$scope.isAdmin = true;
-		})
+		});
     };
  
     // convert date to VietNam (UK) date format

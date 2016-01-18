@@ -22,8 +22,7 @@ public class TaskServiceImp implements TaskService{
 	@Override
 	@Transactional(value="txManager") 
 	public Task create(Task task){
-		Task createdTask = task;
-		return taskRepository.save(createdTask);
+		return taskRepository.save(task);
 	}
 	
 	@Override
@@ -43,7 +42,7 @@ public class TaskServiceImp implements TaskService{
 		updateTask.setOwner(task.getOwner());
 		updateTask.setDescription(task.getDescription());
 		updateTask.setNote(task.getNote());
-		updateTask.setUserStoryId(task.getUserStoryId());
+		updateTask.setUserStory(task.getUserStory());
 		updateTask.setTaskStateId(task.getTaskStateId());
 		return updateTask;
 	}
@@ -65,12 +64,7 @@ public class TaskServiceImp implements TaskService{
 	public Task getByID(int id){
 		return taskRepository.findOne(id);
 	}
-	
-	@Override
-    @Transactional(value = "txManager")
-    public Task getByUserStoryAndName(UserStory us, String name) {
-        return taskRepository.findByUserStoryIdAndName(us, name);
-    }
+
 	
 	@Override
 	@Transactional(value="txManager") 
@@ -81,7 +75,7 @@ public class TaskServiceImp implements TaskService{
 	@Override
         @Transactional(value="txManager") 
 	public List<Task> getByUserStory(UserStory us) {
-	    return taskRepository.findByUserStoryId(us);
+	    return taskRepository.findByUserStoryId(us.getId());
 	}
 	
 	@Override
@@ -90,5 +84,10 @@ public class TaskServiceImp implements TaskService{
 	    return taskRepository.findByName(name);
 	}
 	
+	@Override
+    @Transactional(value = "txManager")
+    public Task getByUserStoryAndName(UserStory us, String name) {
+        return taskRepository.findByUserStoryIdAndName(us.getId(), name);
+    }
 	
 }

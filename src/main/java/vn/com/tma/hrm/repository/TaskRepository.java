@@ -12,10 +12,13 @@ import vn.com.tma.hrm.entities.Project;
 import vn.com.tma.hrm.entities.Sprint;
 import vn.com.tma.hrm.entities.Task;
 import vn.com.tma.hrm.entities.UserStory;
+import vn.com.tma.hrm.projection.TaskProjection;
 
-@RepositoryRestResource(collectionResourceRel = "tasks", path = "tasks")
+@RepositoryRestResource(excerptProjection = TaskProjection.class, collectionResourceRel = "tasks", path = "tasks")
 public interface TaskRepository extends JpaRepository<Task, Integer> {
-    public List<Task> findByUserStoryId(UserStory userStoryId);
-    public List<Task> findByName(String name);
-    public Task findByUserStoryIdAndName(UserStory userStoryId, String name);
+    public List<Task> findByName(String name);    
+    public Task findByUserStoryIdAndName(Long usId, String name);
+    
+    @Query("select t from Task t where t.userStory.id = :usId")
+    public List<Task> findByUserStoryId(@Param("usId") Long usId);
 }
