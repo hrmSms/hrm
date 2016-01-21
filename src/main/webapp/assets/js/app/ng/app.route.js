@@ -118,7 +118,7 @@ angular.module('hrmApp.route', [])
   .state('sprint.create', {
     url: '^/sprint/create?projectId',
     templateUrl: 'pages/sprint-create.html',
-    controller: 'SprintCtrl'
+    controller: 'SprintCreateCtrl'
   })
   .state('sprint.edit', {
     url: '^/sprint/edit?id&projectId',

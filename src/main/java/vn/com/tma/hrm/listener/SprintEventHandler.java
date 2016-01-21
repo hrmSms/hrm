@@ -16,7 +16,8 @@ public class SprintEventHandler {
     
     @HandleBeforeCreate
     public void handleBeforeCreate(Sprint newSprint){
-        
+        System.out.println(newSprint.getName());
+        System.out.println(newSprint.getProject());
     }
     
     @HandleBeforeSave
