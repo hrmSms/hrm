@@ -121,9 +121,9 @@ angular.module('hrmApp.route', [])
     controller: 'SprintCreateCtrl'
   })
   .state('sprint.edit', {
-    url: '^/sprint/edit?id&projectId',
+    url: '^/sprint/edit?id',
     templateUrl: 'pages/sprint-edit.html',
-    controller: 'SprintCtrl'
+    controller: 'SprintEditCtrl'
   });
 
   //https://github.com/angular-ui/ui-router/wiki/Frequently-Asked-Questions#how-to-make-a-trailing-slash-optional-for-all-routes

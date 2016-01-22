@@ -3,8 +3,8 @@
  */
 angular.module('hrmApp.controllers').controller(
     'SprintListCtrl',
-    [ '$scope', '$stateParams', 'sprintService', '$http', 'ApiConfigs',
-        function($scope, $stateParams, sprintService, $http, ApiConfigs) {
+    [ '$scope', '$stateParams', 'sprintService', '$http', 'ApiConfigs', '$state',
+        function($scope, $stateParams, sprintService, $http, ApiConfigs, $state) {
           var projectId = $stateParams.projectId;
           // get project
           $http.get(ApiConfigs.Url.PROJECT + '/' + projectId + '?projection=projectProjection').then(function(data) {
@@ -35,8 +35,8 @@ angular.module('hrmApp.controllers').controller(
           $scope.getSprintsByProjectId(projectId);
           // delete sprint by id
           $scope.onDelete = function(sprint) {
-            var message = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            bootbox.confirm("Are you sure to delete " + message + " ?", function(result) {
+            var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            bootbox.confirm($scope.Message.CONFIRM.DELETE(sprintName), function(result) {
               if (result) {
                 $scope.unActive(sprint);
               }
@@ -44,7 +44,6 @@ angular.module('hrmApp.controllers').controller(
           };
           // Inactive sprint
           $scope.unActive = function(sprint) {
-            console.log($scope.project);
             var updateSprint = angular.copy(sprint);
             updateSprint.active = 0;
             updateSprint.project = updateSprint._embedded.project._links.self.href;
@@ -53,23 +52,27 @@ angular.module('hrmApp.controllers').controller(
               // success
               var index = $scope.sprints.indexOf(sprint);
               $scope.sprints.splice(index, 1);
-              var message = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-              bootbox.alert(message + "deleted successfully");
+              var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              bootbox.alert($scope.Message.SUCCESS.DELETE(sprintName));
             }, function(errorResponse) {
               // error
               console.log(errorResponse);
-              bootbox.alert("Error: " + errorResponse);
             });
           }
-          
-        // convert to VN Date format
-          $scope.VNDateFormat = function(string){
-            return moment(string).format(Formats.VN_DATE);
+          // go to sprint edit
+          $scope.goToEditSprint = function(sprintId) {
+            $state.go('sprint.edit', {
+              id : sprintId,
+            });
+          }
+          // convert to VN Date format
+          $scope.VNDateFormat = function(string) {
+            return moment(string).format($scope.Formats.VN_DATE);
           }
         } ]).controller(
     'SprintCreateCtrl',
-    [ '$scope', '$stateParams', 'sprintService', 'sprintStateService', '$http', 'ApiConfigs', '$state','Message',
-        function($scope, $stateParams, sprintService, sprintStateService, $http, ApiConfigs, $state, Message ) {
+    [ '$scope', '$stateParams', 'sprintService', 'sprintStateService', '$http', 'ApiConfigs', '$state',
+        function($scope, $stateParams, sprintService, sprintStateService, $http, ApiConfigs, $state) {
           $scope.sprint = {};
           // get project by id
           var projectId = $stateParams.projectId;
@@ -95,25 +98,27 @@ angular.module('hrmApp.controllers').controller(
             var sprint = angular.copy($scope.sprint);
             sprint.active = 1;
             sprint.project = $scope.project._links.self.href;
-            sprint.endDate = moment(sprint.endDate, "MM-DD-YYYY");
-            sprint.startDate = moment(sprint.startDate, "MM-DD-YYYY");
-            console.log(sprint);
-            sprintService.create(sprint).$promise.then(function(data){
+            sprint.endDate = moment(sprint.endDate, $scope.Formats.MYSQL_DATE);
+            sprint.startDate = moment(sprint.startDate, $scope.Formats.VN_DATE);
+            sprint.description = $('#description').html();
+            sprint.note = $('#note').html();
+            sprintService.create(sprint).$promise.then(function(data) {
               // success
-              bootbox.alert(sprint.name+"success");
-            }, function(errorResponse){
+              var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              bootbox.alert($scope.Message.SUCCESS.CREATE(sprintName), function(){
+                $scope.goToSprintList(projectId);
+              });
+            }, function(errorResponse) {
               // error
               console.log(errorResponse);
             })
           };
-          
           // redirect Sprint List
-          $scope.goToSprintList = function() {
+          $scope.goToSprintList = function(projectId) {
             $state.go('sprint.list', {
-              projectId : $scope.project.id
+              projectId : projectId
             });
           };
-          
           // reset form
           $scope.reset = function(form) {
             if (form) {
@@ -131,5 +136,72 @@ angular.module('hrmApp.controllers').controller(
             $('#description').html('');
             $('#note').html('');
           }
-          
+        } ]).controller(
+    'SprintEditCtrl',
+    [ '$scope', '$stateParams', 'sprintService', '$http', 'ApiConfigs', '$state', 'sprintStateService',
+        function($scope, $stateParams, sprintService, $http, ApiConfigs, $state, sprintStateService) {
+          $scope.sprint = {};
+          // get sprint id
+          var sprintId = $stateParams.id;
+          // get sprint by sprint id
+          sprintService.getById({
+            id : sprintId
+          }).$promise.then(function(data) {
+            // success
+            if (data) {
+              $scope.sprint = loadSprint(data);
+              $scope.sprintstate = data._embedded.sprintstate;
+              // set sprint state for sprint if not update !important
+              $scope.sprint.sprintstate = $scope.sprintstate._links.self.href;
+              $scope.project = data._embedded.project;
+            } else {
+              // don't have any sprintState
+            }
+          }, function(errorResponse) {
+            // error
+          })
+          // get list of sprintStates
+          sprintStateService.query(function(data) {
+            // success
+            if (data._embedded) {
+              $scope.sprintStates = data._embedded.sprintStates;
+            } else {
+              // don't have any sprintState
+            }
+          }, function(errorResponse) {
+            // error
+          })
+          var loadSprint = function(data) {
+            var sprint = angular.copy(data);
+            sprint.endDate = moment(sprint.endDate).format($scope.Formats.VN_DATE);
+            sprint.startDate = moment(sprint.startDate).format($scope.Formats.VN_DATE);
+            $('#description').html(sprint.description);
+            $('#note').html(sprint.note);
+            return sprint;
+          }
+          $scope.saveAndClose = function() {
+            var sprint = angular.copy($scope.sprint);
+            sprint.active = 1;
+            sprint.project = $scope.project._links.self.href;
+            sprint.endDate = moment(sprint.endDate, $scope.Formats.VN_DATE);
+            sprint.startDate = moment(sprint.startDate, $scope.Formats.VN_DATE);
+            sprint.description = $('#description').html();
+            sprint.note = $('#note').html();
+            sprintService.update(sprint).$promise.then(function(data) {
+              // success
+              var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              bootbox.alert($scope.Message.SUCCESS.UPDATE(sprintName), function() {
+                $scope.goToSprintList($scope.project.id);
+              });
+            }, function(errorResponse) {
+              // error
+              console.log(errorResponse);
+            })
+          };
+          // redirect Sprint List
+          $scope.goToSprintList = function(projectId) {
+            $state.go('sprint.list', {
+              projectId : projectId
+            });
+          };
         } ]);

@@ -170,7 +170,7 @@
   var initAll = function() {
     var today = new Date();
     var afterToDay = function(numberOfDaysToAdd) {
-      var nextDay = today;
+      var nextDay = new Date();
       nextDay.setDate((today.getDate() + numberOfDaysToAdd));
       return nextDay;
     }

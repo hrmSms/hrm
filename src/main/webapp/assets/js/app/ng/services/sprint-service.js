@@ -8,6 +8,7 @@ angular.module("hrmApp.services").factory('sprintService',
         id : '@id'
       }, {
         'getSprintsByProjectId': {method:'GET', url: ApiConfigs.Url.SPRINT + '/search/findByProjectIDAndActive?projectId=:projectId&active=:active&projection=sprintProjection'},
+        'getById': {method:'GET', url: ApiConfigs.Url.SPRINT + '/:id?projection=sprintProjection'},
         'get':    {method:'GET'},
         'create' : {method:'POST'},
         'update' : {method : 'PUT'}
