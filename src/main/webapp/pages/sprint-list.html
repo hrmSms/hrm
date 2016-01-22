@@ -28,7 +28,7 @@
     <!-- <div class="dataTables_borderWrap"> -->
     <div class="widget-header">
       <h4 class="widget-title">Sprint List</h4>
-    </div>
+    </div><!-- end title -->
     <div>
       <table id="sample-table-2" class="table table-striped table-bordered table-hover">
         <thead>
@@ -72,7 +72,11 @@
           </tr>
         </tbody>
       </table>
-    </div>
+       <div ng-show="noSprint" class="col-xs-12 center alert">
+        <h3>{{noSprint}}</h3>
+       </div>
+    </div><!-- end sprint list -->
+   
   </div>
 </div>
 

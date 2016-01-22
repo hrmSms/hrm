@@ -81,6 +81,7 @@
           </div>
         </div>
 
+        <!-- SprintState dropdown -->
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="state"> State <i class="red">*</i></label>
           <div class="col-sm-3">
@@ -89,18 +90,14 @@
                 <option ng-repeat="sprintState in sprintStates" value={{sprintState._links.self.href}}>{{sprintState.name}}</option>
               </select>
             </div>
+
             <div ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
               <div ng-show="form.state.$error.required && !error.sprintstate" class="alert alert-danger">{{Message.ERROR.SPRINTSTATE_NULL}}</div>
             </div>
-          </div>
-          <!-- <label class="col-sm-2 control-label no-padding-right" for="planVelocity""> Plan Velocity </label>
-          <div class="col-sm-3">
-            <div ng-class="{ 'has-error': form.planVelocity.$untouched && form.planVelocity.$invalid }">
-              <input type="text" id="planVelocity" name="planVelocity" class="form-control col-xs-10"
-                ng-model="sprint.planVelocity" smart-float />
-            </div>
-            <div ng-show="form.planVelocity.$error.float" class="alert alert-danger">Please enter float number between 0 to 999</div>
-          </div> -->
+            <!-- show error if do not have any sprintState -->
+            <div ng-show="noSprintState" class="col-xs-12 center alert">{{noSprintState}}</div>
+          </div><!-- end sprintState dropdown -->
+        
 
         </div>
 

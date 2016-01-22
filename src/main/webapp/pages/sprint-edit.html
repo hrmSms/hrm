@@ -35,7 +35,7 @@
               <input type="text" id="name" name="name" class="form-control" ng-model="sprint.name" required />
             </div>
             <div ng-show="form.$submitted || form.name.$touched">
-              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">Name is required</div>
+              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">{{Message.ERROR.NAME_NULL}}</div>
             </div>
             <div ng-show="error.name" class="alert alert-danger">{{error.name}}</div>
           </div>

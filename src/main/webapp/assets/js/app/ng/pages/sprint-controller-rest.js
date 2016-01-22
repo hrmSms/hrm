@@ -26,10 +26,11 @@ angular.module('hrmApp.controllers').controller(
                 $scope.sprints = data._embedded.sprints;
               } else {
                 // project doesn't have sprints
+                $scope.noSprint = $scope.Message.WARNING.NO_SPRINT;
               }
-            }, function(error) {
+            }, function(errorResponse) {
               // error
-              $scope.error = error;
+              bootbox.alert("Error: " + errorResponse);
             })
           };
           $scope.getSprintsByProjectId(projectId);
@@ -90,6 +91,7 @@ angular.module('hrmApp.controllers').controller(
               $scope.sprintStates = data._embedded.sprintStates;
             } else {
               // don't have any sprintState
+              $scope.noSprintState = $scope.Message.WARNING.NO_SPRINTSTATE;
             }
           }, function(errorResponse) {
             // error
@@ -98,23 +100,23 @@ angular.module('hrmApp.controllers').controller(
             var sprint = angular.copy($scope.sprint);
             sprint.active = 1;
             sprint.project = $scope.project._links.self.href;
-            sprint.endDate = moment(sprint.endDate, $scope.Formats.MYSQL_DATE);
+            sprint.endDate = moment(sprint.endDate, $scope.Formats.VN_DATE);
             sprint.startDate = moment(sprint.startDate, $scope.Formats.VN_DATE);
             sprint.description = $('#description').html();
             sprint.note = $('#note').html();
             sprintService.create(sprint).$promise.then(function(data) {
               // success
               var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-              bootbox.alert($scope.Message.SUCCESS.CREATE(sprintName), function(){
-                $scope.goToSprintList(projectId);
+              bootbox.alert($scope.Message.SUCCESS.CREATE(sprintName), function() {
+                $scope.goToSprintList();
               });
             }, function(errorResponse) {
               // error
-              console.log(errorResponse);
+              bootbox.alert("Error: " + errorResponse);
             })
           };
           // redirect Sprint List
-          $scope.goToSprintList = function(projectId) {
+          $scope.goToSprintList = function() {
             $state.go('sprint.list', {
               projectId : projectId
             });
@@ -141,6 +143,8 @@ angular.module('hrmApp.controllers').controller(
     [ '$scope', '$stateParams', 'sprintService', '$http', 'ApiConfigs', '$state', 'sprintStateService',
         function($scope, $stateParams, sprintService, $http, ApiConfigs, $state, sprintStateService) {
           $scope.sprint = {};
+          //store old sprint
+          var oldsprint = {};
           // get sprint id
           var sprintId = $stateParams.id;
           // get sprint by sprint id
@@ -151,14 +155,24 @@ angular.module('hrmApp.controllers').controller(
             if (data) {
               $scope.sprint = loadSprint(data);
               $scope.sprintstate = data._embedded.sprintstate;
-              // set sprint state for sprint if not update !important
+              // set sprintstate link for sprint if not update !important
               $scope.sprint.sprintstate = $scope.sprintstate._links.self.href;
               $scope.project = data._embedded.project;
+              // set project link for sprint if not update !important
+              $scope.sprint.project = $scope.project._links.self.href;
+              
+            //store oldsprint
+              oldsprint = angular.copy($scope.sprint);
             } else {
-              // don't have any sprintState
+              // sprint doesn't exist 
+              bootbox.alert($scope.Message.WARNING.NOT_EXIST_DATA, function(){
+                $scope.goToSprintList();
+              })
+              
             }
           }, function(errorResponse) {
             // error
+            bootbox.alert("Error: " + errorResponse);
           })
           // get list of sprintStates
           sprintStateService.query(function(data) {
@@ -181,27 +195,36 @@ angular.module('hrmApp.controllers').controller(
           }
           $scope.saveAndClose = function() {
             var sprint = angular.copy($scope.sprint);
-            sprint.active = 1;
-            sprint.project = $scope.project._links.self.href;
-            sprint.endDate = moment(sprint.endDate, $scope.Formats.VN_DATE);
-            sprint.startDate = moment(sprint.startDate, $scope.Formats.VN_DATE);
             sprint.description = $('#description').html();
             sprint.note = $('#note').html();
-            sprintService.update(sprint).$promise.then(function(data) {
-              // success
-              var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-              bootbox.alert($scope.Message.SUCCESS.UPDATE(sprintName), function() {
-                $scope.goToSprintList($scope.project.id);
-              });
-            }, function(errorResponse) {
-              // error
-              console.log(errorResponse);
-            })
+            if (JSON.stringify(sprint) == JSON.stringify(oldsprint)) {
+              //cancel update if no change
+              console.log("No changes");
+            } else {
+              console.log(oldsprint);
+              console.log(sprint);
+              // update when at least one field change
+              sprint.endDate = moment(sprint.endDate, $scope.Formats.VN_DATE);
+              sprint.startDate = moment(sprint.startDate, $scope.Formats.VN_DATE);
+              // update sprint
+              sprintService.update(sprint).$promise.then(function(data) {
+                // success
+                var sprintName = sprint.name.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+                bootbox.alert($scope.Message.SUCCESS.UPDATE(sprintName), function() {
+                  $scope.goToSprintList();
+                });
+              }, function(errorResponse) {
+                // error
+                bootbox.alert("Error: " + errorResponse, function() {
+                  $scope.goToSprintList();
+                });
+              })
+            }
           };
           // redirect Sprint List
-          $scope.goToSprintList = function(projectId) {
+          $scope.goToSprintList = function() {
             $state.go('sprint.list', {
-              projectId : projectId
+              projectId : $scope.project.id
             });
           };
         } ]);

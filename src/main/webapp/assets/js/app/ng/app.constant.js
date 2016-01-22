@@ -38,7 +38,11 @@ angular.module('hrmApp.constants', []).constant('AppConfigs', {
       return name + " deleted successfully";
     }
   },
-  WARNING : {},
+  WARNING : {
+    NO_SPRINT: "No sprints found",
+    NO_SPRINTSTATE: "No SprintState found",
+    NOT_EXIST_DATA: "Data doesn't exist",
+  },
   CONFIRM : {
     DELETE : function(name) {
       return "Are you sure to delete " + name + "?";
