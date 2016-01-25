@@ -77,6 +77,6 @@ public class SprintServiceImp implements SprintService {
     @Override
     @Transactional(value = "txManager")
     public List<Sprint> getByProject(Project project) {
-        return sprintRepository.findByProjectAndActive(project, (byte) 1);
+        return sprintRepository.findByProjectIDAndActive(project.getId(), (byte) 1);
     }
 }

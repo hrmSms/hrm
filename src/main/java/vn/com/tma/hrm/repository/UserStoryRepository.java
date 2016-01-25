@@ -27,8 +27,8 @@ public interface UserStoryRepository extends JpaRepository<UserStory, Long>{
     
     public UserStory findByName(@Param("name") String name);
     
-    @Query("select us from UserStory us where us.parent.id = :parentId")
-    public List<UserStory> findByParentId(@Param("parentId") Long parentId);
+    @Query("select us from UserStory us where us.parent.id = :parentId and us.active = 1")
+    public List<UserStory> findActiveUserStoriesByParentId(@Param("parentId") Long parentId);
     
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @Override

@@ -15,7 +15,7 @@ angular.module('hrmApp.controllers')
 			$scope.usStates = response._embedded.userStoryStates;
 		});
 		
-		$http.get('./api/userStories/search/findByProjectId', {
+		$http.get('./api/userStories/search/findActiveUserstoriesByProjectId', {
 			params: {
 				projectId : projectId,
 				projection : 'userStoryProjection'	
@@ -97,7 +97,7 @@ angular.module('hrmApp.controllers')
 		  message = 'This user story contains ' + tasks.length + ' task(s). ';
 	  }
 	  
-	  $http.get('./api/userStories/search/findByParentId', {
+	  $http.get('./api/userStories/search/findActiveUserStoriesByParentId', {
   			params: {
   				parentId : userstory.id,
   				projection : 'userStoryProjection'	
