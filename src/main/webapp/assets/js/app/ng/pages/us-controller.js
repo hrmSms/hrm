@@ -1,7 +1,7 @@
 // CRUD function
 angular.module('hrmApp.controllers')
-.controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', 'hrmService', '$resource', 'SpringDataRestAdapter', 'UserStory', 'Task', 
-                              function($scope, $http, $state, $stateParams, hrmService, $resource, SpringDataRestAdapter, UserStory, Task) {
+.controller('UserStoryCtrl', ['$scope', '$http', '$state', '$stateParams', '$resource', 'SpringDataRestAdapter', 'UserStory', 'Task', '$q', 
+                              function($scope, $http, $state, $stateParams, $resource, SpringDataRestAdapter, UserStory, Task, $q) {
 	
 	$scope.userstory = {};
 		 // Get all related data
@@ -21,7 +21,8 @@ angular.module('hrmApp.controllers')
 				projection : 'userStoryProjection'	
 			}
 		}).success(function (response) {
-			$scope.parents = response._embedded.userStories;
+			if (response._embedded !== 'undefined' && response._embedded != null) 
+				$scope.parents = response._embedded.userStories;
 		});
 		
 		$http.get('./api/sprints', {
@@ -102,6 +103,7 @@ angular.module('hrmApp.controllers')
   				projection : 'userStoryProjection'	
   			}
   		}).success(function (response) {
+  			console.log('response ' + JSON.stringify(response));
   			if (response._embedded != null && response._embedded != 'undefined') {
   				childUserStories = response._embedded.userStories;
   				message = message + 'This user story is the parent of ' + childUserStories.length + ' user story(s). '
@@ -119,19 +121,21 @@ angular.module('hrmApp.controllers')
                 	});
             	}
             	
-            	//delete all related child user stories
+            	//de-active all related child user stories
             	if (childUserStories.length > 0) {
             		var deleltedChildUserStory = new UserStory();
             		childUserStories.forEach(function(us) {
             			deleltedChildUserStory.id = us.id;
-            			deleltedChildUserStory.$delete();
+            			deleltedChildUserStory.active = 0;
+            			deleltedChildUserStory.$pupdate();
             		})
             	}
             	
-            	//delete user story
+            	//de-active user story
         		var deletedUserStory = new UserStory();
             	deletedUserStory.id = userstory.id;
-            	deletedUserStory.$delete(function() {
+            	deletedUserStory.active = 0;
+            	deletedUserStory.$pupdate(function() {
             		 $scope.deleteSuccess = 'UserStory was deleted';
                      // show message success dialog
                      $scope.showDialog('#message');
@@ -143,7 +147,8 @@ angular.module('hrmApp.controllers')
           });
   		});   	  
   }
-          
+  
+ 
     var buildUserstoryObj = function(newUserStory) {
     	newUserStory.id = $scope.userstory.id;
     	newUserStory.active = 1;
@@ -191,7 +196,6 @@ angular.module('hrmApp.controllers')
     $scope.goToEditUserStory = function(userstory) {
     	if (typeof(Storage) != "undefined") {
             localStorage["userstory"] = JSON.stringify(userstory);
-            console.log('localStorage["userstory"] ' + localStorage["userstory"]);
         }
     	$state.go('us.edit', {
             projectId : $scope.project.id,
@@ -217,7 +221,7 @@ angular.module('hrmApp.controllers')
         form.$setUntouched();
         form.$setPristine();
         // directive check float number
-        form.$setValidity('float', true);
+        form.todo.$setValidity('float', true);
       }
       $scope.userstory={};
       // clear description and note div on UIs
@@ -228,16 +232,18 @@ angular.module('hrmApp.controllers')
   
      // get list userstories by project id
     var getUserStoriesByProjectID = function(projectId) {       	
-		
-		$http.get('./api/userStories/search/findByProjectId', {
+    	$scope.projectId = projectId;
+		$http.get('./api/userStories/search/findActiveUserstoriesByProjectId', {
 			params: {
 				projectId : projectId,
 				projection : 'userStoryProjection'	
 			}
 		}).success(function (response) {
-			$scope.userstories = response._embedded.userStories;
-			$scope.project = $scope.userstories[0]._embedded.project;
-			$scope.isAdmin = true;
+			if (response._embedded !== 'undefined' && response._embedded != null) {
+				$scope.userstories = response._embedded.userStories;
+				$scope.project = $scope.userstories[0]._embedded.project;
+				$scope.isAdmin = true;
+			}
 		});
     };
  
