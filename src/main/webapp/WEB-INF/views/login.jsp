@@ -5,7 +5,7 @@
 	<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 		<meta charset="utf-8" />
-        <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+        <!-- <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"> -->
 		<title>Login - HRM</title>
 
 		<meta name="description" content="User login page" />

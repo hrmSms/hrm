@@ -110,26 +110,28 @@ angular.module('hrmApp.directives').directive('lowerThan', [ function() {
     });
 
     var validator = function(viewValue) {
+      var result;
       viewValue = viewValue.substring(0, limit);
       if (ctrl.$isEmpty(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue;
+        result = viewValue;
       } else if (FLOAT_REGEXP_1.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(/\./g, '').replace(',', '.');
+        result = viewValue.replace(/\./g, '').replace(',', '.');
       } else if (FLOAT_REGEXP_2.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(/\,/g, '');
+        result = viewValue.replace(/\,/g, '');
       } else if (FLOAT_REGEXP_3.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.substring(0, limit);
+        result = viewValue.substring(0, limit);
       } else if (FLOAT_REGEXP_4.test(viewValue)) {
         ctrl.$setValidity('float', true);
-        return viewValue.replace(',', '.');
+        result = viewValue.replace(',', '.');
       } else {
         ctrl.$setValidity('float', false);
-        return viewValue.replace(',', '.');
+        result = viewValue.replace(',', '.');
       }
+      return parseFloat(result);
     };
     ctrl.$parsers.unshift(validator); 
   }

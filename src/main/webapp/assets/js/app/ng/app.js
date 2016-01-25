@@ -23,10 +23,14 @@
     		  'Content-Type': 'application/json;charset=utf-8'  
       }
     }])
-    .run(['$log', '$rootScope', '$state', '$stateParams', '$cookieStore', function($log, $rootScope, $state, $stateParams, $cookieStore) {
+    .run(['$log', '$rootScope', '$state', '$stateParams', '$cookieStore','Message', 'Formats', function($log, $rootScope, $state, $stateParams, $cookieStore, Message, Formats) {
       $rootScope.$state = $state;
       $rootScope.$state.params = $stateParams;
       $rootScope.$log = $log;
+      //get message constant
+      $rootScope.Message = Message;
+      //get formats constant
+      $rootScope.Formats = Formats;
       // Keep last url for tracking 
       $rootScope.$on('$locationChangeSuccess', function(event, newUrl, oldUrl, newState, oldState){
         $rootScope.previousUrl = oldUrl;

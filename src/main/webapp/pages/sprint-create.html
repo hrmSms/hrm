@@ -35,7 +35,7 @@
               <input type="text" id="name" name="name" class="form-control" ng-model="sprint.name" required />
             </div>
             <div ng-show="form.$submitted || form.name.$touched">
-              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">Name is required</div>
+              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">{{Message.ERROR.NAME_NULL}}</div>
               <div ng-show="error.name" class="alert alert-danger">{{error.name}}</div>
             </div>
           </div>
@@ -44,7 +44,7 @@
         <div class="form-group ">
           <label class="col-sm-2 control-label no-padding-right" for="description"> Description </label>
           <div class="col-sm-8 col-sx-10">
-            <div class="wysiwyg-editor" id="description" ></div>
+            <div class="wysiwyg-editor" id="description"></div>
           </div>
         </div>
 
@@ -57,13 +57,11 @@
                 class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
-            <div ng-show="form.$submitted || form.startDate.$dirty">
+            <div ng-show="form.$submitted || form.startDate.$touched">
               <div ng-show="!error.startDate">
-                <div ng-show="form.startDate.$error.required" class="alert alert-danger">Start Date isn't null</div>
-                <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">Start Date should be
-                  less than End Date</div>
+                <div ng-show="form.startDate.$error.required" class="alert alert-danger">{{Message.ERROR.STARTDATE_NULL}}</div>
+                <div ng-show="form.startDate.$error.lowerThan" class="alert alert-danger">{{Message.ERROR.AFTER_ENDDATE}}</div>
               </div>
-              <div ng-show="error.startDate" class="alert alert-danger">{{error.startDate}}</div>
             </div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="endDate">End Date <i class="red">*</i></label>
@@ -74,39 +72,32 @@
                 class="input-group-addon"> <i class="fa fa-clock-o bigger-110"></i>
               </span>
             </div>
-            <div ng-show="form.$submitted || form.endDate.$dirty">
+            <div ng-show="form.$submitted || form.endDate.$touched">
               <div ng-show="!error.endDate">
-                <div ng-show="form.endDate.$error.required" class="alert alert-danger">End Date isn't null</div>
-                <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">End Date should be
-                  greater than Start Date</div>
+                <div ng-show="form.endDate.$error.required" class="alert alert-danger">{{Message.ERROR.ENDDATE_NULL}}</div>
+                <div ng-show="form.endDate.$error.higherThan" class="alert alert-danger">{{Message.ERROR.BEFORE_STARTDATE}}</div>
               </div>
             </div>
-            <div ng-show="error.endDate" class="alert alert-danger">{{error.endDate}}</div>
           </div>
         </div>
 
+        <!-- SprintState dropdown -->
         <div class="form-group">
           <label class="col-sm-2 control-label no-padding-right" for="state"> State <i class="red">*</i></label>
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
               <select class="form-control" id="state" name="state" ng-model="sprint.sprintstate" required>
-                <option ng-repeat="sprintState in sprintStates" value={{sprintState}}>{{sprintState.name}}</option>
+                <option ng-repeat="sprintState in sprintStates" value={{sprintState._links.self.href}}>{{sprintState.name}}</option>
               </select>
             </div>
+
             <div ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
-              <div ng-show="form.state.$error.required && !error.sprintstate" class="alert alert-danger">Please
-                choose a Sprint State</div>
-              <div ng-show="error.sprintstate" class="alert alert-danger">{{error.sprintstate}}</div>
+              <div ng-show="form.state.$error.required && !error.sprintstate" class="alert alert-danger">{{Message.ERROR.SPRINTSTATE_NULL}}</div>
             </div>
-          </div>
-          <!-- <label class="col-sm-2 control-label no-padding-right" for="planVelocity""> Plan Velocity </label>
-          <div class="col-sm-3">
-            <div ng-class="{ 'has-error': form.planVelocity.$untouched && form.planVelocity.$invalid }">
-              <input type="text" id="planVelocity" name="planVelocity" class="form-control col-xs-10"
-                ng-model="sprint.planVelocity" smart-float />
-            </div>
-            <div ng-show="form.planVelocity.$error.float" class="alert alert-danger">Please enter float number between 0 to 999</div>
-          </div> -->
+            <!-- show error if do not have any sprintState -->
+            <div ng-show="noSprintState" class="col-xs-12 center alert">{{noSprintState}}</div>
+          </div><!-- end sprintState dropdown -->
+        
 
         </div>
 
@@ -117,7 +108,7 @@
               <input type="text" id="planEstimate" name="planEstimate" class="col-sm-9" ng-model="sprint.planEstimate"
                 smart-float="6" placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.planEstimate.$error.float" class="col-sm-9 alert alert-danger">Please enter float number between 0 to 999</div>
+            <div ng-show="form.planEstimate.$error.float" class="col-sm-9 alert alert-danger">{{Message.ERROR.FLOAT_FORMAT}}</div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="taskEstimate"> Task Estimate </label>
           <div class="col-sm-3">
@@ -125,7 +116,7 @@
               <input type="text" id="taskEstimate" name="taskEstimate" class="col-sm-9" ng-model="sprint.taskEstimate"
                 smart-float="6" placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.taskEstimate.$error.float" class="col-sm-9 alert alert-danger">Please enter float number between 0 to 999</div>
+            <div ng-show="form.taskEstimate.$error.float" class="col-sm-9 alert alert-danger">{{Message.ERROR.FLOAT_FORMAT}}</div>
           </div>
         </div>
 
@@ -136,7 +127,7 @@
               <input type="text" id="toDo" name="toDo" class="col-sm-9" ng-model="sprint.toDo" smart-float="6"
                 placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.toDo.$error.float" class="col-sm-9 alert alert-danger">Please enter float number between 0 to 999</div>
+            <div ng-show="form.toDo.$error.float" class="col-sm-9 alert alert-danger">{{Message.ERROR.FLOAT_FORMAT}}</div>
           </div>
           <label class="col-sm-2 control-label no-padding-right" for="actual"> Actuals </label>
           <div class="col-sm-3">
@@ -144,7 +135,7 @@
               <input type="text" id="actual" name="actual" class="col-sm-9" ng-model="sprint.actuals" smart-float="6"
                 placeholder="0.00" /> <label class="col-sm-3 no-padding-right"> (Hours)</label>
             </div>
-            <div ng-show="form.actual.$error.float" class="col-sm-9 alert alert-danger">Please enter float number between 0 to 999</div>
+            <div ng-show="form.actual.$error.float" class="col-sm-9 alert alert-danger">{{Message.ERROR.FLOAT_FORMAT}}</div>
           </div>
         </div>
 
@@ -159,17 +150,6 @@
           <hrm-button type="create" ng-disabled="!form.$valid" ng-click="createAndClose()"></hrm-button>
           <hrm-button type="reset" ng-click="reset(form)"></hrm-button>
           <hrm-button type="close" ng-click="goToSprintList()"></hrm-button>
-          <!-- 
-          <button ng-disabled="!form.$valid" type="button" class="btn btn-success width-100px"
-            ng-click="createAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Create
-          </button>
-          <button type="button" class="btn btn-warning width-100px" ng-click="reset(form)">
-            <i class="ace-icon fa fa-undo bigger-110"></i> Reset
-          </button>
-          <button type="button" class="btn btn-danger width-100px" ng-click="goToSprintList()">
-            <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button> -->
         </div>
 
       </form>
@@ -185,44 +165,53 @@
     //ace.init.start();
   });
   var initAll = function() {
+    var today = new Date();
+    var afterToDay = function(numberOfDaysToAdd) {
+      var nextDay = new Date();
+      nextDay.setDate((today.getDate() + numberOfDaysToAdd));
+      return nextDay;
+    }
     //datetimepicker plugin
     $('#startDate').datetimepicker({
-      format : 'DD-MM-YYYY'
+      format : 'DD-MM-YYYY',
+      useCurrent : false,
+      minDate : today,
     }).next().on(ace.click_event, function(e) {
       $(this).prev().focus();
-      //$(this).data("DateTimePicker").minDate(date());
     });
-
     $('#endDate').datetimepicker({
-      format : 'DD-MM-YYYY'
+      format : 'DD-MM-YYYY',
+      useCurrent : false,
+      minDate : afterToDay(1),
     }).next().on(ace.click_event, function(e) {
       $(this).prev().focus();
     });
-
+    /* //set mindate for endDate when startDate changes
+    $("#startDate").on("dp.change", function(e) {
+      $('#endDate').data("DateTimePicker").setMinDate(e.date);
+    });
+    //set maxdate for startDate when endDate changes
+    $("#endDate").on("dp.change", function(e) {
+      $('#startDate').data("DateTimePicker").setMaxDate(e.date);
+    }); */
     //description texterea
     $('#description').css({
       'height' : '150px'
     }).ace_wysiwyg();
-
     var toolbar = $('#description').prev().get(0);
     $(toolbar).addClass('wysiwyg-style2');
-
     //note texterea
     $('#note').css({
       'height' : '150px'
     }).ace_wysiwyg();
-
     var toolbar = $('#note').prev().get(0);
     $(toolbar).addClass('wysiwyg-style2');
-
     //RESIZE IMAGE
-
     //Add Image Resize Functionality to Chrome and Safari
     //webkit browsers don't have image resize functionality when content is editable
     //so let's add something using jQuery UI resizable
     //another option would be opening a dialog for user to enter dimensions.
     if (typeof jQuery.ui !== 'undefined' && ace.vars['webkit']) {
-
       var lastResizableImg = null;
       function destroyResizable() {
         if (lastResizableImg == null)
@@ -231,7 +220,6 @@
         lastResizableImg.removeData('resizable');
         lastResizableImg = null;
       }
-
       var enableImageResize = function() {
         $('.wysiwyg-editor').on('mousedown', function(e) {
           var target = $(e.target);
@@ -241,7 +229,6 @@
                 aspectRatio : e.target.width / e.target.height,
               });
               target.data('resizable', true);
-
               if (lastResizableImg != null) {
                 //disable previous resizable image
                 lastResizableImg.resizable("destroy");
@@ -258,9 +245,7 @@
           destroyResizable();
         });
       }
-
       enableImageResize();
-
       /**
       //or we can load the jQuery UI dynamically only if needed
       if (typeof jQuery.ui !== 'undefined') enableImageResize();
@@ -271,7 +256,6 @@
       }
        */
     }
-
   };
 </script>
 

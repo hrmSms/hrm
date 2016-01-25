@@ -25,11 +25,11 @@ public interface ProjectProjection {
     
     public Date getStartDate();
     
+    @JsonIgnore
     public List<Sprint> getSprints();
     
-    public List<UserStory> getUserStories();
-/*    
     @JsonIgnore
-    public List<Sprint> getSprints();*/
+    public List<UserStory> getUserStories();
+
     
 }
