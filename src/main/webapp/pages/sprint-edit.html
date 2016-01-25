@@ -35,7 +35,7 @@
               <input type="text" id="name" name="name" class="form-control" ng-model="sprint.name" required />
             </div>
             <div ng-show="form.$submitted || form.name.$touched">
-              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">Name is required</div>
+              <div ng-show="form.name.$error.required && !error.name" class="alert alert-danger">{{Message.ERROR.NAME_NULL}}</div>
             </div>
             <div ng-show="error.name" class="alert alert-danger">{{error.name}}</div>
           </div>
@@ -101,8 +101,8 @@
           <div class="col-sm-3">
             <div ng-class="{ 'has-error': form.state.$touched && form.state.$invalid }">
               <select class="form-control" id="state" name="state" ng-model="sprint.sprintstate" required>
-                <option ng-repeat="sprintState in sprintStates" value={{sprintState}}
-                  ng-selected="sprint.sprintstate.id==sprintState.id">{{sprintState.name}}</option>
+                <option ng-repeat="s in sprintStates" value={{s._links.self.href}}
+                  ng-selected="sprintstate.id===s.id">{{s.name}}</option>
               </select>
             </div>
             <div ng-show="form.$submitted ||form.state.$touched || form.state.$dirty">
@@ -171,13 +171,8 @@
         </div>
 
         <div class="center clearfix">
-          <button ng-disabled="(!form.$valid)" = "form.$valid" type="button" class="btn btn-success width-100px"
-            ng-click="saveAndClose()">
-            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i> Save
-          </button>
-          <button type="button" class="btn btn-purple width-100px" ng-click="goToSprintList()">
-            <i class="ace-icon fa fa-times bigger-110"></i> Close
-          </button>
+          <hrm-button ng-disabled="(!form.$valid)" type="save" ng-click="saveAndClose()"> </hrm-button>
+          <hrm-button type="close" ng-click="goToSprintList()"> </hrm-button>
         </div>
 
       </form>
@@ -200,37 +195,29 @@
       $(this).prev().focus();
       //$(this).data("DateTimePicker").minDate(date());
     });
-
     $('#endDate').datetimepicker({
       format : 'DD-MM-YYYY'
     }).next().on(ace.click_event, function(e) {
       $(this).prev().focus();
     });
-
     //description texterea
     $('#description').css({
       'height' : '150px'
     }).ace_wysiwyg();
-
     var toolbar = $('#description').prev().get(0);
     $(toolbar).addClass('wysiwyg-style2');
-
     //note texterea
     $('#note').css({
       'height' : '150px'
     }).ace_wysiwyg();
-
     var toolbar = $('#note').prev().get(0);
     $(toolbar).addClass('wysiwyg-style2');
-
     //RESIZE IMAGE
-
     //Add Image Resize Functionality to Chrome and Safari
     //webkit browsers don't have image resize functionality when content is editable
     //so let's add something using jQuery UI resizable
     //another option would be opening a dialog for user to enter dimensions.
     if (typeof jQuery.ui !== 'undefined' && ace.vars['webkit']) {
-
       var lastResizableImg = null;
       function destroyResizable() {
         if (lastResizableImg == null)
@@ -239,7 +226,6 @@
         lastResizableImg.removeData('resizable');
         lastResizableImg = null;
       }
-
       var enableImageResize = function() {
         $('.wysiwyg-editor').on('mousedown', function(e) {
           var target = $(e.target);
@@ -249,7 +235,6 @@
                 aspectRatio : e.target.width / e.target.height,
               });
               target.data('resizable', true);
-
               if (lastResizableImg != null) {
                 //disable previous resizable image
                 lastResizableImg.resizable("destroy");
@@ -266,9 +251,7 @@
           destroyResizable();
         });
       }
-
       enableImageResize();
-
       /**
       //or we can load the jQuery UI dynamically only if needed
       if (typeof jQuery.ui !== 'undefined') enableImageResize();
@@ -279,7 +262,6 @@
       }
        */
     }
-
   };
 </script>
 

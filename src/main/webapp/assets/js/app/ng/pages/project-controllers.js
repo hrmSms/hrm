@@ -4,8 +4,6 @@
 		
 		if ($state.is('project.edit')) {
 			var projectId = $stateParams.id;
-			console.log("project.edit state "+projectId);
-			
 			var action = $stateParams.action;
 			console.log('project.edit state '+action);
 			$scope.projects = {};
@@ -25,12 +23,14 @@
 			$scope.action = action;
 			
 			Project.query(function(response) {
-
-				$scope.projects = response ? response : [];
-		
-				for (var i = 0; i < $scope.projects.length; i++) {
-					var proj = $scope.projects[i];
-		//			console.log('Loading project ' + proj.name);
+				$scope.projects = [];
+				//filter active project
+				for (var i = 0; i < response.length; i++) {
+					var proj = response[i];
+//					console.log('Loading project ' + proj.name +' is '+ proj.active);
+					if (proj.active) {
+						$scope.projects.push(proj);
+					}
 				}
 		})};
 		
@@ -49,9 +49,7 @@
 		
 		$scope.addProject = function(p) {
 			
-			 var desc = $('#description').html();
-	            
-			//p.startDate = d.toISOString();
+			var desc = $('#description').html();
 			p.startDate = moment(p.startDate, "DD-MM-YYYY hh:mm:ss");
 			p.endDate = moment(p.endDate, "DD-MM-YYYY hh:mm:ss");
 			//console.log('Project client id' + p.clientId);
@@ -60,7 +58,6 @@
 			}
 				
 			p.clientId = new Number(p.clientId);
-			
 			
 			new Project({
 				description : desc,
@@ -84,14 +81,22 @@
 	              id : projectId,
 	              action : 1
 	            });
-			
-			//project.save();
 		};
 
 		$scope.deleteProject = function(project) {
-			project.remove(function() {
+			console.log('Project id '+project.id);
+			 project.active = 0;
+			 if (project.clientId == null ) {
+				 project.clientId = 1;
+				}
+			 
+			 if (project.projectOwner == null ) {
+				 project.projectOwner = 1;
+				}
+			project.save(function() {
 				$scope.projects.splice($scope.projects.indexOf(project), 1);
 			});
+			$scope.goToProjectList();
 		};
 		
 		var buildProject = function(project, id, p) {
@@ -99,7 +104,7 @@
 			var desc = $('#description').html();
 			p.startDate = moment(p.startDate, "DD-MM-YYYY hh:mm:ss");
 			p.endDate = moment(p.endDate, "DD-MM-YYYY hh:mm:ss");
-			console.log('Project client id' + p.clientId);
+			//console.log('Project client id' + p.clientId);
 			if (p.clientId == null ) {
 				p.clientId = 1;
 			}
@@ -115,7 +120,7 @@
 				endDate : p.endDate,
 				projectOwner : 1,
 				clientId : p.clientId,
-				active : 1
+				active : p.active
 			})
 			
 			return project;
@@ -124,17 +129,12 @@
         $scope.createAndClose = function() {
         	console.log('createAndClose '+ $scope.action);
         	
-        	
-        	
         	if ($scope.action == 0) {
         		$scope.addProject($scope.p);
         	}
-        	else {
-        		
-            	var project = buildProject(project, $stateParams.id, $scope.p); 
-            	
-            	project.save();
-        		
+        	else {        		
+            	var project = buildProject(project, $stateParams.id, $scope.p);            	
+            	project.save();        		
         	}
         	$scope.goToProjectList();
         };
@@ -168,46 +168,8 @@
           }
 	};
 	
-	// AppController.$inject = ['$scope', 'Project'];
 	angular.module("hrmApp.controllers")
 		.controller("AppController",[ '$scope', '$state', '$stateParams', 'Project', AppController ])
-		//.service('projectService', ['$q', '$http', ProjectService])
-		//.directive('uniqueProjectname', ['ProjectService', UniqueProjectnameDirective])
-		
-		.directive('projectnameValidator', function($q, $timeout, $http) {
-            return {
-                require: 'ngModel',
-                link: function(scope, element, attrs, ngModel) {
-                    ngModel.$asyncValidators.projectname = function(modelValue, viewValue) {
-                        if (!viewValue) {
-                            return $q.when(true);
-                        }
-                        var deferred = $q.defer();
-                        
-                        var urlBase = 'api';
-        	        	urlBase += '/projects/search/findByName?name=';        	        	
-        	        	var isUnique = false;
-        	        	$http.get(urlBase + viewValue)
-        	            .success(function (data) {
-        	                if (data._embedded != undefined) {
-        	                	console.log('Line 165:' + data._embedded.projects[0].name);
-        	                    isUnique = true;
-        	                }        	                
-        	            });
-        	        	
-        	        	
-                        $timeout(function() {
-                            if (viewValue && isUnique) {
-                                deferred.reject();
-                            }
-
-                            deferred.resolve();
-                        }, 500);
-                        return deferred.promise;
-                    };
-                }
-            };
-		})
 		;
 	
 }(angular));

@@ -10,11 +10,12 @@ angular.module('hrmApp.directives').directive('projectnameValidator', function($
                 return $q.when(true);
             }
             var deferred = $q.defer();
-            
+            console.log('Validation '+scope.p);
             var urlBase = ApiConfigs.Url.PROJECT;
-        	urlBase += '/search/findByName?name=';        	        	
+        	urlBase += '/search/findByNameAndActive?name=';
+        	urlBase += viewValue +'&active=1';
         	var isUnique = false;
-        	$http.get(urlBase + viewValue)
+        	$http.get(urlBase)
             .success(function (data) {
                 if (data._embedded != undefined) {
 //                	console.log('Line 19:' + data._embedded.projects[0].name);
