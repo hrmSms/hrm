@@ -15,4 +15,4 @@ angular.module("hrmApp.services").factory('sprintStateService',
 
       return SprintState;
       
-    } ])
+    } ]);
