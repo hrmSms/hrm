@@ -5,7 +5,10 @@ angular.module("hrmApp.services")
 	.factory("UserStory", ['$resource', function($resource) {
 		var UserStory = $resource('./api/userStories/:id', {id : '@id'}, {
 			update: {
-				method: 'PUT'
+				method: 'PUT', headers: {'Content-Type': 'application/json'}
+			},
+			pupdate: {
+				method: 'PATCH', headers: {'Content-Type': 'application/json'}
 			}
 		});
 		
