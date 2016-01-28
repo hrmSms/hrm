@@ -17,8 +17,11 @@
                                'hrmApp.controllers', 
                                'hrmApp.directives', 
                                'hrmApp.services' ])
-    .config(['$logProvider', function($logProvider) {
+    .config(['$logProvider', '$httpProvider', function($logProvider, $httpProvider) {
       $logProvider.debugEnabled(true);
+      $httpProvider.defaults.headers.patch = {
+    		  'Content-Type': 'application/json;charset=utf-8'  
+      }
     }])
     .run(['$log', '$rootScope', '$state', '$stateParams', '$cookieStore','Message', 'Formats', function($log, $rootScope, $state, $stateParams, $cookieStore, Message, Formats) {
       $rootScope.$state = $state;

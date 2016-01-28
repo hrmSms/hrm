@@ -28,11 +28,18 @@
     <intercept-url pattern="/validate" access="permitAll()" />
     <intercept-url pattern="/greeting" access="permitAll()" />
     <intercept-url pattern="/registrationConfirm" access="permitAll()" />
+    <intercept-url pattern="/api/userStories/**" access="hasRole('ADMIN')" method="DELETE"/>
+    <intercept-url pattern="/api/userStories/**" access="hasRole('ADMIN')" method="PATCH"/>
+    <intercept-url pattern="/api/userStories/**" access="hasAnyRole('ADMIN', 'USER')" method="PUT"/>
+    <intercept-url pattern="/api/userStories/**" access="hasAnyRole('USER', 'ADMIN')" method="GET"/>
+    <intercept-url pattern="/api/userStories/**" access="hasRole('USER') or hasRole('ADMIN')" method="POST"/>
+
     <intercept-url pattern="/**" access="hasRole('ADMIN') or hasRole('USER')" />
     <form-login login-page='/login' 
     			username-parameter='email'
-    			authentication-failure-url="/login?error" 
-    			default-target-url='/'/>
+    			authentication-failure-url="/login?error"
+    			default-target-url='/' />
+				<!-- authentication-success-handler-ref="customAuthenticationSuccessHandler"/> -->				
     <remember-me token-validity-seconds="1209600"
     			remember-me-parameter="remember-me"
    				data-source-ref="hrmDataSource"/>

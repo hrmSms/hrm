@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+<!-- <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"> -->
 <title>Welcome - HRM</title>
 </head>
 <body>
